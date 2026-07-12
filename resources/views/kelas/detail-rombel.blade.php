@@ -16,9 +16,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="text-gray-400 dark:text-gray-500">
-                <td class="py-8 text-center" colspan="3">(Data siswa akan muncul di sini)</td>
-            </tr>
+            <template x-if="selectedRombel?.siswa && selectedRombel.siswa.length > 0">
+                <template x-for="(siswa, index) in selectedRombel.siswa" :key="index">
+                    <tr class="border-b last:border-0 dark:border-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td class="py-2 pr-4 text-gray-700 dark:text-gray-300 font-medium" x-text="index + 1"></td>
+                        <td class="py-2 pr-4" x-text="siswa.nama"></td>
+                        <td class="py-2 text-gray-700 dark:text-gray-300" x-text="siswa.nis"></td>
+                    </tr>
+                </template>
+            </template>
+            <template x-if="!selectedRombel?.siswa || selectedRombel.siswa.length === 0">
+                <tr class="text-gray-400 dark:text-gray-500">
+                    <td class="py-8 text-center" colspan="3">Belum ada siswa terdaftar di rombel ini.</td>
+                </tr>
+            </template>
         </tbody>
     </table>
 

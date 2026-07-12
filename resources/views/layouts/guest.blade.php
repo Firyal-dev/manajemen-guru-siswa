@@ -19,15 +19,21 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            {{-- App logo --}}
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+            {{-- Guest layout slot for auth forms, logo now inside the card --}}
+            <div class="w-full sm:max-w-md mt-6 px-6 py-6 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+                {{-- App logo inside the card --}}
+                <div class="flex flex-col items-center mb-6">
+                    <a href="/">
+                        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    </a>
+                    <h2 class="mt-3 text-center text-gray-700 dark:text-gray-300 font-medium text-base">
+                        SMK AK Nusa Bangsa
+                    </h2>
+                    <h2 class="mt-3 text-center text-gray-700 dark:text-gray-300 font-medium text-base">
+                        Selamat Datang di Aplikasi Management 👋
+                    </h2>
+                </div>
 
-            {{-- Guest layout slot for auth forms --}}
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
         </div>

@@ -84,7 +84,7 @@
                         <div>
                             {{-- Photo + name header --}}
                             <div class="flex items-center gap-4 mb-6">
-                                <img :src="`/storage/${selected.url_foto}`" alt="Foto profil"
+                                <img :src="'{{ asset('storage') }}/' + selected.url_foto" alt="Foto profil"
                                     class="w-20 h-20 rounded-full object-cover bg-gray-200 dark:bg-gray-700"
                                     x-on:error.once="$event.target.src='{{ asset('user-placeholder.png') }}'">
                                 <div>
@@ -121,7 +121,7 @@
 
                             {{-- Action buttons --}}
                             <div class="mt-6 flex gap-2">
-                                <a :href="`/guru/${selected.id}/edit`">
+                                <a :href="'{{ url('guru') }}/' + selected.id + '/edit'">
                                     <x-secondary-button>Edit</x-secondary-button>
                                 </a>
                                 <x-danger-button @click="$dispatch('open-modal', 'confirm-hapus')">
@@ -146,7 +146,7 @@
                             <x-secondary-button @click="$dispatch('close-modal', 'confirm-hapus')">
                                 Batal
                             </x-secondary-button>
-                            <form method="POST" x-bind:action="`/guru/${selected.id}`"
+                            <form method="POST" x-bind:action="'{{ url('guru') }}/' + selected.id"
                                   @submit="$dispatch('close-modal', 'confirm-hapus')">
                                 @csrf
                                 @method('DELETE')
