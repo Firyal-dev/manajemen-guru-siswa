@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\JurusanController;
@@ -6,23 +7,18 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelasRombelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RombelController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
-use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\DashboardController;
 // Redirect root to login.
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
 // Authenticated + verified dashboard.
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Student page (placeholder, just auth required).
-Route::get('/siswa', function () {
-    return view('siswa.index');
-})->middleware(['auth'])->name('siswa');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // All routes below require authentication.
 Route::middleware('auth')->group(function () {
@@ -53,6 +49,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/kelas-rombel/create', [KelasRombelController::class, 'createKelasRombel'])->name('kelas-rombel.create');
     Route::post('/kelas-rombel', [KelasRombelController::class, 'storeKelasRombel'])->name('kelas-rombel.store');
     Route::delete('/kelas-rombel/{rombel}', [KelasRombelController::class, 'destroyKelasRombel'])->name('kelas-rombel.destroy');
+
+    // Student CRUD
+    Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa');
+    Route::get('/siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
+    Route::post('/siswa', [SiswaController::class, 'store'])->name('siswa.store');
+    Route::get('/siswa/{siswa}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
+    Route::patch('/siswa/{siswa}', [SiswaController::class, 'update'])->name('siswa.update');
+    Route::delete('/siswa/{siswa}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
 });
 
 require __DIR__ . '/auth.php';

@@ -19,7 +19,10 @@ return new class extends Migration
             $table->string('agama');
             $table->string('kelamin');
             $table->foreignId('rombel_id')->nullable()->constrained()->nullOnDelete();
-            $table->timestamps();
+            $table->timestamp('tanggal_waktu')->nullable();
+            $table->string('status')->default('1');
+            $table->string('alasan_hapus')->nullable();
+            
         });
     }
 

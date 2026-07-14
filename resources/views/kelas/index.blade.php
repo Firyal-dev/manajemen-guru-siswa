@@ -48,7 +48,7 @@
                                 @php $displayNama = "{$kelas->tingkat} {$jurusan->singkatan} {$rombel->tingkat}" @endphp
                                 <x-card
                                     class="w-56 !p-4 space-y-2 border-gray-100 dark:border-gray-600 shadow-none !bg-gray-50 dark:!bg-gray-900/50 cursor-pointer hover:shadow-md transition-shadow"
-                                    @click="selectedRombel = { display_nama: '{{ $displayNama }}', siswa_count: {{ $rombel->siswa->count() }} }; $dispatch('open-modal', 'detail-rombel')">
+                                    @click="selectedRombel = { display_nama: '{{ $displayNama }}', siswa_count: {{ $rombel->siswa->count() }}, siswa: {{ json_encode($rombel->siswa->map(fn($s) => ['nama' => $s->nama, 'nis' => $s->nis])->values()->all()) }} }; $dispatch('open-modal', 'detail-rombel')">
                                     <div class="flex items-start justify-between gap-2">
                                         <div class="font-medium text-gray-900 dark:text-gray-100">{{ $displayNama }}</div>
                                         <x-button-danger
