@@ -56,3 +56,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+// DUMMY API ENDPOINTS FOR SYNC TESTING (REMOVED)
