@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     // Academic years
+    Route::get('/tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun-ajaran.index');
     Route::post('/tahun-ajaran', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store');
     Route::patch('/update-tahun-ajaran', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update');
     Route::patch('/tahun-ajaran/{ta}', [TahunAjaranController::class, 'active'])->name('tahun-ajaran.active');
@@ -57,6 +58,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/siswa/{siswa}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
     Route::patch('/siswa/{siswa}', [SiswaController::class, 'update'])->name('siswa.update');
     Route::delete('/siswa/{siswa}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+    // Penugasan
+    Route::get('/penugasan/wali-kelas', [\App\Http\Controllers\PenugasanController::class, 'indexWaliKelas'])->name('penugasan.wali-kelas');
+    Route::post('/penugasan/wali-kelas', [\App\Http\Controllers\PenugasanController::class, 'storeWaliKelas'])->name('penugasan.wali-kelas.store');
+    Route::delete('/penugasan/wali-kelas/{waliKelas}', [\App\Http\Controllers\PenugasanController::class, 'destroyWaliKelas'])->name('penugasan.wali-kelas.destroy');
+
+    Route::get('/penugasan/guru-mapel', [\App\Http\Controllers\PenugasanController::class, 'indexGuruMapel'])->name('penugasan.guru-mapel');
+    Route::post('/penugasan/guru-mapel', [\App\Http\Controllers\PenugasanController::class, 'storeGuruMapel'])->name('penugasan.guru-mapel.store');
+    Route::delete('/penugasan/guru-mapel/{guruMapel}', [\App\Http\Controllers\PenugasanController::class, 'destroyGuruMapel'])->name('penugasan.guru-mapel.destroy');
 });
 
 require __DIR__ . '/auth.php';

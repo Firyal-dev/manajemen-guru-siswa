@@ -11,57 +11,15 @@
                     </a>
                 </div>
 
-                {{-- Academic year dropdown --}}
-                <div class="flex items-center ms-6">
-                    <x-dropdown align="left" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm leading-4 font-medium rounded-md text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-100 focus:outline-none transition ease-in-out duration-150">
-                                <div>
-                                    {{ $tahunAjaranAktif ? "{$tahunAjaranAktif->tahun_mulai}/{$tahunAjaranAktif->tahun_selesai}" : 'Pilih Tahun Ajaran' }}
-                                </div>
 
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            @foreach ($tahunAjaran ?? [] as $ta)
-                                <form method="POST" action="{{ route('tahun-ajaran.active', $ta->id) }}">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit"
-                                        class="w-full text-center px-4 py-2 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none transition duration-150 ease-in-out {{ $ta->aktif ? 'font-semibold text-indigo-600 dark:text-indigo-400' : '' }}">
-                                        {{ $ta->tahun_mulai }}/{{ $ta->tahun_selesai }}
-                                        @if ($ta->aktif)
-                                            <span class="ms-1">&check;</span>
-                                        @endif
-                                    </button>
-                                </form>
-                            @endforeach
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-
-                {{-- Create new academic year button --}}
-                <div class="flex items-center ms-2">
-                    <x-secondary-button x-data=""
-                        x-on:click.prevent="$dispatch('open-modal', 'buat-tahun-ajaran')">
-                        Buat Tahun Ajaran Baru
-                    </x-secondary-button>
-                </div>
 
                 {{-- Desktop nav links --}}
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('tahun-ajaran.index')" :active="request()->routeIs('tahun-ajaran.*')">
+                        {{ __('Tahun Ajaran') }}
                     </x-nav-link>
                     <x-nav-link :href="route('guru')" :active="request()->routeIs('guru')">
                         {{ __('Guru') }}
@@ -72,6 +30,32 @@
                     <x-nav-link :href="route('kelas')" :active="request()->routeIs('kelas')">
                         {{ __('Kelas') }}
                     </x-nav-link>
+
+                    {{-- Penugasan Dropdown --}}
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out {{ request()->routeIs('penugasan.*') ? 'border-indigo-400 text-gray-900 focus:border-indigo-700' : '' }}">
+                                    <div>Penugasan</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('penugasan.wali-kelas')">
+                                    {{ __('Wali Kelas') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('penugasan.guru-mapel')">
+                                    {{ __('Guru Mapel') }}
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
                 </div>
             </div>
 
@@ -135,34 +119,31 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tahun-ajaran.index')" :active="request()->routeIs('tahun-ajaran.*')">
+                {{ __('Tahun Ajaran') }}
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('guru')" :active="request()->routeIs('guru')">
                 {{ __('Guru') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('siswa')" :active="request()->routeIs('siswa')">
                 {{ __('Siswa') }}
             </x-responsive-nav-link>
-        </div>
+            <x-responsive-nav-link :href="route('kelas')" :active="request()->routeIs('kelas')">
+                {{ __('Kelas') }}
+            </x-responsive-nav-link>
 
-        {{-- Responsive: academic year switcher --}}
-        <div class="pt-2 pb-3 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4 text-sm text-gray-500 dark:text-gray-400 mb-1">{{ __('Tahun Ajaran') }}</div>
-            @foreach ($tahunAjaran ?? [] as $ta)
-                <form method="POST" action="{{ route('tahun-ajaran.active', $ta->id) }}">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit"
-                        class="block w-full text-start ps-4 py-2 border-l-4 text-base font-medium {{ $ta->aktif ? 'border-indigo-400 text-indigo-700 dark:text-indigo-300' : 'border-transparent text-gray-600 dark:text-gray-400' }}">
-                        {{ $ta->tahun_mulai }}/{{ $ta->tahun_selesai }}
-                        @if ($ta->aktif)
-                            &check;
-                        @endif
-                    </button>
-                </form>
-            @endforeach
-            <button x-data="" x-on:click.prevent="$dispatch('open-modal', 'buat-tahun-ajaran')"
-                class="block w-full text-start ps-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:text-gray-800 dark:focus:text-gray-200 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-gray-300 dark:focus:border-gray-600 transition duration-150 ease-in-out">
-                {{ __('Buat Tahun Ajaran Baru') }}
-            </button>
+            {{-- Responsive Penugasan --}}
+            <div class="pt-2 pb-1 border-t border-gray-200 dark:border-gray-600">
+                <div class="px-4 font-medium text-base text-gray-800 dark:text-gray-200">Penugasan</div>
+                <div class="mt-2 space-y-1">
+                    <x-responsive-nav-link :href="route('penugasan.wali-kelas')" :active="request()->routeIs('penugasan.wali-kelas')">
+                        {{ __('Wali Kelas') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('penugasan.guru-mapel')" :active="request()->routeIs('penugasan.guru-mapel')">
+                        {{ __('Guru Mapel') }}
+                    </x-responsive-nav-link>
+                </div>
+            </div>
         </div>
 
         {{-- Responsive: user settings --}}

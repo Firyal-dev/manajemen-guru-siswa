@@ -8,6 +8,13 @@ use App\Models\TahunAjaran;
 // Controller for academic year CRUD & activation.
 class TahunAjaranController extends Controller
 {
+    // Menampilkan halaman manajemen Tahun Ajaran
+    public function index()
+    {
+        $tahunAjarans = TahunAjaran::orderBy('tahun_mulai', 'desc')->get();
+        return view('tahun-ajaran.index', compact('tahunAjarans'));
+    }
+
     // Create a new academic year.
     public function store(TahunAjaranRequest $req)
     {

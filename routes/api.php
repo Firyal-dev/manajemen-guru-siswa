@@ -17,12 +17,16 @@ Route::middleware(['throttle:60,1', \App\Http\Middleware\RequireApiKey::class])-
         return response()->json(Siswa::paginate(50));
     });
 
+    Route::get('/jurusans', function () {
+        return response()->json(\App\Models\Jurusan::paginate(50));
+    });
+
     Route::get('/mapels', function () {
         return response()->json(Mapel::paginate(50));
     });
 
     Route::get('/rombels', function () {
-        return response()->json(Rombel::paginate(50));
+        return response()->json(Rombel::with('kelas')->paginate(50));
     });
 
     Route::get('/tahun-ajaran/aktif', function () {
@@ -31,5 +35,13 @@ Route::middleware(['throttle:60,1', \App\Http\Middleware\RequireApiKey::class])-
 
     Route::get('/rombel/{id}/siswa', function ($id) {
         return response()->json(Siswa::where('rombel_id', $id)->paginate(50));
+    });
+
+    Route::get('/wali-kelas', function () {
+        return response()->json(\App\Models\WaliKelas::paginate(50));
+    });
+
+    Route::get('/guru-mapel', function () {
+        return response()->json(\App\Models\GuruMapel::paginate(50));
     });
 });
