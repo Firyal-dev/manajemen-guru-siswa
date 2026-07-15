@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'riffaganteng@gmail.com'],
             [
-                'name' => 'resya',
+                'name' => 'riffa',
                 'password' => Hash::make('1234567.'),
             ]
         );
