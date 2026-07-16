@@ -11,8 +11,9 @@ class SiswaController extends Controller
 {
     public function index(Request $req)
     {
-        $siswas = Siswa::with('rombel.kelas')
+        $siswas = Siswa::with(['riwayatKelas.rombel.kelas'])
             ->search($req->search)
+            ->filter(['agama' => $req->agama, 'kelamin' => $req->kelamin])
             ->paginate(10)
             ->withQueryString();
 
@@ -27,7 +28,19 @@ class SiswaController extends Controller
 
     public function store(SiswaRequest $req)
     {
-        Siswa::create($req->validated());
+        $siswa = Siswa::create($req->validated());
+
+        if ($req->filled('rombel_id')) {
+            $activeTa = \App\Models\TahunAjaran::where('aktif', true)->first();
+            if ($activeTa) {
+                \App\Models\RiwayatKelasSiswa::create([
+                    'siswa_id' => $siswa->id,
+                    'rombel_id' => $req->rombel_id,
+                    'tahun_ajaran_id' => $activeTa->id,
+                ]);
+            }
+        }
+
         return redirect()->route('siswa')->with('success', 'Siswa berhasil ditambahkan.');
     }
 
@@ -40,6 +53,28 @@ class SiswaController extends Controller
     public function update(SiswaRequest $req, Siswa $siswa)
     {
         $siswa->update($req->validated());
+
+        $activeTa = \App\Models\TahunAjaran::where('aktif', true)->first();
+        if ($activeTa) {
+            if ($req->filled('rombel_id')) {
+                \App\Models\RiwayatKelasSiswa::updateOrCreate(
+                    [
+                        'siswa_id' => $siswa->id,
+                        'tahun_ajaran_id' => $activeTa->id,
+                    ],
+                    [
+                        'rombel_id' => $req->rombel_id,
+                        'status' => 'aktif',
+                        'tanggal_masuk' => now(),
+                    ]
+                );
+            } else {
+                \App\Models\RiwayatKelasSiswa::where('siswa_id', $siswa->id)
+                    ->where('tahun_ajaran_id', $activeTa->id)
+                    ->delete();
+            }
+        }
+
         return redirect()->route('siswa')->with('success', 'Data siswa berhasil diperbarui.');
     }
 

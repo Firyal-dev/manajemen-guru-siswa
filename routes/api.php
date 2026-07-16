@@ -29,12 +29,21 @@ Route::middleware(['throttle:60,1', \App\Http\Middleware\RequireApiKey::class])-
         return response()->json(Rombel::with('kelas')->paginate(50));
     });
 
+    Route::get('/tahun-ajarans', function () {
+        return response()->json(TahunAjaran::paginate(50));
+    });
+
     Route::get('/tahun-ajaran/aktif', function () {
         return response()->json(TahunAjaran::where('aktif', 1)->first());
     });
+    
+    Route::get('/riwayat-kelas', function () {
+        return response()->json(\App\Models\RiwayatKelasSiswa::paginate(100));
+    });
 
     Route::get('/rombel/{id}/siswa', function ($id) {
-        return response()->json(Siswa::where('rombel_id', $id)->paginate(50));
+        $siswaIds = \App\Models\RiwayatKelasSiswa::where('rombel_id', $id)->pluck('siswa_id');
+        return response()->json(Siswa::whereIn('id', $siswaIds)->paginate(50));
     });
 
     Route::get('/wali-kelas', function () {

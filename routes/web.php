@@ -50,6 +50,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/kelas-rombel/create', [KelasRombelController::class, 'createKelasRombel'])->name('kelas-rombel.create');
     Route::post('/kelas-rombel', [KelasRombelController::class, 'storeKelasRombel'])->name('kelas-rombel.store');
     Route::delete('/kelas-rombel/{rombel}', [KelasRombelController::class, 'destroyKelasRombel'])->name('kelas-rombel.destroy');
+    
+    // Assign Siswa to Rombel
+    Route::get('/kelas-rombel/{rombel}/assign-siswa', [KelasRombelController::class, 'assignSiswa'])->name('kelas-rombel.assign-siswa');
+    Route::post('/kelas-rombel/{rombel}/assign-siswa', [KelasRombelController::class, 'updateAssignSiswa'])->name('kelas-rombel.update-assign-siswa');
+    Route::post('/kelas-rombel/api/siswas', [KelasRombelController::class, 'apiSiswas'])->name('kelas-rombel.api-siswas');
 
     // Student CRUD
     Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa');

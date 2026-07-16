@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Enums\Gender;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['rombel_id', 'nama', 'nis', 'nisn', 'agama', 'kelamin', 'status', 'alasan_hapus'])]
+#[Fillable(['nama', 'nis', 'nisn', 'agama', 'kelamin', 'status', 'alasan_hapus'])]
 class Siswa extends Model
 {
     use HasFactory;
@@ -19,7 +19,7 @@ class Siswa extends Model
     protected static function booted()
     {
         static::addGlobalScope('active', function (Builder $builder) {
-            $builder->where('status', '1');
+            $builder->where('siswas.status', '1');
         });
     }
 
@@ -29,9 +29,33 @@ class Siswa extends Model
             "kelamin" => Gender::class,
         ];
     }
-    public function rombel(): BelongsTo
+    
+    // A student has a history of classes (Riwayat Kelas)
+    public function riwayatKelas(): HasMany
     {
-        return $this->belongsTo(Rombel::class);
+        return $this->hasMany(RiwayatKelasSiswa::class);
+    }
+
+    // Custom method to get the currently active Rombel for the student
+    public function rombelAktif()
+    {
+        // Use request() attributes for caching to prevent stale cache in Octane/Long-running processes
+        $req = request();
+        if (! $req->attributes->has('active_ta_id')) {
+            $activeTa = TahunAjaran::where('aktif', true)->first();
+            $req->attributes->set('active_ta_id', $activeTa ? $activeTa->id : -1);
+        }
+        
+        $activeTaId = $req->attributes->get('active_ta_id');
+        
+        if ($activeTaId === -1) return null;
+
+        $riwayat = $this->riwayatKelas
+            ->where('tahun_ajaran_id', $activeTaId)
+            ->where('status', 'aktif')
+            ->first();
+
+        return $riwayat ? $riwayat->rombel : null;
     }
 
     public function scopeSearch(Builder $query, ?string $search): Builder
@@ -43,5 +67,18 @@ class Siswa extends Model
               ->orWhereLike('nis', "%{$search}%", caseSensitive: false)
               ->orWhereLike('nisn', "%{$search}%", caseSensitive: false);
         });
+    }
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        $query->when($filters['agama'] ?? null, function (Builder $q, $agama) {
+            $q->where('agama', $agama);
+        });
+
+        $query->when($filters['kelamin'] ?? null, function (Builder $q, $kelamin) {
+            $q->where('kelamin', $kelamin);
+        });
+
+        return $query;
     }
 }

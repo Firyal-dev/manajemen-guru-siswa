@@ -1,91 +1,97 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Manajemen Tahun Ajaran') }}
-        </h2>
+        Tahun Ajaran
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
-            @if (session('success'))
-                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
+    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline text-[28px] font-bold text-on-surface">Tahun Ajaran</h1>
+            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data tahun ajaran dan set status aktif untuk seluruh sistem.</p>
+        </div>
+        <button x-data="" x-on:click.prevent="$dispatch('open-modal', 'buat-tahun-ajaran')" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            Buat Tahun Ajaran
+        </button>
+    </div>
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100 flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
-                    <div>
-                        <h3 class="text-lg font-medium">Daftar Tahun Ajaran</h3>
-                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            Kelola data tahun ajaran dan set status aktif untuk digunakan di seluruh sistem.
-                        </p>
-                    </div>
-                    <div>
-                        <x-primary-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'buat-tahun-ajaran')">
-                            + Buat Tahun Ajaran
-                        </x-primary-button>
-                    </div>
-                </div>
+    @if (session('success'))
+        <div class="mb-6 p-4 bg-green-50 text-secondary rounded-xl border border-green-200 flex items-center gap-3">
+            <span class="material-symbols-outlined text-[20px]">check_circle</span>
+            <p class="text-[14px] font-bold">{{ session('success') }}</p>
+        </div>
+    @endif
 
-                <div class="overflow-x-auto">
-                    <table class="w-full whitespace-no-wrap">
-                        <thead>
-                            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                                <th class="px-4 py-3">Tahun Ajaran</th>
-                                <th class="px-4 py-3">Status</th>
-                                <th class="px-4 py-3">Dibuat Pada</th>
-                                <th class="px-4 py-3 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                            @forelse($tahunAjarans as $ta)
-                                <tr class="text-gray-700 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td class="px-4 py-3">
-                                        <div class="flex items-center text-sm">
-                                            <p class="font-semibold">{{ $ta->tahun_mulai }} / {{ $ta->tahun_selesai }}</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        @if($ta->aktif)
-                                            <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                                Aktif
-                                            </span>
-                                        @else
-                                            <span class="px-2 py-1 font-semibold leading-tight text-gray-700 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-100">
-                                                Nonaktif
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        {{ $ta->created_at->format('d M Y') }}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            @if(!$ta->aktif)
-                                                <form action="{{ route('tahun-ajaran.active', $ta->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium">
-                                                        Set Aktif
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
-                                        Belum ada data tahun ajaran.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden">
+        <div class="p-5 border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+            <h2 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">calendar_month</span>
+                Daftar Tahun Ajaran
+            </h2>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low border-b border-outline-variant">
+                        <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">Periode Tahun Ajaran</th>
+                        <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">Status</th>
+                        <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">Dibuat Pada</th>
+                        <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/50">
+                    @forelse($tahunAjarans as $ta)
+                        <tr class="hover:bg-surface-container-highest transition-colors group">
+                            <td class="py-4 px-5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg {{ $ta->aktif ? 'bg-primary-container/20 text-primary' : 'bg-surface-container-high text-on-surface-variant' }} flex items-center justify-center font-bold">
+                                        <span class="material-symbols-outlined text-[20px]">school</span>
+                                    </div>
+                                    <p class="font-bold text-[15px] text-on-surface">TA {{ $ta->tahun_mulai }} / {{ $ta->tahun_selesai }}</p>
+                                </div>
+                            </td>
+                            <td class="py-4 px-5">
+                                @if($ta->aktif)
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-secondary border border-green-200 text-[12px] font-bold rounded-lg shadow-sm">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                        Aktif Sekarang
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container text-on-surface-variant border border-outline-variant/50 text-[12px] font-bold rounded-lg">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                                        Nonaktif
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="py-4 px-5 text-[13px] text-on-surface-variant font-medium">
+                                {{ $ta->created_at->format('d M Y') }}
+                            </td>
+                            <td class="py-4 px-5 text-right">
+                                @if(!$ta->aktif)
+                                    <form action="{{ route('tahun-ajaran.active', $ta->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="px-3 py-1.5 bg-primary-container/10 text-primary border border-primary-container hover:bg-primary-container/20 text-[13px] font-bold rounded-lg transition-colors flex items-center gap-1 ml-auto">
+                                            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                            Set Aktif
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-[12px] font-bold text-on-surface-variant italic">Aktif</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="py-12 text-center text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[48px] opacity-20 mb-2">calendar_month</span>
+                                <p class="text-[14px] font-medium">Belum ada data tahun ajaran.</p>
+                                <p class="text-[12px] mt-1">Silakan klik "Buat Tahun Ajaran" untuk menambahkan data.</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 

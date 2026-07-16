@@ -1,119 +1,168 @@
 <x-app-layout>
     <x-slot name="header">
-        {{-- Header: title + action buttons --}}
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{ __('Manajemen Kelas') }}
-                </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Tahun ajaran 2025/2026</p>
-            </div>
-
-            <div>
-                <a href="{{ route('jurusan.create') }}">
-                    <x-primary-button>Tambah Jurusan</x-primary-button>
-                </a>
-                <a href="{{ route('kelas-rombel.create') }}">
-                    <x-primary-button>Tambah Kelas & Rombel</x-primary-button>
-                </a>
-            </div>
-        </div>
+        Manajemen Kelas & Rombel
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-4" x-data="{ selectedRombel: null }">
+    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline text-[28px] font-bold text-on-surface">Kelas & Rombel</h1>
+            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data kelas, rombongan belajar, dan penugasan wali kelas.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('jurusan.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-surface-container-high text-primary text-[14px] font-bold rounded-lg hover:bg-surface-container-highest transition-colors shadow-sm border border-outline-variant/50">
+                <span class="material-symbols-outlined text-[20px]">architecture</span>
+                Tambah Jurusan
+            </a>
+            <a href="{{ route('kelas-rombel.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-[20px]">add</span>
+                Tambah Rombel
+            </a>
+        </div>
+    </div>
 
-            {{-- Per-department listing --}}
-            @foreach ($jurusans as $jurusan)
-                <x-card x-data="{ open: true }">
-                    {{-- Collapsible header: department name + rombel count --}}
-                    <div @click="open = !open" class="flex items-center justify-between cursor-pointer select-none">
-                        <div class="flex items-center gap-2">
-                            <span x-text="open ? '▼' : '▶'" class="text-xs text-gray-400"></span>
-                            <span class="font-semibold text-gray-900 dark:text-gray-100">{{ $jurusan->singkatan }}</span>
-                            @if ($jurusan->kepanjangan ?? false)
-                                <span
-                                    class="text-sm text-gray-500 dark:text-gray-400">({{ $jurusan->kepanjangan }})</span>
-                            @endif
+    @if (session('success'))
+        <div class="mb-6 p-4 bg-green-50 text-secondary rounded-xl border border-green-200 flex items-center gap-3">
+            <span class="material-symbols-outlined text-[20px]">check_circle</span>
+            <p class="text-[14px] font-bold">{{ session('success') }}</p>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="mb-6 p-4 bg-error-container/20 text-error rounded-xl border border-error/30 flex items-center gap-3">
+            <span class="material-symbols-outlined text-[20px]">warning</span>
+            <p class="text-[14px] font-bold">{{ session('error') }}</p>
+        </div>
+    @endif
+
+    <div class="space-y-6" x-data="{ selectedRombel: null }">
+        @forelse ($jurusans as $jurusan)
+            <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden" x-data="{ open: true }">
+                {{-- Header Jurusan --}}
+                <div @click="open = !open" class="p-5 border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest cursor-pointer hover:bg-surface-container-low transition-colors select-none">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined" x-text="open ? 'folder_open' : 'folder'"></span>
                         </div>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ $jurusan->kelas->sum(fn($k) => $k->rombel->count()) }} rombel
-                        </span>
+                        <div>
+                            <h3 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
+                                {{ $jurusan->singkatan }}
+                                @if ($jurusan->kepanjangan ?? false)
+                                    <span class="text-[13px] font-normal text-on-surface-variant">({{ $jurusan->kepanjangan }})</span>
+                                @endif
+                            </h3>
+                            <p class="text-[13px] text-on-surface-variant mt-0.5">
+                                {{ $jurusan->kelas->sum(fn($k) => $k->rombel->count()) }} Rombel
+                            </p>
+                        </div>
                     </div>
+                    <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
+                </div>
 
-                    {{-- Collapsible body: study group cards --}}
-                    <div x-show="open" x-transition.duration.200ms class="mt-4 flex flex-wrap gap-3">
+                {{-- Konten Rombel --}}
+                <div x-show="open" x-collapse x-transition.duration.200ms>
+                    <div class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 bg-surface">
                         @foreach ($jurusan->kelas->sortBy('tingkat') as $kelas)
                             @foreach ($kelas->rombel as $rombel)
-                                @php $displayNama = "{$kelas->tingkat} {$jurusan->singkatan} {$rombel->tingkat}" @endphp
-                                <x-card
-                                    class="w-56 !p-4 space-y-2 border-gray-100 dark:border-gray-600 shadow-none !bg-gray-50 dark:!bg-gray-900/50 cursor-pointer hover:shadow-md transition-shadow"
-                                    @click="selectedRombel = { display_nama: '{{ $displayNama }}', siswa_count: {{ $rombel->siswa->count() }}, siswa: {{ json_encode($rombel->siswa->map(fn($s) => ['nama' => $s->nama, 'nis' => $s->nis])->values()->all()) }} }; $dispatch('open-modal', 'detail-rombel')">
-                                    <div class="flex items-start justify-between gap-2">
-                                        <div class="font-medium text-gray-900 dark:text-gray-100">{{ $displayNama }}</div>
-                                        <x-button-danger
-                                            type="button"
-                                            class="!px-3 !py-1.5 !text-[10px]"
-                                            @click.stop="$dispatch('open-modal', 'confirm-delete-rombel-{{ $rombel->id }}')">
-                                            Hapus
-                                        </x-button-danger>
+                                @php 
+                                    $displayNama = "{$kelas->tingkat} {$jurusan->singkatan} {$rombel->tingkat}";
+                                    $wali = $rombel->guru->first(); 
+                                @endphp
+                                
+                                <div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/60 hover:border-primary hover:shadow-md transition-all cursor-pointer group"
+                                     @click="selectedRombel = { 
+                                        id: {{ $rombel->id }},
+                                        display_nama: '{{ $displayNama }}', 
+                                        siswa_count: {{ $rombel->siswa->count() }}, 
+                                        siswa: {{ json_encode($rombel->siswa->map(fn($s) => ['nama' => $s->nama, 'nis' => $s->nis])->values()->all()) }} 
+                                     }; $dispatch('open-modal', 'detail-rombel')">
+                                    
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-[18px]">meeting_room</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-[15px] text-on-surface">{{ $displayNama }}</p>
+                                                <p class="text-[12px] font-medium text-on-surface-variant">{{ $rombel->siswa->count() }} Siswa</p>
+                                            </div>
+                                        </div>
+                                        <button @click.stop="$dispatch('open-modal', 'confirm-delete-rombel-{{ $rombel->id }}')" class="p-1.5 text-outline hover:text-error-crimson hover:bg-error-container/20 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
                                     </div>
-                                    {{-- Student count --}}
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">
-                                        {{ $rombel->siswa->count() }} siswa</div>
-                                    {{-- Homeroom teacher --}}
-                                    @php $wali = $rombel->guru->first(); @endphp
-                                    @if ($wali)
-                                        <div class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                                            <span
-                                                class="w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-xs font-medium text-indigo-700 dark:text-indigo-300">
-                                                {{ str($wali->nama)->substr(0, 2)->upper() }}
-                                            </span>
-                                            {{ $wali->nama }}
-                                        </div>
-                                    @else
-                                        <div class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
-                                            <span
-                                                class="w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs">
-                                                ?
-                                            </span>
-                                            Belum ada wali
-                                        </div>
-                                    @endif
-                                </x-card>
+                                    
+                                    <div class="pt-3 border-t border-outline-variant/30 flex items-center gap-3">
+                                        @if ($wali)
+                                            <div class="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center font-bold text-[11px] text-primary">
+                                                {{ strtoupper(substr($wali->nama, 0, 2)) }}
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-[12px] font-medium text-on-surface truncate">{{ $wali->nama }}</p>
+                                                <p class="text-[10px] text-on-surface-variant">Wali Kelas</p>
+                                            </div>
+                                        @else
+                                            <div class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center text-[11px] text-outline">
+                                                <span class="material-symbols-outlined text-[14px]">person_off</span>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-[12px] italic text-on-surface-variant">Belum ada wali kelas</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
 
-                                {{-- Delete confirmation modal per rombel --}}
+                                {{-- Delete Modal --}}
                                 <x-modal name="confirm-delete-rombel-{{ $rombel->id }}" :show="false" maxWidth="sm">
                                     <div class="p-6">
-                                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Hapus rombel?</h3>
-                                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                                            Yakin ingin menghapus <span class="font-semibold">{{ $displayNama }}</span>?
+                                        <div class="flex items-center gap-3 text-error mb-4">
+                                            <span class="material-symbols-outlined text-[28px]">warning</span>
+                                            <h2 class="text-lg font-bold text-on-surface">Hapus Rombel</h2>
+                                        </div>
+                                        <p class="text-[14px] text-on-surface-variant mb-6">
+                                            Yakin ingin menghapus rombongan belajar <span class="font-bold text-on-surface">{{ $displayNama }}</span>?
                                         </p>
-
-                                        <div class="mt-6 flex justify-end gap-3">
-                                            <x-secondary-button type="button"
-                                                @click="$dispatch('close-modal', 'confirm-delete-rombel-{{ $rombel->id }}')">
+                                        <div class="flex justify-end gap-3">
+                                            <button @click="$dispatch('close-modal', 'confirm-delete-rombel-{{ $rombel->id }}')" class="px-4 py-2 text-[14px] font-bold text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
                                                 Batal
-                                            </x-secondary-button>
-
+                                            </button>
                                             <form action="{{ route('kelas-rombel.destroy', $rombel) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <x-button-danger type="submit">Hapus</x-button-danger>
+                                                <button type="submit" class="px-4 py-2 text-[14px] font-bold bg-error text-white rounded-lg hover:bg-error/90 transition-colors">
+                                                    Ya, Hapus
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
                                 </x-modal>
                             @endforeach
                         @endforeach
+                        
+                        @if($jurusan->kelas->sum(fn($k) => $k->rombel->count()) === 0)
+                            <div class="col-span-full py-8 text-center text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[48px] opacity-20 mb-2">meeting_room</span>
+                                <p class="text-[14px] font-medium">Belum ada rombel untuk jurusan ini.</p>
+                            </div>
+                        @endif
                     </div>
-                </x-card>
-            @endforeach
+                </div>
+            </div>
+        @empty
+            <div class="bg-surface rounded-xl border border-outline-variant card-shadow p-12 text-center flex flex-col items-center justify-center">
+                <div class="w-16 h-16 bg-surface-container-high rounded-full flex items-center justify-center text-on-surface-variant mb-4">
+                    <span class="material-symbols-outlined text-[32px]">architecture</span>
+                </div>
+                <h3 class="font-bold text-[18px] text-on-surface mb-2">Belum ada data Jurusan</h3>
+                <p class="text-[14px] text-on-surface-variant mb-6 max-w-md">Silakan tambahkan jurusan terlebih dahulu sebelum membuat kelas dan rombongan belajar.</p>
+                <a href="{{ route('jurusan.create') }}" class="px-5 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors">
+                    Tambah Jurusan Pertama
+                </a>
+            </div>
+        @endforelse
 
-            {{-- Modal showing student list in a rombel --}}
-            <x-modal name="detail-rombel" :show="false" maxWidth="2xl">
-                @include('kelas.detail-rombel')
-            </x-modal>
-        </div>
+        {{-- Detail Rombel Modal --}}
+        <x-modal name="detail-rombel" :show="false" maxWidth="2xl">
+            @include('kelas.detail-rombel')
+        </x-modal>
     </div>
 </x-app-layout>

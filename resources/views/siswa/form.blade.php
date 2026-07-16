@@ -1,116 +1,123 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ isset($siswa) ? 'Edit Siswa' : 'Tambah Siswa' }}
-            </h2>
-        </div>
+        {{ isset($siswa) ? 'Edit Siswa' : 'Tambah Siswa' }}
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                {{-- Student form — used for both create and edit --}}
-                <form method="POST" action="{{ isset($siswa) ? route('siswa.update', $siswa) : route('siswa.store') }}"
-                    class="p-6">
-                    @csrf
-                    @isset($siswa)
-                        @method('PATCH')
-                    @endisset
+    <div class="mb-6">
+        <a href="{{ route('siswa') }}" class="inline-flex items-center gap-2 text-primary font-bold text-[13px] hover:underline mb-4">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            Kembali ke Daftar Siswa
+        </a>
+        <h1 class="font-headline text-[28px] font-bold text-on-surface">{{ isset($siswa) ? 'Edit Data Siswa' : 'Tambah Siswa Baru' }}</h1>
+        <p class="text-[14px] text-on-surface-variant mt-1">Isi formulir di bawah ini dengan lengkap dan benar.</p>
+    </div>
 
-                    {{-- Nama Lengkap --}}
-                    <div class="mb-6">
-                        <x-input-label for="nama" value="Nama Lengkap" />
-                        <x-text-input id="nama" name="nama" type="text"
-                            class="mt-1 block w-full"
-                            :value="old('nama', $siswa->nama ?? '')"
-                            required autofocus />
-                        @error('nama')
-                            <x-input-error :messages="$message" class="mt-2" />
-                        @enderror
-                    </div>
-
-                    {{-- NIS --}}
-                    <div class="mb-6">
-                        <x-input-label for="nis" value="NIS (Nomor Induk Siswa)" />
-                        <x-text-input id="nis" name="nis" type="text"
-                            class="mt-1 block w-full"
-                            :value="old('nis', $siswa->nis ?? '')"
-                            required />
-                        @error('nis')
-                            <x-input-error :messages="$message" class="mt-2" />
-                        @enderror
-                    </div>
-
-                    {{-- NISN --}}
-                    <div class="mb-6">
-                        <x-input-label for="nisn" value="NISN (Nomor Induk Siswa Nasional)" />
-                        <x-text-input id="nisn" name="nisn" type="text"
-                            class="mt-1 block w-full"
-                            :value="old('nisn', $siswa->nisn ?? '')"
-                            required />
-                        @error('nisn')
-                            <x-input-error :messages="$message" class="mt-2" />
-                        @enderror
-                    </div>
-
-                    {{-- Religion selector --}}
-                    <div class="mb-6">
-                        <x-input-label for="agama" value="Agama" />
-                        <select id="agama" name="agama" required
-                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm @error('agama') border-red-500 dark:border-red-400 @enderror">
-                            <option value="">Pilih agama</option>
-                            @php $selectedAgama = old('agama', $siswa->agama ?? ''); @endphp
-                            @foreach (['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'] as $agama)
-                                <option value="{{ $agama }}" @selected($agama === $selectedAgama)>{{ $agama }}</option>
-                            @endforeach
-                        </select>
-                        @error('agama')
-                            <x-input-error :messages="$message" class="mt-2" />
-                        @enderror
-                    </div>
-
-                    {{-- Gender selector --}}
-                    <div class="mb-6">
-                        <x-input-label for="kelamin" value="Jenis Kelamin" />
-                        <select id="kelamin" name="kelamin" required
-                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm @error('kelamin') border-red-500 dark:border-red-400 @enderror">
-                            <option value="">Pilih jenis kelamin</option>
-                            <option value="laki_laki" @selected(old('kelamin', $siswa->kelamin?->value ?? '') === 'laki_laki')>Laki-laki</option>
-                            <option value="perempuan" @selected(old('kelamin', $siswa->kelamin?->value ?? '') === 'perempuan')>Perempuan</option>
-                        </select>
-                        @error('kelamin')
-                            <x-input-error :messages="$message" class="mt-2" />
-                        @enderror
-                    </div>
-
-                    {{-- Rombel / Class selector --}}
-                    <div class="mb-6">
-                        <x-input-label for="rombel_id" value="Kelas / Rombel" />
-                        <select id="rombel_id" name="rombel_id"
-                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm @error('rombel_id') border-red-500 dark:border-red-400 @enderror">
-                            <option value="">-- Pilih kelas (opsional) --</option>
-                            @foreach ($rombels as $rombel)
-                                <option value="{{ $rombel->id }}"
-                                    @selected(old('rombel_id', $siswa->rombel_id ?? '') == $rombel->id)>
-                                    {{ $rombel->tingkat }} {{ $rombel->kelas?->nama_kelas ?? '' }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('rombel_id')
-                            <x-input-error :messages="$message" class="mt-2" />
-                        @enderror
-                    </div>
-
-                    {{-- Submit / Cancel --}}
-                    <div class="flex items-center gap-3">
-                        <x-primary-button>{{ isset($siswa) ? 'Update' : 'Simpan' }}</x-primary-button>
-                        <a href="{{ route('siswa') }}">
-                            <x-secondary-button type="button">Batal</x-secondary-button>
-                        </a>
-                    </div>
-                </form>
-            </div>
+    <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden max-w-2xl">
+        <div class="p-5 border-b border-outline-variant bg-surface-container-lowest">
+            <h2 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">person</span>
+                Formulir Siswa
+            </h2>
         </div>
+        
+        <form method="POST" action="{{ isset($siswa) ? route('siswa.update', $siswa) : route('siswa.store') }}" class="p-6 space-y-6">
+            @csrf
+            @isset($siswa)
+                @method('PATCH')
+            @endisset
+
+            {{-- Nama Lengkap --}}
+            <div>
+                <label for="nama" class="block text-[13px] font-bold text-on-surface mb-2">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" value="{{ old('nama', $siswa->nama ?? '') }}" required autofocus
+                    class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+                @error('nama')
+                    <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {{-- NIS --}}
+                <div>
+                    <label for="nis" class="block text-[13px] font-bold text-on-surface mb-2">NIS (Nomor Induk Siswa)</label>
+                    <input type="text" id="nis" name="nis" value="{{ old('nis', $siswa->nis ?? '') }}" required
+                        class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+                    @error('nis')
+                        <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- NISN --}}
+                <div>
+                    <label for="nisn" class="block text-[13px] font-bold text-on-surface mb-2">NISN</label>
+                    <input type="text" id="nisn" name="nisn" value="{{ old('nisn', $siswa->nisn ?? '') }}" required
+                        class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+                    @error('nisn')
+                        <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {{-- Religion selector --}}
+                <div>
+                    <label for="agama" class="block text-[13px] font-bold text-on-surface mb-2">Agama</label>
+                    <select id="agama" name="agama" required
+                        class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+                        <option value="">-- Pilih Agama --</option>
+                        @php $selectedAgama = old('agama', $siswa->agama ?? ''); @endphp
+                        @foreach (['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'] as $agama)
+                            <option value="{{ $agama }}" @selected($agama === $selectedAgama)>{{ $agama }}</option>
+                        @endforeach
+                    </select>
+                    @error('agama')
+                        <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Gender selector --}}
+                <div>
+                    <label for="kelamin" class="block text-[13px] font-bold text-on-surface mb-2">Jenis Kelamin</label>
+                    <select id="kelamin" name="kelamin" required
+                        class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+                        <option value="">-- Pilih --</option>
+                        <option value="laki_laki" @selected(old('kelamin', $siswa->kelamin?->value ?? '') === 'laki_laki')>Laki-laki</option>
+                        <option value="perempuan" @selected(old('kelamin', $siswa->kelamin?->value ?? '') === 'perempuan')>Perempuan</option>
+                    </select>
+                    @error('kelamin')
+                        <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            {{-- Rombel / Class selector --}}
+            <div>
+                <label for="rombel_id" class="block text-[13px] font-bold text-on-surface mb-2">Kelas / Rombel (Opsional)</label>
+                <select id="rombel_id" name="rombel_id"
+                    class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+                    <option value="">-- Pilih kelas --</option>
+                    @foreach ($rombels as $rombel)
+                        <option value="{{ $rombel->id }}" 
+                            @selected(old('rombel_id', isset($siswa) && $siswa->rombelAktif() ? $siswa->rombelAktif()->id : '') == $rombel->id)>
+                            {{ $rombel->tingkat }} {{ $rombel->kelas?->nama_kelas ?? '' }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('rombel_id')
+                    <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Submit / Cancel --}}
+            <div class="pt-4 mt-6 border-t border-outline-variant flex items-center justify-end gap-3">
+                <a href="{{ route('siswa') }}" class="px-5 py-2.5 text-[14px] font-bold text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
+                    Batal
+                </a>
+                <button type="submit" class="px-6 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">save</span>
+                    {{ isset($siswa) ? 'Simpan Perubahan' : 'Simpan Siswa' }}
+                </button>
+            </div>
+        </form>
     </div>
 </x-app-layout>

@@ -14,7 +14,7 @@ class PenugasanController extends Controller
     // --- WALI KELAS ---
     public function indexWaliKelas()
     {
-        $waliKelas = WaliKelas::with(['guru', 'rombel.kelas'])->get();
+        $waliKelas = WaliKelas::has('rombel')->with(['guru', 'rombel.kelas'])->get();
         $gurus = Guru::orderBy('nama', 'asc')->get();
         $rombels = Rombel::with('kelas')->get();
         
@@ -44,7 +44,7 @@ class PenugasanController extends Controller
     // --- GURU MAPEL ---
     public function indexGuruMapel()
     {
-        $guruMapels = GuruMapel::with(['guru', 'mapel', 'rombel.kelas'])->get();
+        $guruMapels = GuruMapel::has('rombel')->with(['guru', 'mapel', 'rombel.kelas'])->get();
         $gurus = Guru::orderBy('nama', 'asc')->get();
         $mapels = Mapel::orderBy('nama_mapel', 'asc')->get();
         $rombels = Rombel::with('kelas')->get();

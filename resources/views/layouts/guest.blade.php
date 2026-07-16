@@ -1,41 +1,62 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Manajemen Guru Siswa') }} - Login</title>
 
-        {{-- App favicon --}}
-        <link rel="icon" type="image/png" href="{{ asset('aknb.png') }}">
+    {{-- App favicon --}}
+    <link rel="icon" type="image/png" href="{{ asset('aknb.png') }}">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lexend:wght@600;700&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind CSS (via CDN with custom config matching app layout) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00288e",
+                        "primary-container": "#1e40af",
+                        "secondary": "#006c49",
+                        "surface": "#ffffff",
+                        "surface-container": "#f0f3ff",
+                        "on-surface": "#111c2d",
+                        "on-surface-variant": "#444653",
+                        "outline-variant": "#c4c5d5",
+                        "error": "#ba1a1a",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "headline": ["Lexend", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        };
+    </script>
+    
+    <!-- Vite assets -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-body text-on-surface bg-surface-container antialiased selection:bg-primary selection:text-white min-h-screen flex items-center justify-center p-4">
+    
+    {{-- Decorative Background Elements --}}
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/10 rounded-full blur-[100px]"></div>
+    </div>
 
-        <!-- Vite assets -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            {{-- Guest layout slot for auth forms, logo now inside the card --}}
-            <div class="w-full sm:max-w-md mt-6 px-6 py-6 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-                {{-- App logo inside the card --}}
-                <div class="flex flex-col items-center mb-6">
-                    <a href="/">
-                        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                    </a>
-                    <h2 class="mt-3 text-center text-gray-700 dark:text-gray-300 font-medium text-base">
-                        SMK AK Nusa Bangsa
-                    </h2>
-                    <h2 class="mt-3 text-center text-gray-700 dark:text-gray-300 font-medium text-base">
-                        Selamat Datang di Aplikasi Management 👋
-                    </h2>
-                </div>
+    {{-- Main Content Container --}}
+    <div class="relative z-10 w-full max-w-[1000px] flex flex-col md:flex-row bg-surface rounded-2xl shadow-xl overflow-hidden border border-outline-variant/30 min-h-[500px]">
+        {{ $slot }}
+    </div>
 
-                {{ $slot }}
-            </div>
-        </div>
-    </body>
+</body>
 </html>

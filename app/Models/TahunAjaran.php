@@ -13,6 +13,16 @@ class TahunAjaran extends Model
 {
     use HasFactory;
 
+    protected static function booted()
+    {
+        static::saved(function ($tahunAjaran) {
+            if ($tahunAjaran->aktif) {
+                // Deactivate all other academic years
+                static::where('id', '!=', $tahunAjaran->id)->update(['aktif' => false]);
+            }
+        });
+    }
+
     // An academic year has many study groups.
     public function rombel(): HasMany
     {
