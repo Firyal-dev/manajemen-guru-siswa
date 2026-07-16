@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <span class="px-2.5 py-1 bg-green-50 text-secondary text-[12px] font-bold rounded-full">
-                        {{ $siswa->rombelAktif()?->tingkat ?? '-' }} {{ $siswa->rombelAktif()?->kelas?->nama_kelas ?? '' }}
+                        {{ $siswa->rombelAktif() ? $siswa->rombelAktif()->kelas->tingkat . ' ' . $siswa->rombelAktif()->kelas->jurusan->singkatan . ' ' . $siswa->rombelAktif()->tingkat : '-' }}
                     </span>
                 </div>
                 @empty

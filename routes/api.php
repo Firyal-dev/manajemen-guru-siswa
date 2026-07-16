@@ -9,6 +9,47 @@ use App\Models\Rombel;
 use App\Models\TahunAjaran;
 
 Route::middleware(['throttle:60,1', \App\Http\Middleware\RequireApiKey::class])->group(function () {
+    Route::get('/version', function () {
+        $models = [
+            \App\Models\TahunAjaran::class,
+            \App\Models\Guru::class,
+            \App\Models\Siswa::class,
+            \App\Models\Jurusan::class,
+            \App\Models\Mapel::class,
+            \App\Models\Rombel::class,
+            \App\Models\RiwayatKelasSiswa::class,
+            \App\Models\WaliKelas::class,
+            \App\Models\GuruMapel::class
+        ];
+
+        $maxDate = null;
+        foreach ($models as $modelClass) {
+            $model = new $modelClass;
+            $table = $model->getTable();
+            $query = $modelClass::query();
+            
+            if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses_recursive($modelClass)) && \Illuminate\Support\Facades\Schema::hasColumn($table, 'deleted_at')) {
+                $query->withTrashed();
+                $maxDeleted = $query->max('deleted_at');
+                if ($maxDeleted && (!$maxDate || $maxDeleted > $maxDate)) {
+                    $maxDate = $maxDeleted;
+                }
+            }
+            
+            if (\Illuminate\Support\Facades\Schema::hasColumn($table, 'updated_at')) {
+                $maxUpdated = $query->max('updated_at');
+                if ($maxUpdated && (!$maxDate || $maxUpdated > $maxDate)) {
+                    $maxDate = $maxUpdated;
+                }
+            }
+        }
+
+        return response()->json([
+            'version' => $maxDate,
+            'timestamp' => $maxDate ? \Carbon\Carbon::parse($maxDate)->toIso8601String() : null
+        ]);
+    });
+
     Route::get('/gurus', function () {
         return response()->json(Guru::paginate(50));
     });

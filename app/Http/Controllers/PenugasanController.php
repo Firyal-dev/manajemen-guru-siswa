@@ -16,7 +16,7 @@ class PenugasanController extends Controller
     {
         $waliKelas = WaliKelas::has('rombel')->with(['guru', 'rombel.kelas'])->get();
         $gurus = Guru::orderBy('nama', 'asc')->get();
-        $rombels = Rombel::with('kelas')->get();
+        $rombels = Rombel::with(['kelas', 'kelas.jurusan'])->get();
         
         return view('penugasan.wali-kelas', compact('waliKelas', 'gurus', 'rombels'));
     }
@@ -47,7 +47,7 @@ class PenugasanController extends Controller
         $guruMapels = GuruMapel::has('rombel')->with(['guru', 'mapel', 'rombel.kelas'])->get();
         $gurus = Guru::orderBy('nama', 'asc')->get();
         $mapels = Mapel::orderBy('nama_mapel', 'asc')->get();
-        $rombels = Rombel::with('kelas')->get();
+        $rombels = Rombel::with(['kelas', 'kelas.jurusan'])->get();
 
         return view('penugasan.guru-mapel', compact('guruMapels', 'gurus', 'mapels', 'rombels'));
     }

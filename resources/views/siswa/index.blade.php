@@ -89,8 +89,7 @@
                                         'agama'   => $siswa->agama,
                                         'kelamin' => $siswa->kelamin?->value,
                                         'kelamin_label' => $siswa->kelamin?->label(),
-                                        'rombel'  => $siswa->rombelAktif()?->kelas?->nama_kelas ?? '-',
-                                        'tingkat' => $siswa->rombelAktif()?->tingkat ?? '-',
+                                        'rombel'  => $siswa->rombelAktif() ? $siswa->rombelAktif()->kelas->tingkat . ' ' . $siswa->rombelAktif()->kelas->jurusan->singkatan . ' ' . $siswa->rombelAktif()->tingkat : '-',
                                     ];
                                 @endphp
                                 <tr @click="selected = {{ json_encode($siswaData) }}"
@@ -115,7 +114,7 @@
                                     
                                     <td class="py-3 px-4 hidden sm:table-cell">
                                         <span class="px-2.5 py-1 bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded-lg border border-outline-variant/30">
-                                            {{ $siswa->rombelAktif()?->tingkat ?? '-' }} {{ $siswa->rombelAktif()?->kelas?->nama_kelas ?? '' }}
+                                            {{ $siswa->rombelAktif() ? $siswa->rombelAktif()->kelas->tingkat . ' ' . $siswa->rombelAktif()->kelas->jurusan->singkatan . ' ' . $siswa->rombelAktif()->tingkat : '-' }}
                                         </span>
                                     </td>
                                     
@@ -190,7 +189,7 @@
                                     <div>
                                         <p class="text-[11px] font-bold text-on-surface-variant uppercase">Kelas</p>
                                         <p class="text-[14px] font-medium text-on-surface">
-                                            <span x-text="selected.tingkat"></span> <span x-text="selected.rombel"></span>
+                                            <span x-text="selected.rombel"></span>
                                         </p>
                                     </div>
                                 </div>

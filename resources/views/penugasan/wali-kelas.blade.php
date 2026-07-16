@@ -61,7 +61,7 @@
                         <select id="rombel_id" name="rombel_id" class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
                             <option value="" disabled selected>-- Pilih Rombel --</option>
                             @foreach($rombels as $rombel)
-                                <option value="{{ $rombel->id }}">{{ $rombel->tingkat }}</option>
+                                <option value="{{ $rombel->id }}">{{ $rombel->kelas->tingkat }} {{ $rombel->kelas->jurusan->singkatan }} {{ $rombel->tingkat }}</option>
                             @endforeach
                         </select>
                         <p class="text-[11px] text-on-surface-variant mt-2 flex items-center gap-1">
@@ -114,7 +114,7 @@
                                     </td>
                                     <td class="py-3 px-4">
                                         <span class="px-2.5 py-1 bg-green-50 text-secondary border border-green-200 text-[12px] font-bold rounded-lg">
-                                            {{ $item->rombel->tingkat }}
+                                            {{ $item->rombel->kelas->tingkat }} {{ $item->rombel->kelas->jurusan->singkatan }} {{ $item->rombel->tingkat }}
                                         </span>
                                     </td>
                                     <td class="py-3 px-4 text-right">
@@ -143,4 +143,52 @@
         </div>
 
     </div>
+
+    @push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+    <style>
+        .ts-control {
+            border-radius: 0.5rem;
+            border-color: #c4c5d5;
+            padding: 0.625rem 0.75rem;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #111c2d;
+            min-height: 42px;
+        }
+        .ts-control.focus {
+            border-color: #00288e;
+            box-shadow: 0 0 0 1px #00288e;
+        }
+        .ts-dropdown {
+            border-radius: 0.5rem;
+            font-size: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            border-color: #c4c5d5;
+        }
+        .ts-dropdown .option:hover, .ts-dropdown .option.active {
+            background-color: #f0f3ff;
+            color: #00288e;
+        }
+    </style>
+    @endpush
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new TomSelect('#guru_id', {
+                create: false,
+                placeholder: "-- Pilih Guru --",
+                searchField: ['text']
+            });
+            
+            new TomSelect('#rombel_id', {
+                create: false,
+                placeholder: "-- Pilih Rombel --",
+                searchField: ['text']
+            });
+        });
+    </script>
+    @endpush
 </x-app-layout>

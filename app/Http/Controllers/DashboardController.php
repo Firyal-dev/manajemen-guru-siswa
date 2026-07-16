@@ -21,7 +21,7 @@ class DashboardController extends Controller
             'rombel' => Rombel::count(),
         ];
 
-        $siswaTerbaru = Siswa::with('riwayatKelas.rombel.kelas')->latest()->take(5)->get();
+        $siswaTerbaru = Siswa::with('riwayatKelas.rombel.kelas.jurusan')->latest()->take(5)->get();
         $guruTerbaru = Guru::latest()->take(5)->get();
 
         return view('dashboard', compact('counts', 'siswaTerbaru', 'guruTerbaru'));

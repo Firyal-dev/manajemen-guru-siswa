@@ -11,7 +11,7 @@ class SiswaController extends Controller
 {
     public function index(Request $req)
     {
-        $siswas = Siswa::with(['riwayatKelas.rombel.kelas'])
+        $siswas = Siswa::with(['riwayatKelas.rombel.kelas.jurusan'])
             ->search($req->search)
             ->filter(['agama' => $req->agama, 'kelamin' => $req->kelamin])
             ->paginate(10)
@@ -22,7 +22,7 @@ class SiswaController extends Controller
 
     public function create()
     {
-        $rombels = Rombel::with('kelas')->orderBy('tingkat')->get();
+        $rombels = Rombel::with(['kelas.jurusan'])->orderBy('tingkat')->get();
         return view('siswa.form', compact('rombels'));
     }
 
@@ -46,7 +46,7 @@ class SiswaController extends Controller
 
     public function edit(Siswa $siswa)
     {
-        $rombels = Rombel::with('kelas')->orderBy('tingkat')->get();
+        $rombels = Rombel::with(['kelas.jurusan'])->orderBy('tingkat')->get();
         return view('siswa.form', compact('siswa', 'rombels'));
     }
 
