@@ -10,6 +10,7 @@ use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KurikulumController;
 // Redirect root to login.
 Route::get('/', function () {
     return redirect()->route('login');
@@ -32,6 +33,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/tahun-ajaran', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store');
     Route::patch('/update-tahun-ajaran', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update');
     Route::patch('/tahun-ajaran/{ta}', [TahunAjaranController::class, 'active'])->name('tahun-ajaran.active');
+
+    // Kurikulum
+    Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.index');
+    Route::post('/kurikulum', [KurikulumController::class, 'store'])->name('kurikulum.store');
+    Route::patch('/kurikulum/{kurikulum}', [KurikulumController::class, 'update'])->name('kurikulum.update');
+    Route::delete('/kurikulum/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy');
 
     // Teacher CRUD
     Route::get('/guru', [GuruController::class, 'index'])->name('guru');

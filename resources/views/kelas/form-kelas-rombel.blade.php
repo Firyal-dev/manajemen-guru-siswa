@@ -57,7 +57,7 @@
                     <x-card>
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Data Rombel</h3>
-                            <x-secondary-button type="button" @click="rombels.push({ tingkat: '' })">
+                            <x-secondary-button type="button" @click="rombels.push({ tingkat: '', kurikulum_id: '1' })">
                                 + Tambahkan rombel
                             </x-secondary-button>
                         </div>
@@ -85,13 +85,27 @@
                                     </button>
 
                                     {{-- Rombel number input --}}
-                                    <div>
+                                    <div class="mb-3">
                                         <x-input-label x-bind:for="`rombel_${index}_tingkat`">
                                             <span x-text="`Rombel ${index + 1}`"></span>
                                         </x-input-label>
                                         <x-text-input type="number" x-bind:id="`rombel_${index}_tingkat`"
                                             x-bind:name="`rombels[${index}][tingkat]`" class="mt-1 block w-full"
-                                            placeholder="Nomor rombel" min="1" x-model="rombel.tingkat" />
+                                            placeholder="Nomor rombel" min="1" x-model="rombel.tingkat" required />
+                                    </div>
+
+                                    {{-- Kurikulum selector --}}
+                                    <div>
+                                        <x-input-label x-bind:for="`rombel_${index}_kurikulum`" value="Kurikulum" />
+                                        <select x-bind:id="`rombel_${index}_kurikulum`" x-bind:name="`rombels[${index}][kurikulum_id]`" required x-model="rombel.kurikulum_id"
+                                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                            <option value="">Pilih kurikulum</option>
+                                            @foreach ($kurikulums as $k)
+                                                <option value="{{ $k->id }}">
+                                                    {{ $k->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </template>

@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('tahun-ajaran.index')" :active="request()->routeIs('tahun-ajaran.*')">
                         {{ __('Tahun Ajaran') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('kurikulum.index')" :active="request()->routeIs('kurikulum.*')">
+                        {{ __('Kurikulum') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('guru')" :active="request()->routeIs('guru')">
                         {{ __('Guru') }}
                     </x-nav-link>
@@ -121,6 +124,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('tahun-ajaran.index')" :active="request()->routeIs('tahun-ajaran.*')">
                 {{ __('Tahun Ajaran') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('kurikulum.index')" :active="request()->routeIs('kurikulum.*')">
+                {{ __('Kurikulum') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('guru')" :active="request()->routeIs('guru')">
                 {{ __('Guru') }}

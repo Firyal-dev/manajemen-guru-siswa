@@ -18,7 +18,10 @@ class TahunAjaranRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tahun_mulai' => ['required', 'integer', 'digits:4', 'min:2000', 'max:2100'],
+            'tahun_mulai' => [
+                'required', 'integer', 'digits:4', 'min:2000', 'max:2100',
+                \Illuminate\Validation\Rule::unique('tahun_ajarans')->ignore($this->route('ta'))
+            ],
             'tahun_selesai' => ['required', 'integer', 'digits:4', 'min:2000', 'max:2100', 'gt:tahun_mulai'],
             'aktif' => ['boolean'],
         ];

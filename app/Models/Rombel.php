@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 // Study group (Rombel / Rombongan Belajar) — a specific class group within a grade.
-#[Fillable(['kelas_id', 'tahun_ajaran_id', 'tingkat'])]
+#[Fillable(['kelas_id', 'tahun_ajaran_id', 'tingkat', 'kurikulum_id'])]
 class Rombel extends Model
 {
     use HasFactory;
@@ -49,5 +49,10 @@ class Rombel extends Model
     public function tahunAjaran(): BelongsTo
     {
         return $this->belongsTo(TahunAjaran::class);
+    }
+
+    public function kurikulum(): BelongsTo
+    {
+        return $this->belongsTo(Kurikulum::class);
     }
 }

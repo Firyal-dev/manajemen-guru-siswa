@@ -15,7 +15,13 @@ class PenugasanController extends Controller
     public function indexWaliKelas()
     {
         $waliKelas = WaliKelas::has('rombel')->with(['guru', 'rombel.kelas'])->get();
-        $gurus = Guru::orderBy('nama', 'asc')->get();
+        
+        // Ambil ID guru yang sudah menjadi wali kelas
+        $assignedGuruIds = $waliKelas->pluck('guru_id')->toArray();
+        
+        // Kecualikan guru yang sudah jadi wali kelas agar tidak muncul di pilihan
+        $gurus = Guru::whereNotIn('id', $assignedGuruIds)->orderBy('nama', 'asc')->get();
+        
         $rombels = Rombel::with(['kelas', 'kelas.jurusan'])->get();
         
         return view('penugasan.wali-kelas', compact('waliKelas', 'gurus', 'rombels'));

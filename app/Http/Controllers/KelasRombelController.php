@@ -18,8 +18,9 @@ class KelasRombelController extends Controller
     {
         $jurusans = Jurusan::orderBy('singkatan')->get();
         $tahunAjaran = TahunAjaran::where('aktif', true)->first();
+        $kurikulums = \App\Models\Kurikulum::where('status', true)->get();
 
-        return view('kelas.form-kelas-rombel', compact('jurusans', 'tahunAjaran'));
+        return view('kelas.form-kelas-rombel', compact('jurusans', 'tahunAjaran', 'kurikulums'));
     }
 
     // Store a new grade and its associated study groups.
@@ -33,6 +34,7 @@ class KelasRombelController extends Controller
                     'kelas_id' => $kelas->id,
                     'tahun_ajaran_id' => $rombel['tahun_ajaran_id'],
                     'tingkat' => $rombel['tingkat'],
+                    'kurikulum_id' => $rombel['kurikulum_id'] ?? 1,
                 ]);
             }
         }
