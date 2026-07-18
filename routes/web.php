@@ -3,14 +3,13 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelasRombelController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KurikulumController;
+use App\Http\Controllers\MapelController;
 // Redirect root to login.
 Route::get('/', function () {
     return redirect()->route('login');
@@ -57,6 +56,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/kelas-rombel/create', [KelasRombelController::class, 'createKelasRombel'])->name('kelas-rombel.create');
     Route::post('/kelas-rombel', [KelasRombelController::class, 'storeKelasRombel'])->name('kelas-rombel.store');
     Route::delete('/kelas-rombel/{rombel}', [KelasRombelController::class, 'destroyKelasRombel'])->name('kelas-rombel.destroy');
+
+    // Subject management (Mapel)
+    Route::get('/mapel', [MapelController::class, 'caridata'])->name('mapel.index');
+    Route::get('/mapel/create', [MapelController::class, 'create'])->name('mapel.create');
+    Route::post('/mapel', [MapelController::class, 'store'])->name('mapel.store');
+    Route::get('/mapel/{mapel}/edit', [MapelController::class, 'edit'])->name('mapel.edit');
+    Route::patch('/mapel/{mapel}', [MapelController::class, 'update'])->name('mapel.update');
+    Route::delete('/mapel/{mapel}', [MapelController::class, 'destroy'])->name('mapel.destroy');
     
     // Assign Siswa to Rombel
     Route::get('/kelas-rombel/{rombel}/assign-siswa', [KelasRombelController::class, 'assignSiswa'])->name('kelas-rombel.assign-siswa');
@@ -77,6 +84,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/penugasan/guru-mapel', [\App\Http\Controllers\PenugasanController::class, 'indexGuruMapel'])->name('penugasan.guru-mapel');
     Route::post('/penugasan/guru-mapel', [\App\Http\Controllers\PenugasanController::class, 'storeGuruMapel'])->name('penugasan.guru-mapel.store');
+    Route::get('/penugasan/rombels', [\App\Http\Controllers\PenugasanController::class, 'apiRombels'])->name('penugasan.rombels');
     Route::delete('/penugasan/guru-mapel/{guruMapel}', [\App\Http\Controllers\PenugasanController::class, 'destroyGuruMapel'])->name('penugasan.guru-mapel.destroy');
 });
 

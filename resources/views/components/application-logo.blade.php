@@ -1,1 +1,1 @@
-<img {{ $attributes }} src="{{ asset('aknb.png') }}" alt="Logo Sekolah">
+<img {{ $attributes->merge(['class' => 'block h-9 w-auto object-contain']) }} src="{{ asset('aknb.png') }}" alt="Logo Sekolah">

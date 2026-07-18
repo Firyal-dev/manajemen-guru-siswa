@@ -106,4 +106,24 @@ class PenugasanController extends Controller
         $guruMapel->delete();
         return redirect()->route('penugasan.guru-mapel')->with('success', 'Tugas Guru Mapel berhasil dicabut.');
     }
+
+    public function apiRombels(Request $request)
+    {
+        $query = $request->input('q');
+
+        $rombels = Rombel::with(['kelas', 'kelas.jurusan'])
+            ->when($query, fn($builder) => $builder->where(function ($builder) use ($query) {
+                $builder->where('tingkat', 'like', "%{$query}%")
+                    ->orWhereHas('kelas', fn($kelas) => $kelas->where('tingkat', 'like', "%{$query}%")
+                        ->orWhereHas('jurusan', fn($jurusan) => $jurusan->where('singkatan', 'like', "%{$query}%")));
+            }))
+            ->orderBy('tingkat')
+            ->get()
+            ->map(fn($rombel) => [
+                'id' => $rombel->id,
+                'text' => $rombel->label,
+            ]);
+
+        return response()->json($rombels);
+    }
 }

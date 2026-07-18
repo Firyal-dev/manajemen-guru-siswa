@@ -37,6 +37,8 @@ class SiswaController extends Controller
                     'siswa_id' => $siswa->id,
                     'rombel_id' => $req->rombel_id,
                     'tahun_ajaran_id' => $activeTa->id,
+                    'status' => 'aktif',
+                    'tanggal_masuk' => now(),
                 ]);
             }
         }

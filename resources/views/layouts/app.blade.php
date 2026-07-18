@@ -107,12 +107,26 @@
         }
         .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03); }
         .nav-active {
-            background-color: #1e40af;
-            color: #ffffff;
+            background-color: #dbeafe;
+            color: #0f172a !important;
             font-weight: 700;
+        }
+        .nav-active *,
+        .nav-active {
+            color: #0f172a !important;
+        }
+        .nav-active:hover,
+        .nav-active:focus {
+            background-color: #c7d2fe;
+            color: #0f172a !important;
         }
         .nav-active .material-symbols-outlined {
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            color: #1d4ed8 !important;
+        }
+        .nav-active:hover .material-symbols-outlined,
+        .nav-active:focus .material-symbols-outlined {
+            color: #1e40af !important;
         }
         /* Scrollbar styling */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -137,8 +151,8 @@
 
 <aside id="sidebar" class="fixed left-0 top-0 h-full w-72 flex flex-col z-40 bg-surface border-r border-outline-variant md:translate-x-0">
     <div class="p-5 border-b border-outline-variant flex items-center gap-3">
-        <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center shadow-sm">
-            <span class="material-symbols-outlined text-white text-[22px]" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+        <div class="w-12 h-12 rounded-2xl overflow-hidden bg-white/90 flex items-center justify-center shadow-sm">
+            <img src="{{ asset('aknb.png') }}" alt="Logo Master Data" class="h-10 w-10 object-contain" />
         </div>
         <div>
             <h1 class="font-display text-[18px] font-bold text-primary leading-tight">Master Data</h1>
@@ -170,6 +184,10 @@
             <span class="material-symbols-outlined text-[22px]">groups</span>
             <span class="text-[14px] font-semibold">Data Siswa</span>
         </a>
+        <a href="{{ route('mapel.index') }}" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 text-on-surface-variant hover:text-primary hover:bg-surface-container-high {{ request()->routeIs('mapel.*') ? 'nav-active' : '' }}">
+            <span class="material-symbols-outlined text-[22px]">menu_book</span>
+            <span class="text-[14px] font-semibold">Data Mapel</span>
+        </a>
         
         <div class="px-3 py-1.5 mt-4">
             <span class="text-[10px] font-bold text-outline uppercase tracking-widest">Akademik</span>
@@ -194,7 +212,7 @@
 
     <div class="p-4 border-t border-outline-variant">
         <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center font-bold text-primary text-sm flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
                 {{ strtoupper(substr($currentUser, 0, 2)) }}
             </div>
             <div class="flex-1 min-w-0">
@@ -225,11 +243,6 @@
     </div>
 
     <div class="flex items-center gap-2 md:gap-4">
-        <div class="hidden lg:flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full border border-outline-variant/50 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
-            <span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
-            <input class="bg-transparent border-none focus:ring-0 text-[14px] text-on-surface w-44 placeholder:text-outline" placeholder="Pencarian..." type="text"/>
-        </div>
-        
         <a href="{{ route('profile.edit') }}" class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all flex items-center justify-center">
             <span class="material-symbols-outlined">person</span>
         </a>
@@ -238,7 +251,7 @@
             <span class="text-[13px] font-semibold text-on-surface">{{ $currentUser }}</span>
             <span class="text-[11px] text-on-surface-variant">Admin App</span>
         </div>
-        <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center font-bold text-primary text-xs">
+        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">
             {{ strtoupper(substr($currentUser, 0, 2)) }}
         </div>
     </div>
@@ -268,6 +281,12 @@
         sidebar.classList.remove('open');
         overlay.classList.add('hidden');
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('#sidebar a').forEach(function (link) {
+            link.addEventListener('click', closeSidebar);
+        });
+    });
 </script>
 @stack('scripts')
 </body>

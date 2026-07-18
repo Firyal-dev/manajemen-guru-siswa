@@ -81,6 +81,24 @@
                         <tbody class="divide-y divide-outline-variant/50">
                             @forelse ($siswas as $index => $siswa)
                                 @php
+                                    $rombelAktif = $siswa->rombelAktif();
+                                    $siswaRombel = '-';
+
+                                    if ($rombelAktif) {
+                                        $kelasLabel = trim("{$rombelAktif->kelas->tingkat} {$rombelAktif->kelas->jurusan->singkatan}");
+                                        $rombelTingkat = trim($rombelAktif->tingkat);
+
+                                        if ($kelasLabel && str_contains($rombelTingkat, $kelasLabel)) {
+                                            $siswaRombel = $rombelTingkat;
+                                        } elseif ($rombelTingkat && str_contains($kelasLabel, $rombelTingkat)) {
+                                            $siswaRombel = $rombelTingkat;
+                                        } elseif ($kelasLabel === $rombelTingkat) {
+                                            $siswaRombel = $kelasLabel;
+                                        } else {
+                                            $siswaRombel = "{$kelasLabel} / {$rombelTingkat}";
+                                        }
+                                    }
+
                                     $siswaData = [
                                         'id'      => $siswa->id,
                                         'nama'    => $siswa->nama,
@@ -89,7 +107,7 @@
                                         'agama'   => $siswa->agama,
                                         'kelamin' => $siswa->kelamin?->value,
                                         'kelamin_label' => $siswa->kelamin?->label(),
-                                        'rombel'  => $siswa->rombelAktif() ? $siswa->rombelAktif()->kelas->tingkat . ' ' . $siswa->rombelAktif()->kelas->jurusan->singkatan . ' ' . $siswa->rombelAktif()->tingkat : '-',
+                                        'rombel'  => $siswaRombel,
                                     ];
                                 @endphp
                                 <tr @click="selected = {{ json_encode($siswaData) }}"
@@ -114,7 +132,7 @@
                                     
                                     <td class="py-3 px-4 hidden sm:table-cell">
                                         <span class="px-2.5 py-1 bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded-lg border border-outline-variant/30">
-                                            {{ $siswa->rombelAktif() ? $siswa->rombelAktif()->kelas->tingkat . ' ' . $siswa->rombelAktif()->kelas->jurusan->singkatan . ' ' . $siswa->rombelAktif()->tingkat : '-' }}
+                                            {{ $siswaRombel ?? ($siswa->rombelAktif() ? trim("{$siswa->rombelAktif()->kelas->tingkat} {$siswa->rombelAktif()->kelas->jurusan->singkatan} / {$siswa->rombelAktif()->tingkat}") : '-') }}
                                         </span>
                                     </td>
                                     

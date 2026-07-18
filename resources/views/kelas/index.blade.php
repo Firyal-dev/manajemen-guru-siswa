@@ -63,10 +63,22 @@
                     <div class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 bg-surface">
                         @foreach ($jurusan->kelas->sortBy('tingkat') as $kelas)
                             @foreach ($kelas->rombel as $rombel)
-                                @php 
-                                    $displayNama = "{$kelas->tingkat} {$jurusan->singkatan} {$rombel->tingkat}";
-                                    $wali = $rombel->guru->first(); 
-                                @endphp
+                                @php
+                                $kelasLabel = trim("{$kelas->tingkat} {$jurusan->singkatan}");
+                                $rombelLabel = trim($rombel->tingkat);
+
+                                if ($kelasLabel && str_contains($rombelLabel, $kelasLabel)) {
+                                    $displayNama = $rombelLabel;
+                                } elseif ($rombelLabel && str_contains($kelasLabel, $rombelLabel)) {
+                                    $displayNama = $rombelLabel;
+                                } elseif ($kelasLabel === $rombelLabel) {
+                                    $displayNama = $kelasLabel;
+                                } else {
+                                    $displayNama = "{$kelasLabel} / {$rombelLabel}";
+                                }
+
+                                $wali = $rombel->guru->first();
+                            @endphp
                                 
                                 <div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/60 hover:border-primary hover:shadow-md transition-all cursor-pointer group"
                                      @click="selectedRombel = { 

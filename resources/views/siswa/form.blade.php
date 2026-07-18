@@ -29,7 +29,7 @@
             {{-- Nama Lengkap --}}
             <div>
                 <label for="nama" class="block text-[13px] font-bold text-on-surface mb-2">Nama Lengkap</label>
-                <input type="text" id="nama" name="nama" value="{{ old('nama', $siswa->nama ?? '') }}" required autofocus
+                <input type="text" id="nama" name="nama" value="{{ old('nama', $siswa->nama ?? '') }}" placeholder="Masukkan nama lengkap siswa" required autofocus
                     class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
                 @error('nama')
                     <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
@@ -40,7 +40,7 @@
                 {{-- NIS --}}
                 <div>
                     <label for="nis" class="block text-[13px] font-bold text-on-surface mb-2">NIS (Nomor Induk Siswa)</label>
-                    <input type="text" id="nis" name="nis" value="{{ old('nis', $siswa->nis ?? '') }}" required
+                    <input type="text" id="nis" name="nis" value="{{ old('nis', $siswa->nis ?? '') }}" placeholder="Contoh: 12345678" required
                         class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
                     @error('nis')
                         <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
@@ -50,7 +50,7 @@
                 {{-- NISN --}}
                 <div>
                     <label for="nisn" class="block text-[13px] font-bold text-on-surface mb-2">NISN</label>
-                    <input type="text" id="nisn" name="nisn" value="{{ old('nisn', $siswa->nisn ?? '') }}" required
+                    <input type="text" id="nisn" name="nisn" value="{{ old('nisn', $siswa->nisn ?? '') }}" placeholder="Contoh: 2023000001" required
                         class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
                     @error('nisn')
                         <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>

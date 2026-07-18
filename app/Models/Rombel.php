@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 // Study group (Rombel / Rombongan Belajar) — a specific class group within a grade.
@@ -54,5 +53,17 @@ class Rombel extends Model
     public function kurikulum(): BelongsTo
     {
         return $this->belongsTo(Kurikulum::class);
+    }
+
+    public function getLabelAttribute(): string
+    {
+        $prefix = trim("{$this->kelas->tingkat} {$this->kelas->jurusan->singkatan}");
+        $label = trim($this->tingkat);
+
+        if (str_starts_with($label, $prefix)) {
+            $label = trim(substr($label, strlen($prefix)));
+        }
+
+        return trim("{$prefix} {$label}");
     }
 }

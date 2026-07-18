@@ -23,7 +23,7 @@
                         <div class="mb-6">
                             <x-input-label for="jurusan_id" value="Jurusan" />
                             <select id="jurusan_id" name="jurusan_id" required
-                                class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm @error('jurusan_id') border-red-500 dark:border-red-400 @enderror">
+                                class="mt-1 block w-full border-gray-300 white:border-gray-700 white:bg-gray-900 dark:text-gray-700 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm @error('jurusan_id') border-red-500 dark:border-red-400 @enderror">
                                 <option value="">Pilih jurusan</option>
                                 @foreach ($jurusans as $j)
                                     <option value="{{ $j->id }}" @selected(old('jurusan_id') == $j->id)>
@@ -40,7 +40,7 @@
                         <div class="mb-6">
                             <x-input-label for="tingkat" value="Tingkat" />
                             <select id="tingkat" name="tingkat" required
-                                class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm @error('tingkat') border-red-500 dark:border-red-400 @enderror">
+                                class="mt-1 block w-full border-gray-300 white:border-gray-700 white:bg-gray-900 dark:text-gray-700 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm @error('tingkat') border-red-500 dark:border-red-400 @enderror">
                                 <option value="">Pilih tingkat</option>
                                 @foreach (['X', 'XI', 'XII', 'XIII'] as $t)
                                     <option value="{{ $t }}" @selected(old('tingkat') == $t)>{{ $t }}
@@ -98,7 +98,7 @@
                                     <div>
                                         <x-input-label x-bind:for="`rombel_${index}_kurikulum`" value="Kurikulum" />
                                         <select x-bind:id="`rombel_${index}_kurikulum`" x-bind:name="`rombels[${index}][kurikulum_id]`" required x-model="rombel.kurikulum_id"
-                                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                            class="mt-1 block w-full border-gray-300 white:border-gray-700 white:bg-gray-900 dark:text-gray-700 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                             <option value="">Pilih kurikulum</option>
                                             @foreach ($kurikulums as $k)
                                                 <option value="{{ $k->id }}">

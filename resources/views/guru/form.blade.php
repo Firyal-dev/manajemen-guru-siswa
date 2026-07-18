@@ -27,38 +27,77 @@
             @endisset
 
             {{-- Photo upload --}}
-            <div>
+            <div x-data="{
+                    previewUrl: '{{ isset($guru) && $guru->url_foto ? asset('storage/' . $guru->url_foto) : '' }}',
+                    fileName: '',
+                    status: '{{ isset($guru) && $guru->url_foto ? 'current' : 'idle' }}',
+                    previewFile(event) {
+                        const file = event.target.files[0];
+                        if (! file) {
+                            this.fileName = '';
+                            this.status = '{{ isset($guru) && $guru->url_foto ? 'current' : 'idle' }}';
+                            return;
+                        }
+                        this.fileName = file.name;
+                        this.status = 'loading';
+
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.previewUrl = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+
+                        setTimeout(() => {
+                            this.status = 'ready';
+                        }, 700);
+                    }
+                }">
                 <label for="url_foto" class="block text-[13px] font-bold text-on-surface mb-2">Foto Profil (Opsional)</label>
-                
-                @if(isset($guru) && $guru->url_foto)
+
+                <template x-if="previewUrl">
                     <div class="mb-3 flex items-center gap-4">
-                        <img src="{{ asset('storage/' . $guru->url_foto) }}" alt="Foto saat ini" class="w-16 h-16 rounded-full object-cover border border-outline-variant">
-                        <p class="text-[12px] text-on-surface-variant">Foto saat ini</p>
+                        <img :src="previewUrl" alt="Preview foto" class="w-16 h-16 rounded-full object-cover border border-outline-variant">
+                        <div>
+                            <p class="text-[12px] font-semibold text-on-surface">
+                                <span x-show="status === 'current'">Foto saat ini</span>
+                                <span x-show="status === 'loading'">Memeriksa foto...</span>
+                                <span x-show="status === 'ready'">Foto terpilih</span>
+                            </p>
+                            <p class="text-[12px] text-on-surface-variant" x-text="fileName || '{{ isset($guru) && $guru->url_foto ? basename($guru->url_foto) : 'Belum ada foto' }}'"></p>
+                        </div>
                     </div>
-                @endif
-                
-                <input type="file" name="url_foto" id="url_foto" accept=".jpg,.png"
-                    class="block w-full text-[13px] text-on-surface-variant
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-lg file:border-0
-                        file:text-[13px] file:font-bold
-                        file:bg-primary-container/20 file:text-primary
-                        hover:file:bg-primary-container/30 cursor-pointer
-                        bg-surface-container-lowest border border-outline-variant rounded-lg
-                        focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                    {{ !isset($guru) ? 'required' : '' }}>
+                </template>
+
+                <div class="grid gap-2">
+                    <label for="url_foto" class="inline-flex items-center justify-center gap-2 w-full max-w-fit px-4 py-2 border border-outline-variant rounded-lg text-[14px] font-semibold text-primary hover:bg-primary-container/10 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">photo_camera</span>
+                        Pilih Foto
+                    </label>
+                    <p class="text-[12px] text-on-surface-variant">Maksimal JPG/PNG 2MB. Biarkan kosong jika tidak ingin mengganti foto.</p>
+                </div>
+
+                <input type="file" name="url_foto" id="url_foto" accept=".jpg,.png" class="sr-only" @change="previewFile($event)" {{ !isset($guru) ? 'required' : '' }}>
+
+                <div class="mt-3 transition-all">
+                    <div x-show="status === 'loading'" class="inline-flex items-center gap-2 text-secondary text-[13px]">
+                        <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                        Memindai foto...
+                    </div>
+                    <div x-show="status === 'ready'" class="inline-flex items-center gap-2 text-success text-[13px]">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        Foto siap diunggah
+                    </div>
+                </div>
+
                 @error('url_foto')
                     <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
                 @enderror
-                @isset($guru)
-                    <p class="mt-2 text-[11px] text-on-surface-variant">Biarkan kosong jika tidak ingin mengganti foto.</p>
-                @endisset
             </div>
 
             {{-- Nama --}}
             <div>
                 <label for="nama" class="block text-[13px] font-bold text-on-surface mb-2">Nama Lengkap</label>
-                <input type="text" id="nama" name="nama" value="{{ old('nama', $guru->nama ?? '') }}" required autofocus
+                <input type="text" id="nama" name="nama" value="{{ old('nama', $guru->nama ?? '') }}" placeholder="Masukkan nama lengkap guru" required autofocus
                     class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
                 @error('nama')
                     <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
@@ -68,7 +107,7 @@
             {{-- NIP --}}
             <div>
                 <label for="nip" class="block text-[13px] font-bold text-on-surface mb-2">NIP</label>
-                <input type="text" id="nip" name="nip" value="{{ old('nip', $guru->nip ?? '') }}" required
+                <input type="text" id="nip" name="nip" value="{{ old('nip', $guru->nip ?? '') }}" placeholder="Contoh: 196504071990031001" required
                     class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all">
                 @error('nip')
                     <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
