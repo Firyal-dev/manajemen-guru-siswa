@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MapelRequest;
+use App\Models\Jurusan;
 use App\Models\Mapel;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class MapelController extends Controller
     public function caridata(Request $request)
     {
         $mapels = Mapel::search($request->search)
-            ->where('status', 1)
+            ->with('jurusan')
             ->orderBy('nama_mapel')
             ->paginate(10)
             ->withQueryString();
@@ -26,21 +27,23 @@ class MapelController extends Controller
 
     public function create()
     {
-        return view('mapel.form');
+        $jurusans = Jurusan::orderBy('singkatan')->get();
+
+        return view('mapel.form', compact('jurusans'));
     }
 
     public function store(MapelRequest $request)
     {
-        $data = $request->validated();
-        $data['status'] = 1;
-        Mapel::create($data);
+        Mapel::create($request->validated());
 
         return redirect()->route('mapel.index')->with('success', 'Mapel berhasil ditambahkan.');
     }
 
     public function edit(Mapel $mapel)
     {
-        return view('mapel.form', compact('mapel'));
+        $jurusans = Jurusan::orderBy('singkatan')->get();
+
+        return view('mapel.form', compact('mapel', 'jurusans'));
     }
 
     public function update(MapelRequest $request, Mapel $mapel)
@@ -52,7 +55,7 @@ class MapelController extends Controller
 
     public function destroy(Mapel $mapel)
     {
-        $mapel->update(['status' => 2]);
+        $mapel->delete();
 
         return redirect()->route('mapel.index')->with('success', 'Mapel berhasil dihapus.');
     }

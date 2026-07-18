@@ -59,15 +59,36 @@ class DummyDataSeeder extends Seeder
         }
 
         // 4. Mapel (Muatan Nasional + Kejuruan)
-        $namaMapel = [
-            'Pendidikan Agama Islam', 'Pendidikan Pancasila', 'Bahasa Indonesia', 'Matematika', 'Bahasa Inggris', 'Sejarah',
-            'Kimia Analisis Dasar', 'Teknik Dasar Pekerjaan Laboratorium Kimia', 'Analisis Kimia Instrumen', // AK
-            'Farmakognosi', 'Farmakologi', 'Simulasi Apotek', // FAR
-            'Pemrograman Dasar', 'Basis Data', 'Pemrograman Berorientasi Objek', // PPLG
+        // Mapel umum: jurusan_id null, kelompok 'Umum'.
+        // Mapel kejuruan: jurusan_id terisi, kelompok 'Kejuruan'.
+        $mapelUmum = [
+            'Pendidikan Agama Islam', 'Pendidikan Pancasila', 'Bahasa Indonesia',
+            'Matematika', 'Bahasa Inggris', 'Sejarah',
         ];
-        
-        foreach ($namaMapel as $m) {
-            Mapel::create(['nama_mapel' => $m]);
+        $mapelKejuruan = [
+            $jurusanAK->id => ['Kimia Analisis Dasar', 'Teknik Dasar Pekerjaan Laboratorium Kimia', 'Analisis Kimia Instrumen'],
+            $jurusanFAR->id => ['Farmakognosi', 'Farmakologi', 'Simulasi Apotek'],
+            $jurusanPPLG->id => ['Pemrograman Dasar', 'Basis Data', 'Pemrograman Berorientasi Objek'],
+        ];
+
+        foreach ($mapelUmum as $m) {
+            Mapel::create([
+                'nama_mapel' => $m,
+                'is_not_pai' => $m !== 'Pendidikan Agama Islam',
+                'kelompok' => 'Umum',
+                'jurusan_id' => null,
+            ]);
+        }
+
+        foreach ($mapelKejuruan as $jurusanId => $namaList) {
+            foreach ($namaList as $m) {
+                Mapel::create([
+                    'nama_mapel' => $m,
+                    'is_not_pai' => true,
+                    'kelompok' => 'Kejuruan',
+                    'jurusan_id' => $jurusanId,
+                ]);
+            }
         }
 
         // 5. Guru (20 Guru Realistis)

@@ -53,6 +53,8 @@
                     <tr class="bg-surface-container-low border-b border-outline-variant">
                         <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">No</th>
                         <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">Nama Mapel</th>
+                        <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">Kelompok</th>
+                        <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">Jurusan</th>
                         <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -61,6 +63,22 @@
                         <tr class="hover:bg-surface-container-highest transition-colors">
                             <td class="py-4 px-5 text-[13px] text-on-surface-variant">{{ $mapels->firstItem() + $index }}</td>
                             <td class="py-4 px-5 text-[14px] text-on-surface font-semibold">{{ $mapel->nama_mapel }}</td>
+                            <td class="py-4 px-5">
+                                @if ($mapel->kelompok === 'Kejuruan')
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary-container/20 text-primary border border-primary-container">
+                                        <span class="material-symbols-outlined text-[14px]">engineering</span>
+                                        Kejuruan
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-surface-container text-on-surface-variant border border-outline-variant">
+                                        <span class="material-symbols-outlined text-[14px]">public</span>
+                                        Umum
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="py-4 px-5 text-[13px] text-on-surface-variant">
+                                {{ $mapel->jurusan?->singkatan ?? '—' }}
+                            </td>
                             <td class="py-4 px-5 text-right space-x-2">
                                 <a href="{{ route('mapel.edit', $mapel) }}" class="inline-flex items-center gap-2 px-3 py-2 bg-surface-container text-primary text-[13px] font-semibold rounded-lg border border-primary-container hover:bg-primary-container/10 transition-colors">
                                     <span class="material-symbols-outlined text-[18px]">edit</span>
@@ -74,7 +92,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="py-12 text-center text-on-surface-variant">
+                            <td colspan="5" class="py-12 text-center text-on-surface-variant">
                                 <span class="material-symbols-outlined text-[48px] opacity-20 mb-2">book</span>
                                 <p class="text-[14px] font-medium">Belum ada data mapel.</p>
                             </td>
