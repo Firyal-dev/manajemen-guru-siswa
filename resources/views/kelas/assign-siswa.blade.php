@@ -28,9 +28,9 @@
                         <span class="material-symbols-outlined text-[28px]">meeting_room</span>
                     </div>
                     <h2 class="font-headline text-2xl font-bold text-on-surface mb-1">
-                        {{ $rombel->kelas->tingkat }} {{ $rombel->kelas->jurusan->singkatan }} {{ $rombel->tingkat }}
+                        {{ $rombel->kelas->tingkat }} {{ $rombel->kelas->jurusan->nama }} {{ $rombel->tingkat }}
                     </h2>
-                    <p class="text-[13px] text-on-surface-variant font-medium">{{ $rombel->kelas->jurusan->nama_jurusan ?? $rombel->kelas->jurusan->kepanjangan }}</p>
+                    <p class="text-[13px] text-on-surface-variant font-medium">{{ $rombel->kelas->jurusan->nama }}</p>
                 </div>
                 
                 <div class="p-6 space-y-5 bg-surface">

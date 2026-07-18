@@ -43,7 +43,7 @@
                     <option value="">— Tidak ada (Mapel Umum) —</option>
                     @foreach ($jurusans as $jurusan)
                         <option value="{{ $jurusan->id }}" @selected(old('jurusan_id', $mapel->jurusan_id ?? '') == $jurusan->id)>
-                            {{ $jurusan->singkatan }} — {{ $jurusan->kepanjangan }}
+                            {{ $jurusan->nama }}
                         </option>
                     @endforeach
                 </select>

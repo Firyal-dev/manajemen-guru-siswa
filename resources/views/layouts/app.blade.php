@@ -196,6 +196,10 @@
             <span class="material-symbols-outlined text-[22px]">meeting_room</span>
             <span class="text-[14px] font-semibold">Manajemen Kelas</span>
         </a>
+        <a href="{{ route('jurusan.index') }}" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 text-on-surface-variant hover:text-primary hover:bg-surface-container-high {{ request()->routeIs('jurusan.*') ? 'nav-active' : '' }}">
+            <span class="material-symbols-outlined text-[22px]">school</span>
+            <span class="text-[14px] font-semibold">Manajemen Jurusan</span>
+        </a>
         
         <div class="px-3 py-1.5 mt-4">
             <span class="text-[10px] font-bold text-outline uppercase tracking-widest">Penugasan</span>

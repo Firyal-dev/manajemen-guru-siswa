@@ -45,10 +45,7 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
-                                {{ $jurusan->singkatan }}
-                                @if ($jurusan->kepanjangan ?? false)
-                                    <span class="text-[13px] font-normal text-on-surface-variant">({{ $jurusan->kepanjangan }})</span>
-                                @endif
+                                {{ $jurusan->nama }}
                             </h3>
                             <p class="text-[13px] text-on-surface-variant mt-0.5">
                                 {{ $jurusan->kelas->sum(fn($k) => $k->rombel->count()) }} Rombel
@@ -64,7 +61,7 @@
                         @foreach ($jurusan->kelas->sortBy('tingkat') as $kelas)
                             @foreach ($kelas->rombel as $rombel)
                                 @php
-                                $kelasLabel = trim("{$kelas->tingkat} {$jurusan->singkatan}");
+                                $kelasLabel = trim("{$kelas->tingkat} {$jurusan->nama}");
                                 $rombelLabel = trim($rombel->tingkat);
 
                                 if ($kelasLabel && str_contains($rombelLabel, $kelasLabel)) {

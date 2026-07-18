@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('jurusans', function (Blueprint $table) {
             $table->id();
-            $table->string('singkatan');
-            $table->string('kepanjangan');
+            $table->string('nama');
+            $table->integer('panjang_tahun_ajaran');
             $table->timestamps();
         });
     }

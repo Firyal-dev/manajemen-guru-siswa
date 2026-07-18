@@ -16,7 +16,7 @@ class KelasRombelController extends Controller
     // Show the combined grade + study group creation form.
     public function createKelasRombel()
     {
-        $jurusans = Jurusan::orderBy('singkatan')->get();
+        $jurusans = Jurusan::orderBy('nama')->get();
         $tahunAjaran = TahunAjaran::where('aktif', true)->first();
         $kurikulums = \App\Models\Kurikulum::where('status', true)->get();
 

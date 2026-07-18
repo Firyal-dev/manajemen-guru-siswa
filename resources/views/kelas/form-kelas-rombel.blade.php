@@ -27,7 +27,7 @@
                                 <option value="">Pilih jurusan</option>
                                 @foreach ($jurusans as $j)
                                     <option value="{{ $j->id }}" @selected(old('jurusan_id') == $j->id)>
-                                        {{ $j->singkatan }} ({{ $j->kepanjangan }})
+                                        {{ $j->nama }}
                                     </option>
                                 @endforeach
                             </select>

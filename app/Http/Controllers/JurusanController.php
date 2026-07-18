@@ -18,7 +18,7 @@ class JurusanController extends Controller
     // Show create department form.
     public function create()
     {
-        return view('kelas.form-jurusan');
+        return view('jurusan.form');
     }
 
     // Store new department.
@@ -26,6 +26,43 @@ class JurusanController extends Controller
     {
         Jurusan::create($req->validated());
 
-        return redirect()->route('kelas')->with('success', 'Jurusan berhasil ditambahkan.');
+        return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil ditambahkan.');
+    }
+
+    // Dedicated department management page (list + row counts).
+    public function manage()
+    {
+        $jurusans = Jurusan::withCount(['kelas', 'mapels'])
+            ->orderBy('nama')
+            ->paginate(10);
+
+        return view('jurusan.index', compact('jurusans'));
+    }
+
+    // Show edit form.
+    public function edit(Jurusan $jurusan)
+    {
+        return view('jurusan.form', compact('jurusan'));
+    }
+
+    // Update department.
+    public function update(JurusanRequest $req, Jurusan $jurusan)
+    {
+        $jurusan->update($req->validated());
+
+        return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil diperbarui.');
+    }
+
+    // Delete department (blocked when still referenced by kelas/mapel).
+    public function destroy(Jurusan $jurusan)
+    {
+        if ($jurusan->kelas()->exists() || $jurusan->mapels()->exists()) {
+            return redirect()->route('jurusan.index')
+                ->with('error', 'Jurusan tidak dapat dihapus karena masih dipakai kelas atau mapel.');
+        }
+
+        $jurusan->delete();
+
+        return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil dihapus.');
     }
 }

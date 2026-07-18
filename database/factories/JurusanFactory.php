@@ -12,8 +12,8 @@ class JurusanFactory extends Factory
     public function definition(): array
     {
         return [
-            'singkatan' => fake()->unique()->lexify('???'),
-            'kepanjangan' => fake()->words(3, true),
+            'nama' => ucwords(fake()->unique()->words(3, true)),
+            'panjang_tahun_ajaran' => fake()->numberBetween(3, 4),
         ];
     }
 }

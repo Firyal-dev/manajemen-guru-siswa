@@ -85,7 +85,7 @@
                                     $siswaRombel = '-';
 
                                     if ($rombelAktif) {
-                                        $kelasLabel = trim("{$rombelAktif->kelas->tingkat} {$rombelAktif->kelas->jurusan->singkatan}");
+                                        $kelasLabel = trim("{$rombelAktif->kelas->tingkat} {$rombelAktif->kelas->jurusan->nama}");
                                         $rombelTingkat = trim($rombelAktif->tingkat);
 
                                         if ($kelasLabel && str_contains($rombelTingkat, $kelasLabel)) {
@@ -132,7 +132,7 @@
                                     
                                     <td class="py-3 px-4 hidden sm:table-cell">
                                         <span class="px-2.5 py-1 bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded-lg border border-outline-variant/30">
-                                            {{ $siswaRombel ?? ($siswa->rombelAktif() ? trim("{$siswa->rombelAktif()->kelas->tingkat} {$siswa->rombelAktif()->kelas->jurusan->singkatan} / {$siswa->rombelAktif()->tingkat}") : '-') }}
+                                            {{ $siswaRombel ?? ($siswa->rombelAktif() ? trim("{$siswa->rombelAktif()->kelas->tingkat} {$siswa->rombelAktif()->kelas->jurusan->nama} / {$siswa->rombelAktif()->tingkat}") : '-') }}
                                         </span>
                                     </td>
                                     

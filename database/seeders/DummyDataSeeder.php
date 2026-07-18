@@ -6,6 +6,7 @@ use App\Models\Guru;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Mapel;
+use App\Models\RiwayatKelasSiswa;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
@@ -24,9 +25,9 @@ class DummyDataSeeder extends Seeder
         $tahunAjaran = TahunAjaran::create(['tahun_mulai' => 2025, 'tahun_selesai' => 2026, 'aktif' => true]);
 
         // 2. Jurusan
-        $jurusanAK = Jurusan::create(['singkatan' => 'AK', 'kepanjangan' => 'Analis Kimia']); 
-        $jurusanFAR = Jurusan::create(['singkatan' => 'FAR', 'kepanjangan' => 'Farmasi']);
-        $jurusanPPLG = Jurusan::create(['singkatan' => 'PPLG', 'kepanjangan' => 'Pengembangan Perangkat Lunak dan Gim']);
+        $jurusanAK = Jurusan::create(['nama' => 'Analis Kimia', 'panjang_tahun_ajaran' => 4]);
+        $jurusanFAR = Jurusan::create(['nama' => 'Farmasi', 'panjang_tahun_ajaran' => 3]);
+        $jurusanPPLG = Jurusan::create(['nama' => 'Pengembangan Perangkat Lunak dan Gim', 'panjang_tahun_ajaran' => 3]);
 
         // 3. Kelas & Rombel
         $dataRombel = [
@@ -109,13 +110,20 @@ class DummyDataSeeder extends Seeder
                 $nis = "24" . str_pad($siswaIndex, 4, '0', STR_PAD_LEFT);
                 $nisn = "00" . str_pad($siswaIndex, 6, '0', STR_PAD_LEFT);
                 
-                Siswa::create([
-                    'rombel_id' => $rombel->id,
+                $siswa = Siswa::create([
                     'nama' => $faker->name,
                     'nis' => $nis,
                     'nisn' => $nisn,
                     'kelamin' => $i % 2 == 0 ? 'laki_laki' : 'perempuan',
                     'agama' => 'Islam'
+                ]);
+
+                RiwayatKelasSiswa::create([
+                    'siswa_id' => $siswa->id,
+                    'rombel_id' => $rombel->id,
+                    'tahun_ajaran_id' => $tahunAjaran->id,
+                    'status' => 'aktif',
+                    'tanggal_masuk' => now(),
                 ]);
                 $siswaIndex++;
             }

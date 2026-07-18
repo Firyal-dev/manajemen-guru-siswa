@@ -14,28 +14,28 @@
                 <form method="POST" action="{{ route('jurusan.store') }}" class="p-6">
                     @csrf
 
-                    {{-- Abbreviation (e.g. RPL) --}}
+                    {{-- Department name --}}
                     <div class="mb-6">
-                        <x-input-label for="singkatan" value="Singkatan" />
-                        <x-text-input id="singkatan" name="singkatan" type="text"
+                        <x-input-label for="nama" value="Nama Jurusan" />
+                        <x-text-input id="nama" name="nama" type="text"
                             class="mt-1 block w-full"
-                            :value="old('singkatan')"
-                            placeholder="RPL"
+                            :value="old('nama')"
+                            placeholder="Rekayasa Perangkat Lunak"
                             required autofocus />
-                        @error('singkatan')
+                        @error('nama')
                             <x-input-error :messages="$message" class="mt-2" />
                         @enderror
                     </div>
 
-                    {{-- Full name (e.g. Rekayasa Perangkat Lunak) --}}
+                    {{-- Study length in years --}}
                     <div class="mb-6">
-                        <x-input-label for="kepanjangan" value="Kepanjangan" />
-                        <x-text-input id="kepanjangan" name="kepanjangan" type="text"
+                        <x-input-label for="panjang_tahun_ajaran" value="Lama Masa Studi (Tahun)" />
+                        <x-text-input id="panjang_tahun_ajaran" name="panjang_tahun_ajaran" type="number"
                             class="mt-1 block w-full"
-                            :value="old('kepanjangan')"
-                            placeholder="Rekayasa Perangkat Lunak"
+                            :value="old('panjang_tahun_ajaran', 3)"
+                            min="1" max="6"
                             required />
-                        @error('kepanjangan')
+                        @error('panjang_tahun_ajaran')
                             <x-input-error :messages="$message" class="mt-2" />
                         @enderror
                     </div>

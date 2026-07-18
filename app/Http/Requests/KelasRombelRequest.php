@@ -65,7 +65,7 @@ class KelasRombelRequest extends FormRequest
             }
 
             $jurusan = Jurusan::find($jurusanId);
-            $jurusanLabel = $jurusan?->singkatan ?? 'jurusan yang dipilih';
+            $jurusanLabel = $jurusan?->nama ?? 'jurusan yang dipilih';
 
             $existingRombels = Rombel::query()
                 ->whereHas('kelas', function ($query) use ($jurusanId, $kelasTingkat) {

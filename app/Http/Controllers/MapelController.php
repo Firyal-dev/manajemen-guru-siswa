@@ -27,7 +27,7 @@ class MapelController extends Controller
 
     public function create()
     {
-        $jurusans = Jurusan::orderBy('singkatan')->get();
+        $jurusans = Jurusan::orderBy('nama')->get();
 
         return view('mapel.form', compact('jurusans'));
     }
@@ -41,7 +41,7 @@ class MapelController extends Controller
 
     public function edit(Mapel $mapel)
     {
-        $jurusans = Jurusan::orderBy('singkatan')->get();
+        $jurusans = Jurusan::orderBy('nama')->get();
 
         return view('mapel.form', compact('mapel', 'jurusans'));
     }

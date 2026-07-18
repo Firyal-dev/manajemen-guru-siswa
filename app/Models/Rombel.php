@@ -57,7 +57,7 @@ class Rombel extends Model
 
     public function getLabelAttribute(): string
     {
-        $prefix = trim("{$this->kelas->tingkat} {$this->kelas->jurusan->singkatan}");
+        $prefix = trim("{$this->kelas->tingkat} {$this->kelas->jurusan->nama}");
         $label = trim($this->tingkat);
 
         if (str_starts_with($label, $prefix)) {

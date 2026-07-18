@@ -77,7 +77,7 @@
                                 @endif
                             </td>
                             <td class="py-4 px-5 text-[13px] text-on-surface-variant">
-                                {{ $mapel->jurusan?->singkatan ?? '—' }}
+                                {{ $mapel->jurusan?->nama ?? '—' }}
                             </td>
                             <td class="py-4 px-5 text-right space-x-2">
                                 <a href="{{ route('mapel.edit', $mapel) }}" class="inline-flex items-center gap-2 px-3 py-2 bg-surface-container text-primary text-[13px] font-semibold rounded-lg border border-primary-container hover:bg-primary-container/10 transition-colors">

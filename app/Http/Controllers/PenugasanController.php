@@ -115,7 +115,7 @@ class PenugasanController extends Controller
             ->when($query, fn($builder) => $builder->where(function ($builder) use ($query) {
                 $builder->where('tingkat', 'like', "%{$query}%")
                     ->orWhereHas('kelas', fn($kelas) => $kelas->where('tingkat', 'like', "%{$query}%")
-                        ->orWhereHas('jurusan', fn($jurusan) => $jurusan->where('singkatan', 'like', "%{$query}%")));
+                        ->orWhereHas('jurusan', fn($jurusan) => $jurusan->where('nama', 'like', "%{$query}%")));
             }))
             ->orderBy('tingkat')
             ->get()

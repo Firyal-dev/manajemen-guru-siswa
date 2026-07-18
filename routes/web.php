@@ -52,6 +52,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/jurusan/create', [JurusanController::class, 'create'])->name('jurusan.create');
     Route::post('/jurusan', [JurusanController::class, 'store'])->name('jurusan.store');
 
+    // Department management (Jurusan) — dedicated CRUD page
+    Route::get('/jurusan', [JurusanController::class, 'manage'])->name('jurusan.index');
+    Route::get('/jurusan/{jurusan}/edit', [JurusanController::class, 'edit'])->name('jurusan.edit');
+    Route::patch('/jurusan/{jurusan}', [JurusanController::class, 'update'])->name('jurusan.update');
+    Route::delete('/jurusan/{jurusan}', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
+
     // Grade + Study group (Kelas & Rombel)
     Route::get('/kelas-rombel/create', [KelasRombelController::class, 'createKelasRombel'])->name('kelas-rombel.create');
     Route::post('/kelas-rombel', [KelasRombelController::class, 'storeKelasRombel'])->name('kelas-rombel.store');
