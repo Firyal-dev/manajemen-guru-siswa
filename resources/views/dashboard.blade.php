@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        Dashboard Overview
+        Ringkasan
     </x-slot>
 
     <div class="mb-6">
-        <h1 class="font-headline text-[28px] md:text-[32px] font-bold text-on-surface">Selamat datang di Master Data 👋</h1>
-        <p class="text-[15px] text-on-surface-variant mt-1">SMK AK Nusa Bangsa — Sistem Manajemen Guru & Siswa</p>
+        <h1 class="font-headline text-[28px] md:text-[32px] font-bold text-on-surface">Selamat datang 👋</h1>
+        <p class="text-[15px] text-on-surface-variant mt-1">SMK AK Nusa Bangsa — Pengelolaan Data Guru & Siswa</p>
     </div>
 
     {{-- Statistics Grid --}}
@@ -19,7 +19,7 @@
                 <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Aktif</span>
             </div>
             <p class="font-headline text-[32px] font-bold text-on-surface leading-none">{{ $counts['guru'] ?? 0 }}</p>
-            <p class="text-[13px] text-on-surface-variant mt-1">Total Guru</p>
+            <p class="text-[13px] text-on-surface-variant mt-1">Jumlah Guru</p>
         </div>
 
         {{-- Card Siswa --}}
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <p class="font-headline text-[32px] font-bold text-on-surface leading-none">{{ $counts['siswa'] ?? 0 }}</p>
-            <p class="text-[13px] text-on-surface-variant mt-1">Total Siswa</p>
+            <p class="text-[13px] text-on-surface-variant mt-1">Jumlah Siswa</p>
         </div>
 
         {{-- Card Rombel --}}
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <p class="font-headline text-[32px] font-bold text-on-surface leading-none">{{ $counts['rombel'] ?? 0 }}</p>
-            <p class="text-[13px] text-on-surface-variant mt-1">Rombel / Kelas</p>
+            <p class="text-[13px] text-on-surface-variant mt-1">Jumlah Kelas</p>
         </div>
 
         {{-- Card Jurusan --}}

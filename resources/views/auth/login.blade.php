@@ -33,7 +33,7 @@
 
         <div class="hidden md:block mb-8">
             <h2 class="font-headline text-2xl font-bold text-on-surface">Selamat Datang 👋</h2>
-            <p class="text-[14px] text-on-surface-variant mt-2">Silakan masuk menggunakan email dan password Anda.</p>
+            <p class="text-[14px] text-on-surface-variant mt-2">Silakan masuk menggunakan email dan kata sandi Anda.</p>
         </div>
 
         {{-- Session status messages --}}
@@ -64,10 +64,10 @@
             {{-- Password field --}}
             <div>
                 <div class="flex items-center justify-between mb-2">
-                    <label for="password" class="block text-[13px] font-bold text-on-surface">Password</label>
+                    <label for="password" class="block text-[13px] font-bold text-on-surface">Kata Sandi</label>
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}" class="text-[12px] font-bold text-primary hover:underline">
-                            Lupa password?
+                            Lupa kata sandi?
                         </a>
                     @endif
                 </div>

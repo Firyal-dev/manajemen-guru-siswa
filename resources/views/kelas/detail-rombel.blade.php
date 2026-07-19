@@ -10,7 +10,7 @@
                     Daftar Siswa <span class="text-outline-variant px-1">|</span> <span x-text="selectedRombel?.display_nama"></span>
                 </h2>
                 <p class="text-[13px] text-on-surface-variant font-medium mt-1">
-                    Total: <span x-text="selectedRombel?.siswa_count ?? 0"></span> siswa aktif
+                    Jumlah: <span x-text="selectedRombel?.siswa_count ?? 0"></span> siswa aktif
                 </p>
             </div>
         </div>
@@ -45,7 +45,7 @@
                             <td class="py-12 px-5 text-center text-on-surface-variant" colspan="3">
                                 <div class="flex flex-col items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-[40px] text-outline opacity-50">person_off</span>
-                                    <p class="font-medium text-[14px]">Belum ada siswa di rombel ini.</p>
+                                    <p class="font-medium text-[14px]">Belum ada siswa di kelas ini.</p>
                                 </div>
                             </td>
                         </tr>

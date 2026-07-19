@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        Atur Siswa Rombel
+        Atur Siswa Kelas
     </x-slot>
 
     <div class="mb-6">
         <a href="{{ route('kelas') }}" class="inline-flex items-center gap-2 text-primary font-bold text-[13px] hover:underline mb-4">
             <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-            Kembali ke Manajemen Kelas
+            Kembali ke Data Kelas
         </a>
-        <h1 class="font-headline text-[28px] font-bold text-on-surface">Atur Siswa Rombel</h1>
-        <p class="text-[14px] text-on-surface-variant mt-1">Pilih dan tugaskan siswa ke rombongan belajar ini.</p>
+        <h1 class="font-headline text-[28px] font-bold text-on-surface">Atur Siswa Kelas</h1>
+        <p class="text-[14px] text-on-surface-variant mt-1">Pilih dan masukkan siswa ke kelas ini.</p>
     </div>
 
     @if (session('error'))
@@ -123,7 +123,7 @@
                                     <template x-if="siswa.rombel_aktif && siswa.rombel_aktif.id !== currentRombelId">
                                         <div class="mt-2 inline-flex items-center gap-1 px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded text-[10px] font-bold">
                                             <span class="material-symbols-outlined text-[12px]">warning</span>
-                                            Sudah di rombel lain
+                                            Sudah di kelas lain
                                         </div>
                                     </template>
                                 </div>

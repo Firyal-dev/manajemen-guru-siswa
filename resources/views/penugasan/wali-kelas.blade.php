@@ -6,7 +6,7 @@
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="font-headline text-[28px] font-bold text-on-surface">Penugasan Wali Kelas</h1>
-            <p class="text-[14px] text-on-surface-variant mt-1">Tugaskan guru sebagai wali untuk rombongan belajar.</p>
+            <p class="text-[14px] text-on-surface-variant mt-1">Tugaskan guru sebagai wali kelas.</p>
         </div>
     </div>
 
@@ -72,16 +72,16 @@
                     </div>
 
                     <div class="relative">
-                        <label class="block text-[13px] font-bold text-on-surface mb-2">Pilih Rombel</label>
+                        <label class="block text-[13px] font-bold text-on-surface mb-2">Pilih Kelas</label>
                         <input type="hidden" id="rombel_id" name="rombel_id" required>
                         <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-3 h-48">
                             <div class="px-0 pb-3 border-b border-outline-variant mb-3">
-                                <label class="sr-only" for="rombel_search">Cari Rombel</label>
+                                <label class="sr-only" for="rombel_search">Cari Kelas</label>
                                 <div class="relative">
                                     <span class="absolute inset-y-0 left-3 flex items-center text-on-surface-variant">
                                         <span class="material-symbols-outlined text-[18px]">search</span>
                                     </span>
-                                    <input id="rombel_search" type="text" placeholder="Cari Rombel atau kelas..." class="w-full pl-10 pr-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest text-[14px] text-on-surface focus:ring-1 focus:ring-primary focus:border-primary transition-all" />
+                                    <input id="rombel_search" type="text" placeholder="Cari kelas..." class="w-full pl-10 pr-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest text-[14px] text-on-surface focus:ring-1 focus:ring-primary focus:border-primary transition-all" />
                                 </div>
                             </div>
                             <div id="rombel_options" class="space-y-2 overflow-y-auto h-[calc(100%-64px)] px-0">
@@ -95,7 +95,7 @@
                         </div>
                         <p class="text-[11px] text-on-surface-variant mt-2 flex items-center gap-1">
                             <span class="material-symbols-outlined text-[14px]">info</span>
-                            Satu rombel hanya bisa memiliki satu wali kelas.
+                            Satu kelas hanya bisa memiliki satu wali kelas.
                         </p>
                     </div>
 
@@ -123,7 +123,7 @@
                             <tr class="bg-surface-container-low border-b border-outline-variant">
                                 <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider w-12 text-center">No</th>
                                 <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider">Nama Guru</th>
-                                <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider">Rombel</th>
+                                <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider">Kelas</th>
                                 <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider text-right">Aksi</th>
                             </tr>
                         </thead>

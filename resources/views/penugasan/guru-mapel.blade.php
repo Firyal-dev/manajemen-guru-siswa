@@ -6,7 +6,7 @@
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="font-headline text-[28px] font-bold text-on-surface">Guru Mata Pelajaran</h1>
-            <p class="text-[14px] text-on-surface-variant mt-1">Tugaskan guru untuk mata pelajaran di berbagai rombongan belajar.</p>
+            <p class="text-[14px] text-on-surface-variant mt-1">Tugaskan guru untuk mengajar mata pelajaran di berbagai kelas.</p>
         </div>
     </div>
 
@@ -46,7 +46,7 @@
                 <div class="p-5 border-b border-outline-variant bg-surface-container-lowest">
                     <h2 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary">assignment_ind</span>
-                        Tugaskan Guru Mapel Baru
+                        Tugaskan Guru Mata Pelajaran Baru
                     </h2>
                 </div>
                 
@@ -55,7 +55,7 @@
                     
                     <div class="relative">
                         <label class="block text-[13px] font-bold text-on-surface mb-2">Pilih Guru</label>
-                        <input type="hidden" id="guru_id" name="guru_id" required>
+                        <input type="hidden" id="guru_id" name="guru_id" value="{{ old('guru_id') }}" required>
                         <button type="button" id="guru_select_button" class="w-full text-left bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all flex items-center justify-between" aria-haspopup="listbox" aria-expanded="false">
                             <span id="guru_select_text" class="text-on-surface-variant">-- Pilih Guru --</span>
                             <span class="material-symbols-outlined">arrow_drop_down</span>
@@ -80,7 +80,7 @@
 
                     <div class="relative">
                         <label class="block text-[13px] font-bold text-on-surface mb-2">Pilih Mata Pelajaran</label>
-                        <input type="hidden" id="mapel_id" name="mapel_id" required>
+                        <input type="hidden" id="mapel_id" name="mapel_id" value="{{ old('mapel_id') }}" required>
                         <button type="button" id="mapel_select_button" class="w-full text-left bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all flex items-center justify-between" aria-haspopup="listbox" aria-expanded="false">
                             <span id="mapel_select_text" class="text-on-surface-variant">-- Pilih Mata Pelajaran --</span>
                             <span class="material-symbols-outlined">arrow_drop_down</span>
@@ -97,27 +97,35 @@
                             </div>
                             <div id="mapel_select_options" class="max-h-64 overflow-y-auto">
                                 @foreach($mapels as $mapel)
-                                <button type="button" data-value="{{ $mapel->id }}" class="w-full text-left px-3 py-2 hover:bg-surface-container-high transition-colors text-[14px] text-on-surface">{{ $mapel->nama_mapel }}</button>
+                                <button type="button" data-value="{{ $mapel->id }}" data-kelompok="{{ strtolower($mapel->kelompok ?? '') }}" data-jurusan-id="{{ $mapel->jurusan_id ?? '' }}" class="w-full text-left px-3 py-2 hover:bg-surface-container-high transition-colors text-[14px] text-on-surface">{{ $mapel->nama_mapel }}</button>
                                 @endforeach
                             </div>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[13px] font-bold text-on-surface mb-2">Pilih Rombel </label>
+                        <label class="block text-[13px] font-bold text-on-surface mb-2">Pilih Kelas </label>
                         <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-3 h-48 overflow-y-auto">
-                            <div class="grid grid-cols-2 gap-2">
+                            <div class="grid grid-cols-2 gap-2" id="rombel_grid">
                                 @foreach($rombels as $rombel)
-                                <label class="flex items-center p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer border border-transparent hover:border-outline-variant/30">
-                                    <input type="checkbox" name="rombel_id[]" value="{{ $rombel->id }}" class="w-4 h-4 text-primary bg-surface-container border-outline-variant rounded focus:ring-primary focus:ring-2 focus:ring-offset-0">
+                                <label class="rombel-label flex items-center p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer border border-transparent hover:border-outline-variant/30" data-jurusan-id="{{ $rombel->kelas->jurusan_id ?? '' }}">
+                                    <input type="checkbox" name="rombel_id[]" value="{{ $rombel->id }}" @checked(in_array($rombel->id, old('rombel_id', []))) class="w-4 h-4 text-primary bg-surface-container border-outline-variant rounded focus:ring-primary focus:ring-2 focus:ring-offset-0">
                                     <span class="ms-2 text-[13px] font-medium text-on-surface">{{ $rombel->label }}</span>
                                 </label>
                                 @endforeach
                             </div>
+                            <p id="rombel_empty_hint" class="hidden text-[12px] text-on-surface-variant text-center py-6 flex-col items-center justify-center gap-1">
+                                <span class="material-symbols-outlined text-[28px] opacity-30 block mx-auto">filter_alt_off</span>
+                                Tidak ada kelas yang sesuai dengan jurusan mata pelajaran kejuruan ini.
+                            </p>
                         </div>
+                        <p id="rombel_filter_hint" class="hidden text-[11px] text-primary mt-2 items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">filter_alt</span>
+                            Kelas ditampilkan otomatis sesuai jurusan mata pelajaran kejuruan yang dipilih.
+                        </p>
                         <p class="text-[11px] text-on-surface-variant mt-2 flex items-center gap-1">
                             <span class="material-symbols-outlined text-[14px]">info</span>
-                            Bisa memilih lebih dari 1 rombel.
+                            Bisa memilih lebih dari 1 kelas.
                         </p>
                     </div>
 
@@ -146,7 +154,7 @@
                                 <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider w-12 text-center whitespace-nowrap">No</th>
                                 <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider whitespace-nowrap">Informasi Guru</th>
                                 <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider hidden sm:table-cell whitespace-nowrap">Mata Pelajaran</th>
-                                <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider whitespace-nowrap">Rombel</th>
+                                <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider whitespace-nowrap">Kelas</th>
                                 <th class="py-3 px-4 font-bold text-[12px] text-on-surface uppercase tracking-wider text-right whitespace-nowrap">Aksi</th>
                             </tr>
                         </thead>
@@ -300,6 +308,12 @@
                 options.querySelectorAll('button[data-value]').forEach(option => {
                     option.addEventListener('click', function () {
                         hiddenInput.value = this.dataset.value;
+                        if (this.hasAttribute('data-kelompok')) {
+                            hiddenInput.dataset.kelompok = this.dataset.kelompok;
+                            hiddenInput.dataset.jurusanId = this.dataset.jurusanId;
+                        }
+                        hiddenInput.dispatchEvent(new Event('change'));
+                        
                         displayText.textContent = this.textContent.trim();
                         displayText.classList.remove('text-on-surface-variant');
                         displayText.classList.add('text-on-surface');
@@ -315,6 +329,20 @@
                         option.style.display = query && !text.includes(query) ? 'none' : 'block';
                     });
                 });
+
+                // Pulihkan pilihan dari old input (setelah validasi gagal)
+                if (hiddenInput.value) {
+                    const selected = options.querySelector(`button[data-value="${hiddenInput.value}"]`);
+                    if (selected) {
+                        if (selected.hasAttribute('data-kelompok')) {
+                            hiddenInput.dataset.kelompok = selected.dataset.kelompok;
+                            hiddenInput.dataset.jurusanId = selected.dataset.jurusanId;
+                        }
+                        displayText.textContent = selected.textContent.trim();
+                        displayText.classList.remove('text-on-surface-variant');
+                        displayText.classList.add('text-on-surface');
+                    }
+                }
             };
 
             customDropdown('guru_select_button', 'guru_select_dropdown', 'guru_search', 'guru_select_options', 'guru_id', 'guru_select_text');
@@ -330,6 +358,53 @@
                     }
                 });
             });
+
+            const mapelInput = document.getElementById('mapel_id');
+            const rombelEmptyHint = document.getElementById('rombel_empty_hint');
+            const rombelFilterHint = document.getElementById('rombel_filter_hint');
+
+            function applyRombelFilter() {
+                if (!mapelInput) return;
+
+                const kelompok = (mapelInput.dataset.kelompok || '').toLowerCase();
+                const jurusanId = String(mapelInput.dataset.jurusanId || '');
+                const isKejuruan = kelompok === 'kejuruan' && jurusanId !== '';
+                const rombelLabels = document.querySelectorAll('.rombel-label');
+                let visibleCount = 0;
+
+                rombelLabels.forEach(label => {
+                    const labelJurusanId = String(label.dataset.jurusanId || '');
+                    const hide = isKejuruan && jurusanId !== labelJurusanId;
+
+                    if (hide) {
+                        label.style.display = 'none';
+                        const checkbox = label.querySelector('input[type="checkbox"]');
+                        if (checkbox) checkbox.checked = false;
+                    } else {
+                        label.style.display = 'flex';
+                        visibleCount++;
+                    }
+                });
+
+                // Petunjuk filter aktif
+                if (rombelFilterHint) {
+                    rombelFilterHint.classList.toggle('hidden', !isKejuruan);
+                    rombelFilterHint.classList.toggle('flex', isKejuruan);
+                }
+
+                // Petunjuk kosong bila mapel kejuruan tapi tak ada rombel sesuai
+                if (rombelEmptyHint) {
+                    const showEmpty = isKejuruan && visibleCount === 0;
+                    rombelEmptyHint.classList.toggle('hidden', !showEmpty);
+                    rombelEmptyHint.classList.toggle('flex', showEmpty);
+                }
+            }
+
+            if (mapelInput) {
+                mapelInput.addEventListener('change', applyRombelFilter);
+                // Terapkan saat load (mis. setelah old input / validasi error)
+                applyRombelFilter();
+            }
 
             const tableWrapper = document.getElementById('guru-mapel-table-wrapper');
             if (tableWrapper) {
@@ -404,7 +479,7 @@
                         node.className = 'p-3 border border-outline-variant rounded-lg bg-surface-container-lowest flex items-center justify-between';
                         node.innerHTML = `<div>
                             <p class="font-bold text-[14px] text-on-surface">${a.mapel}</p>
-                            <p class="text-[12px] text-on-surface-variant">Rombel: ${a.rombel}</p>
+                            <p class="text-[12px] text-on-surface-variant">Kelas: ${a.rombel}</p>
                         </div>`;
                         detailContent.appendChild(node);
                     });
@@ -421,7 +496,7 @@
                         node.className = 'p-3 border border-outline-variant rounded-lg bg-surface-container-lowest flex items-center justify-between';
                         node.innerHTML = `<div>
                             <p class="font-bold text-[14px] text-on-surface">${a.mapel}</p>
-                            <p class="text-[12px] text-on-surface-variant">Rombel: ${a.rombel}</p>
+                            <p class="text-[12px] text-on-surface-variant">Kelas: ${a.rombel}</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <button type="button" class="py-1.5 px-3 bg-error text-white rounded-lg detach-btn inline-flex items-center gap-2" data-id="${a.id}" data-mapel="${a.mapel}">

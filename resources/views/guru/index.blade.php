@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        Manajemen Guru
+        Data Guru
     </x-slot>
 
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="font-headline text-[28px] font-bold text-on-surface">Data Guru</h1>
-            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data master guru beserta informasi pribadinya.</p>
+            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data guru beserta informasi pribadinya.</p>
         </div>
         <a href="{{ route('guru.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
             <span class="material-symbols-outlined text-[20px]">add</span>

@@ -29,7 +29,7 @@
 
                     {{-- Study length in years --}}
                     <div class="mb-6">
-                        <x-input-label for="panjang_tahun_ajaran" value="Lama Masa Studi (Tahun)" />
+                        <x-input-label for="panjang_tahun_ajaran" value="Lama Masa Belajar (Tahun)" />
                         <x-text-input id="panjang_tahun_ajaran" name="panjang_tahun_ajaran" type="number"
                             class="mt-1 block w-full"
                             :value="old('panjang_tahun_ajaran', 3)"

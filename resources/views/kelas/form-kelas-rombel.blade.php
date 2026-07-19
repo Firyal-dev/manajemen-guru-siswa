@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Tambah Kelas & Rombel
+                Tambah Kelas & Rombongan Belajar
             </h2>
         </div>
     </x-slot>
@@ -56,16 +56,16 @@
                     {{-- Right: Study groups (dynamic Alpine.js list) --}}
                     <x-card>
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Data Rombel</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Data Rombongan Belajar</h3>
                             <x-secondary-button type="button" @click="rombels.push({ tingkat: '', kurikulum_id: '1' })">
-                                + Tambahkan rombel
+                                + Tambah Rombongan Belajar
                             </x-secondary-button>
                         </div>
 
                         <div class="max-h-96 overflow-y-auto pr-1">
                             <template x-if="rombels.length === 0">
                                 <p class="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
-                                    Belum ada rombel ditambahkan
+                                    Belum ada rombongan belajar ditambahkan
                                 </p>
                             </template>
 
@@ -87,11 +87,11 @@
                                     {{-- Rombel number input --}}
                                     <div class="mb-3">
                                         <x-input-label x-bind:for="`rombel_${index}_tingkat`">
-                                            <span x-text="`Rombel ${index + 1}`"></span>
+                                            <span x-text="`Rombongan Belajar ${index + 1}`"></span>
                                         </x-input-label>
                                         <x-text-input type="number" x-bind:id="`rombel_${index}_tingkat`"
                                             x-bind:name="`rombels[${index}][tingkat]`" class="mt-1 block w-full"
-                                            placeholder="Nomor rombel" min="1" x-model="rombel.tingkat" required />
+                                            placeholder="Nomor rombongan belajar" min="1" x-model="rombel.tingkat" required />
                                     </div>
 
                                     {{-- Kurikulum selector --}}

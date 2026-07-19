@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        Manajemen Kurikulum
+        Data Kurikulum
     </x-slot>
 
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="font-headline text-[28px] font-bold text-on-surface">Manajemen Kurikulum</h1>
-            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data kurikulum yang tersedia untuk diterapkan pada kelas atau rombel.</p>
+            <h1 class="font-headline text-[28px] font-bold text-on-surface">Data Kurikulum</h1>
+            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data kurikulum yang tersedia untuk diterapkan pada kelas.</p>
         </div>
         <button x-data="" x-on:click.prevent="$dispatch('open-modal', 'buat-kurikulum')" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
             <span class="material-symbols-outlined text-[20px]">add</span>

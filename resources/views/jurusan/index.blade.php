@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        Manajemen Jurusan
+        Data Jurusan
     </x-slot>
 
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -45,9 +45,9 @@
                         <tr class="bg-surface-container-low border-b border-outline-variant">
                             <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">No</th>
                             <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider">Nama Jurusan</th>
-                            <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-center">Lama (Tahun)</th>
-                            <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-center">Kelas</th>
-                            <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-center">Mapel</th>
+                            <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-center">Lama Belajar (Tahun)</th>
+                            <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-center">Jumlah Kelas</th>
+                            <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-center">Mata Pelajaran</th>
                             <th class="py-3 px-5 font-bold text-[12px] text-on-surface uppercase tracking-wider text-right">Aksi</th>
                         </tr>
                     </thead>

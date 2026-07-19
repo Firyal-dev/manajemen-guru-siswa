@@ -6,7 +6,7 @@
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="font-headline text-[28px] font-bold text-on-surface">Tahun Ajaran</h1>
-            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data tahun ajaran dan set status aktif untuk seluruh sistem.</p>
+            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data tahun ajaran dan tandai tahun ajaran yang sedang aktif.</p>
         </div>
         <button x-data="" x-on:click.prevent="$dispatch('open-modal', 'buat-tahun-ajaran')" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
             <span class="material-symbols-outlined text-[20px]">add</span>

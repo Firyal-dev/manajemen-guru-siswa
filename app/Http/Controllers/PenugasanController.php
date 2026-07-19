@@ -67,6 +67,16 @@ class PenugasanController extends Controller
             'rombel_id.*' => 'exists:rombels,id',
         ]);
 
+        $mapel = Mapel::find($request->mapel_id);
+        if ($mapel && strtolower($mapel->kelompok) === 'kejuruan' && $mapel->jurusan_id) {
+            foreach ($request->rombel_id as $rId) {
+                $rombel = Rombel::with('kelas')->find($rId);
+                if ($rombel && $rombel->kelas->jurusan_id != $mapel->jurusan_id) {
+                    return back()->withInput()->with('error', "Mata pelajaran kejuruan '{$mapel->nama_mapel}' hanya dapat ditugaskan pada rombel dari jurusan yang sesuai.");
+                }
+            }
+        }
+
         $skipped = [];
         $added = 0;
 

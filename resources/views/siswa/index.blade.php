@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        Manajemen Siswa
+        Data Siswa
     </x-slot>
 
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="font-headline text-[28px] font-bold text-on-surface">Data Siswa</h1>
-            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data master siswa dan riwayat akademiknya.</p>
+            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data siswa dan riwayat kelasnya.</p>
         </div>
         <a href="{{ route('siswa.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-secondary text-white text-[14px] font-bold rounded-lg hover:bg-secondary/90 transition-colors shadow-sm">
             <span class="material-symbols-outlined text-[20px]">add</span>

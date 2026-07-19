@@ -9,7 +9,7 @@
             Kembali ke Data Jurusan
         </a>
         <h1 class="font-headline text-[28px] font-bold text-on-surface">{{ isset($jurusan) ? 'Edit Jurusan' : 'Tambah Jurusan Baru' }}</h1>
-        <p class="text-[14px] text-on-surface-variant mt-1">Isi nama jurusan dan lama masa studi (dalam tahun) untuk dikelola di sistem.</p>
+        <p class="text-[14px] text-on-surface-variant mt-1">Isi nama jurusan dan lama masa belajar (dalam tahun).</p>
     </div>
 
     <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden max-w-2xl">
@@ -36,7 +36,7 @@
             </div>
 
             <div>
-                <label for="panjang_tahun_ajaran" class="block text-[13px] font-bold text-on-surface mb-2">Lama Masa Studi (Tahun)</label>
+                <label for="panjang_tahun_ajaran" class="block text-[13px] font-bold text-on-surface mb-2">Lama Masa Belajar (Tahun)</label>
                 <input type="number" id="panjang_tahun_ajaran" name="panjang_tahun_ajaran" value="{{ old('panjang_tahun_ajaran', $jurusan->panjang_tahun_ajaran ?? 3) }}" min="1" max="6"
                     class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[14px] rounded-lg p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
                 <p class="mt-1.5 text-[12px] text-on-surface-variant">Jumlah tahun tempuh, mis. 3 atau 4 tahun.</p>

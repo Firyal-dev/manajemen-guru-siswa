@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        Manajemen Kelas & Rombel
+        Data Kelas
     </x-slot>
 
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="font-headline text-[28px] font-bold text-on-surface">Kelas & Rombel</h1>
-            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data kelas, rombongan belajar, dan penugasan wali kelas.</p>
+            <h1 class="font-headline text-[28px] font-bold text-on-surface">Data Kelas</h1>
+            <p class="text-[14px] text-on-surface-variant mt-1">Kelola data kelas dan wali kelasnya.</p>
         </div>
         <div class="flex items-center gap-3">
             <a href="{{ route('jurusan.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-surface-container-high text-primary text-[14px] font-bold rounded-lg hover:bg-surface-container-highest transition-colors shadow-sm border border-outline-variant/50">
@@ -15,7 +15,7 @@
             </a>
             <a href="{{ route('kelas-rombel.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
                 <span class="material-symbols-outlined text-[20px]">add</span>
-                Tambah Rombel
+                Tambah Kelas
             </a>
         </div>
     </div>
@@ -48,7 +48,7 @@
                                 {{ $jurusan->nama }}
                             </h3>
                             <p class="text-[13px] text-on-surface-variant mt-0.5">
-                                {{ $jurusan->kelas->sum(fn($k) => $k->rombel->count()) }} Rombel
+                                {{ $jurusan->kelas->sum(fn($k) => $k->rombel->count()) }} Kelas
                             </p>
                         </div>
                     </div>
@@ -125,10 +125,10 @@
                                     <div class="p-6">
                                         <div class="flex items-center gap-3 text-error mb-4">
                                             <span class="material-symbols-outlined text-[28px]">warning</span>
-                                            <h2 class="text-lg font-bold text-on-surface">Hapus Rombel</h2>
+                                            <h2 class="text-lg font-bold text-on-surface">Hapus Kelas</h2>
                                         </div>
                                         <p class="text-[14px] text-on-surface-variant mb-6">
-                                            Yakin ingin menghapus rombongan belajar <span class="font-bold text-on-surface">{{ $displayNama }}</span>?
+                                            Yakin ingin menghapus kelas <span class="font-bold text-on-surface">{{ $displayNama }}</span>?
                                         </p>
                                         <div class="flex justify-end gap-3">
                                             <button @click="$dispatch('close-modal', 'confirm-delete-rombel-{{ $rombel->id }}')" class="px-4 py-2 text-[14px] font-bold text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
@@ -150,7 +150,7 @@
                         @if($jurusan->kelas->sum(fn($k) => $k->rombel->count()) === 0)
                             <div class="col-span-full py-8 text-center text-on-surface-variant">
                                 <span class="material-symbols-outlined text-[48px] opacity-20 mb-2">meeting_room</span>
-                                <p class="text-[14px] font-medium">Belum ada rombel untuk jurusan ini.</p>
+                                <p class="text-[14px] font-medium">Belum ada kelas untuk jurusan ini.</p>
                             </div>
                         @endif
                     </div>
@@ -162,7 +162,7 @@
                     <span class="material-symbols-outlined text-[32px]">architecture</span>
                 </div>
                 <h3 class="font-bold text-[18px] text-on-surface mb-2">Belum ada data Jurusan</h3>
-                <p class="text-[14px] text-on-surface-variant mb-6 max-w-md">Silakan tambahkan jurusan terlebih dahulu sebelum membuat kelas dan rombongan belajar.</p>
+                <p class="text-[14px] text-on-surface-variant mb-6 max-w-md">Silakan tambahkan jurusan terlebih dahulu sebelum membuat kelas.</p>
                 <a href="{{ route('jurusan.create') }}" class="px-5 py-2.5 bg-primary text-white text-[14px] font-bold rounded-lg hover:bg-primary/90 transition-colors">
                     Tambah Jurusan Pertama
                 </a>
