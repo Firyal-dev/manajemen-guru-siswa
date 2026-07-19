@@ -21,6 +21,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
+        \Illuminate\Database\Eloquent\Model::preventLazyLoading(!app()->isProduction());
+        \Illuminate\Database\Eloquent\Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
+            \Illuminate\Support\Facades\Log::warning("Lazy loading: {$relation} on " . get_class($model));
+        });
+
         View::composer('layouts.navigation', function ($view) {
             $view->with([
                 'tahunAjaranAktif' => TahunAjaran::where('aktif', true)->first(),

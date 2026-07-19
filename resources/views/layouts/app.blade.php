@@ -270,8 +270,7 @@
 {{-- Create academic year modal --}}
 @include('tahun-ajaran.create')
 
-<x-toast />
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -291,6 +290,92 @@
             link.addEventListener('click', closeSidebar);
         });
     });
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    @if (session('success'))
+        Toast.fire({
+            icon: 'success',
+            title: "{!! session('success') !!}"
+        });
+    @endif
+    
+    @if (session('error'))
+        Toast.fire({
+            icon: 'error',
+            title: "{!! session('error') !!}"
+        });
+    @endif
+
+    window.confirmDelete = function(formId, itemName = 'data ini', requireReason = false) {
+        let swalOptions = {
+            title: 'Konfirmasi Hapus',
+            html: `Apakah Anda yakin ingin menghapus <b>${itemName}</b>? Tindakan ini tidak dapat dibatalkan.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#EF4444',
+            cancelButtonColor: '#757684',
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        };
+
+        if (requireReason) {
+            swalOptions.input = 'textarea';
+            swalOptions.inputLabel = 'Alasan penghapusan *';
+            swalOptions.inputPlaceholder = 'Contoh: Pindah sekolah, dll.';
+            swalOptions.inputAttributes = {
+                'aria-label': 'Alasan penghapusan'
+            };
+            swalOptions.inputValidator = (value) => {
+                if (!value) {
+                    return 'Alasan penghapusan wajib diisi!'
+                }
+            };
+        }
+
+        Swal.fire(swalOptions).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById(formId);
+                if (requireReason && result.value) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'alasan_hapus';
+                    input.value = result.value;
+                    form.appendChild(input);
+                }
+                form.submit();
+            }
+        });
+    }
+
+    window.confirmAction = function(formId, title, text, icon = 'warning', confirmBtnText = 'Ya, Lanjutkan') {
+        Swal.fire({
+            title: title,
+            html: text,
+            icon: icon,
+            showCancelButton: true,
+            confirmButtonColor: '#00288e',
+            cancelButtonColor: '#757684',
+            confirmButtonText: confirmBtnText,
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(formId).submit();
+            }
+        });
+    }
 </script>
 @stack('scripts')
 </body>

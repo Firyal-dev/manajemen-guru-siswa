@@ -32,7 +32,11 @@ class GuruController extends Controller
         $data = $req->validated();
 
         if ($req->hasFile('url_foto')) {
-            $data['url_foto'] = $req->file('url_foto')->store('foto-guru', 'public');
+            $file = $req->file('url_foto');
+            if (!@getimagesize($file->getPathname())) {
+                return back()->withErrors(['url_foto' => 'File yang diupload bukan gambar valid.'])->withInput();
+            }
+            $data['url_foto'] = $file->store('foto-guru', 'public');
         } else {
             $data['url_foto'] = null;
         }
@@ -53,10 +57,14 @@ class GuruController extends Controller
         $data = $req->validated();
 
         if ($req->hasFile('url_foto')) {
+            $file = $req->file('url_foto');
+            if (!@getimagesize($file->getPathname())) {
+                return back()->withErrors(['url_foto' => 'File yang diupload bukan gambar valid.'])->withInput();
+            }
             if ($guru->url_foto) {
                 Storage::disk('public')->delete($guru->url_foto);
             }
-            $data['url_foto'] = $req->file('url_foto')->store('foto-guru', 'public');
+            $data['url_foto'] = $file->store('foto-guru', 'public');
         } else {
             unset($data['url_foto']);
         }

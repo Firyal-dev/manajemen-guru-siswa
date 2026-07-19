@@ -71,7 +71,7 @@
                                     <form action="{{ route('tahun-ajaran.active', $ta->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="px-3 py-1.5 bg-primary-container/10 text-primary border border-primary-container hover:bg-primary-container/20 text-[13px] font-bold rounded-lg transition-colors flex items-center gap-1 ml-auto">
+                                        <button type="button" onclick="openConfirmationModal(this.form, 'TA {{ $ta->tahun_mulai }} / {{ $ta->tahun_selesai }}')" class="px-3 py-1.5 bg-primary-container/10 text-primary border border-primary-container hover:bg-primary-container/20 text-[13px] font-bold rounded-lg transition-colors flex items-center gap-1 ml-auto">
                                             <span class="material-symbols-outlined text-[16px]">check_circle</span>
                                             Set Aktif
                                         </button>
@@ -97,4 +97,34 @@
 
     {{-- Create academic year modal --}}
     @include('tahun-ajaran.create')
+
+    <script>
+        function openConfirmationModal(formElement, taName) {
+            const expectedPhrase = `SAYA YAKIN AKTIFKAN ${taName}`;
+            Swal.fire({
+                title: 'Konfirmasi Aktivasi',
+                html: `Mengaktifkan <b>${taName}</b> akan <b style="color: #EF4444;">menonaktifkan</b> tahun ajaran lain yang saat ini sedang aktif.<br><br>Ketik kalimat berikut untuk melanjutkan:<br><div class="font-mono font-bold mt-2 px-2 py-1 bg-gray-200 rounded select-all inline-block">${expectedPhrase}</div>`,
+                icon: 'warning',
+                input: 'text',
+                inputPlaceholder: 'Ketik di sini...',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Aktifkan',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#EF4444',
+                cancelButtonColor: '#757684',
+                reverseButtons: true,
+                preConfirm: (inputValue) => {
+                    if (inputValue !== expectedPhrase) {
+                        Swal.showValidationMessage('Teks yang diketik tidak cocok!');
+                        return false;
+                    }
+                    return true;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    formElement.submit();
+                }
+            });
+        }
+    </script>
 </x-app-layout>

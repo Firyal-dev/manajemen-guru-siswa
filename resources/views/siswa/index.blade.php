@@ -239,10 +239,14 @@
                                     <span class="material-symbols-outlined text-[18px]">edit</span>
                                     Edit Data
                                 </a>
-                                <button @click="$dispatch('open-modal', 'confirm-hapus-siswa')" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-error-container/50 text-error text-[14px] font-bold rounded-lg hover:bg-error-container transition-colors">
-                                    <span class="material-symbols-outlined text-[18px]">delete</span>
-                                    Hapus
-                                </button>
+                                <form method="POST" :id="'delete-siswa-form-' + selected.id" x-bind:action="'{{ url('siswa') }}/' + selected.id">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" @click="confirmDelete('delete-siswa-form-' + selected.id, selected.nama, true)" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-error-container/50 text-error text-[14px] font-bold rounded-lg hover:bg-error-container transition-colors">
+                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        Hapus
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </template>
@@ -252,45 +256,5 @@
         </div>
     </div>
 
-    {{-- Delete Modal --}}
-    <x-modal name="confirm-hapus-siswa" :show="false" maxWidth="sm">
-        <div class="p-6">
-            <div class="flex items-center gap-3 text-error mb-4">
-                <span class="material-symbols-outlined text-[28px]">warning</span>
-                <h2 class="text-lg font-bold text-on-surface">Konfirmasi Hapus</h2>
-            </div>
-            
-            <p class="text-[14px] text-on-surface-variant">
-                Yakin ingin menghapus data siswa <span class="font-bold text-on-surface" x-text="selected?.nama"></span>? Tindakan ini tidak dapat dibatalkan.
-            </p>
-            
-            <form method="POST" x-bind:action="'{{ url('siswa') }}/' + selected?.id" @submit="$dispatch('close-modal', 'confirm-hapus-siswa')">
-                @csrf
-                @method('DELETE')
-                
-                <div class="mt-4">
-                    <label for="alasan_hapus" class="block text-[13px] font-bold text-on-surface mb-1">
-                        Alasan penghapusan <span class="text-error">*</span>
-                    </label>
-                    <textarea
-                        id="alasan_hapus"
-                        name="alasan_hapus"
-                        rows="3"
-                        required
-                        placeholder="Contoh: Siswa pindah sekolah, dll."
-                        class="w-full rounded-lg border-outline-variant bg-surface-container-lowest text-on-surface text-[14px] p-3 focus:border-error focus:ring-1 focus:ring-error outline-none"
-                    ></textarea>
-                </div>
-
-                <div class="mt-6 flex justify-end gap-3">
-                    <button type="button" @click="$dispatch('close-modal', 'confirm-hapus-siswa')" class="px-4 py-2 text-[14px] font-bold text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
-                        Batal
-                    </button>
-                    <button type="submit" class="px-4 py-2 text-[14px] font-bold bg-error text-white rounded-lg hover:bg-error/90 transition-colors">
-                        Ya, Hapus
-                    </button>
-                </div>
-            </form>
-        </div>
-    </x-modal>
 </x-app-layout>
+

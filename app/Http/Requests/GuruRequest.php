@@ -25,7 +25,7 @@ class GuruRequest extends FormRequest
             'nip' => ['required', 'string', Rule::unique('gurus', 'nip')->ignore($guruId)],
             'agama' => ['required', 'string', 'max:50'],
             'kelamin' => ['required', 'in:laki_laki,perempuan'],
-            'url_foto' => ['nullable', 'image', 'mimes:jpg,png', 'max:2048'],
+            'url_foto' => ['nullable', 'image', 'mimes:jpg,png', 'max:2048', 'dimensions:min_width=100,min_height=100'],
         ];
     }
 

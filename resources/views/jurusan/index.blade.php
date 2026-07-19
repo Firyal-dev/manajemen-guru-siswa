@@ -28,16 +28,7 @@
         </div>
     @endif
 
-    <div x-data="{
-            deleteTarget: null,
-            submitDelete() {
-                if (! this.deleteTarget) return;
-
-                const form = document.getElementById('delete-jurusan-form');
-                form.action = '{{ url('jurusan') }}/' + this.deleteTarget;
-                form.submit();
-            }
-        }" x-on:jurusan-delete-target.window="deleteTarget = $event.detail" x-on:jurusan-delete-confirm.window="submitDelete()">
+    <div>
         <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
@@ -68,10 +59,14 @@
                                         <span class="material-symbols-outlined text-[18px]">edit</span>
                                         Edit
                                     </a>
-                                    <button type="button" @click="$dispatch('jurusan-delete-target', {{ $jurusan->id }}); $dispatch('open-modal', 'confirm-hapus-jurusan')" class="inline-flex items-center gap-2 px-3 py-2 bg-error-container/10 text-error text-[13px] font-semibold rounded-lg border border-error-container hover:bg-error-container/20 transition-colors">
+                                    <button type="button" onclick="confirmDelete('delete-jurusan-form-{{ $jurusan->id }}', '{{ addslashes($jurusan->nama) }}')" class="inline-flex items-center gap-2 px-3 py-2 bg-error-container/10 text-error text-[13px] font-semibold rounded-lg border border-error-container hover:bg-error-container/20 transition-colors">
                                         <span class="material-symbols-outlined text-[18px]">delete</span>
                                         Hapus
                                     </button>
+                                    <form id="delete-jurusan-form-{{ $jurusan->id }}" method="POST" action="{{ url('jurusan', $jurusan->id) }}" class="hidden">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -92,32 +87,5 @@
                 </div>
             @endif
 
-            <form id="delete-jurusan-form" method="POST" class="hidden">
-                @csrf
-                @method('DELETE')
-            </form>
-        </div>
-
-        <x-modal name="confirm-hapus-jurusan" :show="false" maxWidth="sm">
-            <div class="p-6">
-                <div class="flex items-center gap-3 text-error mb-4">
-                    <span class="material-symbols-outlined text-[28px]">warning</span>
-                    <h2 class="text-lg font-bold text-on-surface">Konfirmasi Hapus Jurusan</h2>
-                </div>
-
-                <p class="text-[14px] text-on-surface-variant">
-                    Apakah Anda yakin ingin menghapus jurusan ini? Jurusan yang masih dipakai kelas atau mapel tidak dapat dihapus.
-                </p>
-
-                <div class="mt-6 flex justify-end gap-3">
-                    <button @click="$dispatch('close-modal', 'confirm-hapus-jurusan')" class="px-4 py-2 text-[14px] font-bold text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
-                        Batal
-                    </button>
-                    <button type="button" @click="submitDelete(); $dispatch('close-modal', 'confirm-hapus-jurusan')" class="px-4 py-2 text-[14px] font-bold bg-error text-white rounded-lg hover:bg-error/90 transition-colors">
-                        Ya, Hapus
-                    </button>
-                </div>
-            </div>
-        </x-modal>
-    </div>
 </x-app-layout>
+

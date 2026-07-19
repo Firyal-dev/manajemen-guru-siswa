@@ -21,16 +21,7 @@
         </div>
     @endif
 
-    <div x-data="{
-            deleteTarget: null,
-            submitDelete() {
-                if (! this.deleteTarget) return;
-
-                const form = document.getElementById('delete-mapel-form');
-                form.action = '{{ url('mapel') }}/' + this.deleteTarget;
-                form.submit();
-            }
-        }" x-on:mapel-delete-target.window="deleteTarget = $event.detail" x-on:mapel-delete-confirm.window="submitDelete()">
+    <div>
         <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden">
             <div class="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest">
                 <form method="GET" action="{{ route('mapel.index') }}" class="w-full max-w-md">
@@ -84,10 +75,14 @@
                                     <span class="material-symbols-outlined text-[18px]">edit</span>
                                     Edit
                                 </a>
-                                <button type="button" @click="$dispatch('mapel-delete-target', {{ $mapel->id }}); $dispatch('open-modal', 'confirm-hapus-mapel')" class="inline-flex items-center gap-2 px-3 py-2 bg-error-container/10 text-error text-[13px] font-semibold rounded-lg border border-error-container hover:bg-error-container/20 transition-colors">
+                                <button type="button" onclick="confirmDelete('delete-mapel-form-{{ $mapel->id }}', '{{ addslashes($mapel->nama_mapel) }}')" class="inline-flex items-center gap-2 px-3 py-2 bg-error-container/10 text-error text-[13px] font-semibold rounded-lg border border-error-container hover:bg-error-container/20 transition-colors">
                                     <span class="material-symbols-outlined text-[18px]">delete</span>
                                     Hapus
                                 </button>
+                                <form id="delete-mapel-form-{{ $mapel->id }}" method="POST" action="{{ url('mapel', $mapel->id) }}" class="hidden">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
                             </td>
                         </tr>
                     @empty
@@ -108,31 +103,5 @@
             </div>
         @endif
 
-        <form id="delete-mapel-form" method="POST" class="hidden">
-            @csrf
-            @method('DELETE')
-        </form>
-    </div>
-
-    <x-modal name="confirm-hapus-mapel" :show="false" maxWidth="sm">
-        <div class="p-6">
-            <div class="flex items-center gap-3 text-error mb-4">
-                <span class="material-symbols-outlined text-[28px]">warning</span>
-                <h2 class="text-lg font-bold text-on-surface">Konfirmasi Hapus Mata Pelajaran</h2>
-            </div>
-
-            <p class="text-[14px] text-on-surface-variant">
-                Apakah Anda yakin ingin menghapus mata pelajaran ini? Tindakan ini tidak dapat dibatalkan.
-            </p>
-
-            <div class="mt-6 flex justify-end gap-3">
-                <button @click="$dispatch('close-modal', 'confirm-hapus-mapel')" class="px-4 py-2 text-[14px] font-bold text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
-                    Batal
-                </button>
-                <button type="button" @click="submitDelete(); $dispatch('close-modal', 'confirm-hapus-mapel')" class="px-4 py-2 text-[14px] font-bold bg-error text-white rounded-lg hover:bg-error/90 transition-colors">
-                    Ya, Hapus
-                </button>
-            </div>
-        </div>
-    </x-modal>
 </x-app-layout>
+

@@ -95,9 +95,13 @@
                                                 <p class="text-[12px] font-medium text-on-surface-variant">{{ $rombel->siswa->count() }} Siswa</p>
                                             </div>
                                         </div>
-                                        <button @click.stop="$dispatch('open-modal', 'confirm-delete-rombel-{{ $rombel->id }}')" class="p-1.5 text-outline hover:text-error-crimson hover:bg-error-container/20 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
-                                            <span class="material-symbols-outlined text-[18px]">delete</span>
-                                        </button>
+                                        <form method="POST" id="delete-rombel-form-{{ $rombel->id }}" action="{{ route('kelas-rombel.destroy', $rombel) }}" class="inline-block" @click.stop>
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" @click.stop="confirmDelete('delete-rombel-form-{{ $rombel->id }}', '{{ addslashes($displayNama) }}')" class="p-1.5 text-outline hover:text-error-crimson hover:bg-error-container/20 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
+                                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                                            </button>
+                                        </form>
                                     </div>
                                     
                                     <div class="pt-3 border-t border-outline-variant/30 flex items-center gap-3">
@@ -120,30 +124,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Delete Modal --}}
-                                <x-modal name="confirm-delete-rombel-{{ $rombel->id }}" :show="false" maxWidth="sm">
-                                    <div class="p-6">
-                                        <div class="flex items-center gap-3 text-error mb-4">
-                                            <span class="material-symbols-outlined text-[28px]">warning</span>
-                                            <h2 class="text-lg font-bold text-on-surface">Hapus Kelas</h2>
-                                        </div>
-                                        <p class="text-[14px] text-on-surface-variant mb-6">
-                                            Yakin ingin menghapus kelas <span class="font-bold text-on-surface">{{ $displayNama }}</span>?
-                                        </p>
-                                        <div class="flex justify-end gap-3">
-                                            <button @click="$dispatch('close-modal', 'confirm-delete-rombel-{{ $rombel->id }}')" class="px-4 py-2 text-[14px] font-bold text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
-                                                Batal
-                                            </button>
-                                            <form action="{{ route('kelas-rombel.destroy', $rombel) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="px-4 py-2 text-[14px] font-bold bg-error text-white rounded-lg hover:bg-error/90 transition-colors">
-                                                    Ya, Hapus
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </x-modal>
+
                             @endforeach
                         @endforeach
                         

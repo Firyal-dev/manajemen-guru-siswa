@@ -123,4 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'api_access_token' => env('API_ACCESS_TOKEN'),
+
 ];

@@ -16,7 +16,7 @@ class RequireApiKey
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->header('X-API-KEY');
-        $validToken = env('API_ACCESS_TOKEN');
+        $validToken = config('app.api_access_token');
 
         if (!$token || !$validToken || !hash_equals($validToken, $token)) {
             return response()->json(['error' => 'Unauthorized. Invalid API Key.'], 401);
