@@ -230,33 +230,70 @@
     </div>
 
     <!-- Detail Modal -->
-    <div id="guruDetailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
-        <div class="absolute inset-0 bg-black/40"></div>
-        <div class="relative bg-surface rounded-xl border border-outline-variant w-full max-w-2xl p-5">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="font-bold text-[16px] text-on-surface">Detail Penugasan</h3>
-                <button type="button" class="text-on-surface-variant hover:bg-surface-container-highest rounded-full p-2 close-detail-modal">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+    <div id="guruDetailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="relative bg-surface rounded-2xl border border-outline-variant w-full max-w-2xl overflow-hidden shadow-2xl" style="animation: modalSlideIn 0.25s ease-out;">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-primary to-primary-container px-6 py-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white text-[22px]">assignment</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline font-bold text-[18px] text-white">Detail Penugasan</h3>
+                            <p class="text-[12px] text-white/70">Daftar mata pelajaran & kelas yang ditugaskan</p>
+                        </div>
+                    </div>
+                    <button type="button" class="text-white/80 hover:text-white hover:bg-white/20 rounded-full p-2 transition-colors close-detail-modal">
+                        <span class="material-symbols-outlined text-[20px]">close</span>
+                    </button>
+                </div>
             </div>
-            <div id="detailModalContent" class="space-y-3 max-h-72 overflow-y-auto">
-                <!-- populated by JS -->
+            <!-- Modal Body -->
+            <div class="px-6 py-4">
+                <div id="detailModalContent" class="space-y-2.5 max-h-[360px] overflow-y-auto pr-1">
+                    <!-- populated by JS -->
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="px-6 py-3 border-t border-outline-variant/50 bg-surface-container-lowest flex justify-between items-center">
+                <p id="detailModalCount" class="text-[12px] text-on-surface-variant"></p>
+                <button type="button" class="px-4 py-2 text-[13px] font-bold text-primary hover:bg-primary-container/10 rounded-lg transition-colors close-detail-modal">Tutup</button>
             </div>
         </div>
     </div>
 
     <!-- Edit Modal -->
-    <div id="guruEditModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
-        <div class="absolute inset-0 bg-black/40"></div>
-        <div class="relative bg-surface rounded-xl border border-outline-variant w-full max-w-2xl p-5">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="font-bold text-[16px] text-on-surface">Edit Penugasan</h3>
-                <button type="button" class="text-on-surface-variant hover:bg-surface-container-highest rounded-full p-2 close-edit-modal">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+    <div id="guruEditModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="relative bg-surface rounded-2xl border border-outline-variant w-full max-w-2xl overflow-hidden shadow-2xl" style="animation: modalSlideIn 0.25s ease-out;">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-secondary to-green-700 px-6 py-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white text-[22px]">edit_note</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline font-bold text-[18px] text-white">Edit Penugasan</h3>
+                            <p class="text-[12px] text-white/70">Kelola atau cabut mata pelajaran yang ditugaskan</p>
+                        </div>
+                    </div>
+                    <button type="button" class="text-white/80 hover:text-white hover:bg-white/20 rounded-full p-2 transition-colors close-edit-modal">
+                        <span class="material-symbols-outlined text-[20px]">close</span>
+                    </button>
+                </div>
             </div>
-            <div id="editModalContent" class="space-y-3 max-h-72 overflow-y-auto">
-                <!-- populated by JS -->
+            <!-- Modal Body -->
+            <div class="px-6 py-4">
+                <div id="editModalContent" class="space-y-2.5 max-h-[360px] overflow-y-auto pr-1">
+                    <!-- populated by JS -->
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="px-6 py-3 border-t border-outline-variant/50 bg-surface-container-lowest flex justify-end">
+                <button type="button" class="px-4 py-2 text-[13px] font-bold text-secondary hover:bg-green-50 rounded-lg transition-colors close-edit-modal">Tutup</button>
             </div>
         </div>
     </div>
@@ -470,19 +507,36 @@
             const closeEditButtons = document.querySelectorAll('.close-edit-modal');
             closeEditButtons.forEach(b => b.addEventListener('click', () => editModal.classList.add('hidden')));
 
+            const detailModalCount = document.getElementById('detailModalCount');
+
             document.querySelectorAll('.detail-button').forEach(btn => {
                 btn.addEventListener('click', function () {
                     const assignments = JSON.parse(this.getAttribute('data-assignments') || '[]');
                     detailContent.innerHTML = '';
-                    assignments.forEach(a => {
+                    assignments.forEach((a, idx) => {
                         const node = document.createElement('div');
-                        node.className = 'p-3 border border-outline-variant rounded-lg bg-surface-container-lowest flex items-center justify-between';
-                        node.innerHTML = `<div>
-                            <p class="font-bold text-[14px] text-on-surface">${a.mapel}</p>
-                            <p class="text-[12px] text-on-surface-variant">Kelas: ${a.rombel}</p>
-                        </div>`;
+                        node.className = 'group flex items-center gap-4 p-3.5 rounded-xl border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container-low hover:border-primary/30 transition-all duration-150';
+                        node.innerHTML = `
+                            <div class="w-8 h-8 rounded-lg bg-primary-container/15 text-primary flex items-center justify-center font-bold text-[13px] flex-shrink-0">
+                                ${idx + 1}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-sky-50 text-sky-700 border border-sky-100 text-[12px] font-bold rounded-lg">
+                                        <span class="material-symbols-outlined text-[14px]">menu_book</span>
+                                        ${a.mapel}
+                                    </span>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-50 text-green-700 border border-green-200 text-[12px] font-bold rounded-lg">
+                                        <span class="material-symbols-outlined text-[14px]">meeting_room</span>
+                                        ${a.rombel}
+                                    </span>
+                                </div>
+                            </div>`;
                         detailContent.appendChild(node);
                     });
+                    if (detailModalCount) {
+                        detailModalCount.textContent = `Total: ${assignments.length} penugasan`;
+                    }
                     detailModal.classList.remove('hidden');
                 });
             });
@@ -491,19 +545,29 @@
                 btn.addEventListener('click', function () {
                     const assignments = JSON.parse(this.getAttribute('data-assignments') || '[]');
                     editContent.innerHTML = '';
-                    assignments.forEach(a => {
+                    assignments.forEach((a, idx) => {
                         const node = document.createElement('div');
-                        node.className = 'p-3 border border-outline-variant rounded-lg bg-surface-container-lowest flex items-center justify-between';
-                        node.innerHTML = `<div>
-                            <p class="font-bold text-[14px] text-on-surface">${a.mapel}</p>
-                            <p class="text-[12px] text-on-surface-variant">Kelas: ${a.rombel}</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button type="button" class="py-1.5 px-3 bg-error text-white rounded-lg detach-btn inline-flex items-center gap-2" data-id="${a.id}" data-mapel="${a.mapel}">
+                        node.className = 'group flex items-center gap-4 p-3.5 rounded-xl border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container-low hover:border-secondary/30 transition-all duration-150';
+                        node.innerHTML = `
+                            <div class="w-8 h-8 rounded-lg bg-green-100 text-secondary flex items-center justify-center font-bold text-[13px] flex-shrink-0">
+                                ${idx + 1}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-sky-50 text-sky-700 border border-sky-100 text-[12px] font-bold rounded-lg">
+                                        <span class="material-symbols-outlined text-[14px]">menu_book</span>
+                                        ${a.mapel}
+                                    </span>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-50 text-green-700 border border-green-200 text-[12px] font-bold rounded-lg">
+                                        <span class="material-symbols-outlined text-[14px]">meeting_room</span>
+                                        ${a.rombel}
+                                    </span>
+                                </div>
+                            </div>
+                            <button type="button" class="py-1.5 px-3 bg-error/10 text-error border border-error/20 hover:bg-error hover:text-white rounded-lg detach-btn inline-flex items-center gap-1.5 transition-colors flex-shrink-0" data-id="${a.id}" data-mapel="${a.mapel}">
                                 <span class="material-symbols-outlined text-[16px]">person_remove</span>
-                                <span class="text-[13px] font-bold">Cabut</span>
-                            </button>
-                        </div>`;
+                                <span class="text-[12px] font-bold">Cabut</span>
+                            </button>`;
                         editContent.appendChild(node);
                     });
                     editModal.classList.remove('hidden');
