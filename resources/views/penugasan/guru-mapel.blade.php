@@ -110,7 +110,7 @@
                                 @foreach($rombels as $rombel)
                                 <label class="rombel-label flex items-center p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer border border-transparent hover:border-outline-variant/30" data-jurusan-id="{{ $rombel->kelas->jurusan_id ?? '' }}">
                                     <input type="checkbox" name="rombel_id[]" value="{{ $rombel->id }}" @checked(in_array($rombel->id, old('rombel_id', []))) class="w-4 h-4 text-primary bg-surface-container border-outline-variant rounded focus:ring-primary focus:ring-2 focus:ring-offset-0">
-                                    <span class="ms-2 text-[13px] font-medium text-on-surface">{{ $rombel->label }}</span>
+                                    <span class="ms-2 text-[13px] font-medium text-on-surface">{{ $rombel->tingkat }} ({{ $rombel->kelas->jurusan->nama }})</span>
                                 </label>
                                 @endforeach
                             </div>
@@ -167,7 +167,7 @@
                                     $first = $items->first();
                                     $uniqueMapels = $items->pluck('mapel.nama_mapel')->unique()->values();
                                     $firstUnique = $uniqueMapels->first();
-                                    $assignments = $items->map(function($it){ return ['id' => $it->id, 'mapel' => $it->mapel->nama_mapel, 'rombel' => $it->rombel->label]; })->toJson();
+                                    $assignments = $items->map(function($it){ return ['id' => $it->id, 'mapel' => $it->mapel->nama_mapel, 'rombel' => $it->rombel->tingkat]; })->toJson();
                                 @endphp
                                 <tr class="hover:bg-surface-container-highest transition-colors group">
                                     <td class="py-3 px-4 text-[13px] text-on-surface-variant text-center font-medium whitespace-nowrap">
@@ -193,7 +193,7 @@
                                     </td>
                                     <td class="py-3 px-4 whitespace-nowrap">
                                         @php
-                                            $rombelLabels = $items->pluck('rombel.label')->unique()->values();
+                                            $rombelLabels = $items->pluck('rombel.tingkat')->unique()->values();
                                         @endphp
                                         <span class="px-2.5 py-1 bg-green-50 text-secondary border border-green-200 text-[12px] font-bold rounded-lg">
                                             {{ $rombelLabels->join(', ') }}
