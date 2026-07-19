@@ -117,6 +117,23 @@ class KelasRombelController extends Controller
         $siswaIds = $request->siswa_ids ?? [];
         $activeTa = $rombel->tahun_ajaran_id;
 
+        // Validasi: Pastikan siswa yang dipilih belum memiliki rombel lain yang aktif di tahun ajaran ini
+        if (!empty($siswaIds)) {
+            $alreadyAssigned = \App\Models\RiwayatKelasSiswa::whereIn('siswa_id', $siswaIds)
+                ->where('tahun_ajaran_id', $activeTa)
+                ->where('rombel_id', '!=', $rombel->id)
+                ->with('siswa')
+                ->get();
+
+            if ($alreadyAssigned->count() > 0) {
+                $names = $alreadyAssigned->map(function ($r) {
+                    return $r->siswa ? $r->siswa->nama : 'Siswa tidak diketahui';
+                })->unique()->implode(', ');
+                
+                return redirect()->back()->with('error', "Gagal menyimpan: Siswa berikut sudah terdaftar di kelas lain pada tahun ajaran ini: $names.");
+            }
+        }
+
         // 1. Remove unchecked students from this rombel (for the active year)
         \App\Models\RiwayatKelasSiswa::where('rombel_id', $rombel->id)
             ->whereNotIn('siswa_id', $siswaIds)

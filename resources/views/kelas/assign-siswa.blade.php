@@ -102,15 +102,16 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <template x-for="siswa in students" :key="siswa.id">
-                            <label class="flex items-start p-3 rounded-xl border transition-all cursor-pointer select-none group relative overflow-hidden"
-                                :class="selectedIds.includes(siswa.id) ? 'bg-primary-container/10 border-primary shadow-sm' : 'bg-surface border-outline-variant/60 hover:border-primary/50'">
+                            <label class="flex items-start p-3 rounded-xl border transition-all select-none group relative overflow-hidden"
+                                :class="(siswa.rombel_aktif && siswa.rombel_aktif.id !== currentRombelId) ? 'bg-surface border-outline-variant/30 opacity-60 cursor-not-allowed' : (selectedIds.includes(siswa.id) ? 'bg-primary-container/10 border-primary shadow-sm cursor-pointer' : 'bg-surface border-outline-variant/60 hover:border-primary/50 cursor-pointer')">
                                 
                                 <div class="absolute right-0 top-0 bottom-0 w-1 bg-primary transition-transform duration-200"
                                      :class="selectedIds.includes(siswa.id) ? 'scale-y-100' : 'scale-y-0'"></div>
                                 
                                 <div class="flex items-center h-5 mt-0.5">
                                     <input type="checkbox" name="siswa_ids[]" :value="siswa.id" x-model="selectedIds"
-                                        class="w-4 h-4 text-primary bg-surface-container border-outline-variant rounded focus:ring-primary focus:ring-2 focus:ring-offset-0 transition-colors">
+                                        :disabled="siswa.rombel_aktif && siswa.rombel_aktif.id !== currentRombelId"
+                                        class="w-4 h-4 text-primary bg-surface-container border-outline-variant rounded focus:ring-primary focus:ring-2 focus:ring-offset-0 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                                 </div>
                                 <div class="ml-3 flex-1 min-w-0">
                                     <p class="text-[14px] font-bold text-on-surface truncate group-hover:text-primary transition-colors" x-text="siswa.nama"></p>
