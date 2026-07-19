@@ -65,11 +65,6 @@
             <div>
                 <div class="flex items-center justify-between mb-2">
                     <label for="password" class="block text-[13px] font-bold text-on-surface">Kata Sandi</label>
-                    @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}" class="text-[12px] font-bold text-primary hover:underline">
-                            Lupa kata sandi?
-                        </a>
-                    @endif
                 </div>
                 <div class="relative">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
