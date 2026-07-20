@@ -80,7 +80,7 @@ Aplikasi ini bertindak sebagai **Penyedia Master Data** (Tahun Ajaran, dsb) untu
 
 Pastikan variabel berikut ada di file `.env` Anda:
 ```env
-API_ACCESS_TOKEN=PBWTikgXDzYx1q3ZQ94cmtqSOwRiyz9PE76NjxKw7AIi3j5Xp7g4n1hNa5CNIvfs
+API_ACCESS_TOKEN=<your-secret-token>
 ```
 
 Nilai token ini bebas, namun **harus sama persis** dengan nilai `API_SISWA_TOKEN` yang dimasukkan pada file `.env` aplikasi `management-nilai` agar permintaan sinkronisasi data tidak ditolak.
