@@ -1,0 +1,5 @@
+Ganti autentikasi API dari API key statis ke token Sanctum dengan scope per-endpoint
+
+- Tambah model ApiClient sebagai konsumen mesin (dipakai management-nilai)
+- Endpoint API sekarang pakai auth:sanctum + ability per akses (mapels:read, siswas:read, dll)
+- Daftarkan alias middleware ability & abilities
