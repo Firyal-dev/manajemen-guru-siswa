@@ -23,6 +23,7 @@ class SiswaRequest extends FormRequest
             'agama'      => ['required', 'string', 'max:50'],
             'kelamin'    => ['required', 'in:laki_laki,perempuan'],
             'rombel_id'  => ['nullable', 'exists:rombels,id'],
+            'url_foto'   => ['nullable', 'image', 'mimes:jpg,png', 'max:2048', 'dimensions:min_width=100,min_height=100'],
         ];
     }
 
@@ -32,6 +33,10 @@ class SiswaRequest extends FormRequest
             'nis.unique'  => 'NIS ini sudah terdaftar.',
             'nisn.unique' => 'NISN ini sudah terdaftar.',
             'rombel_id.exists' => 'Kelas/Rombel tidak ditemukan.',
+            'url_foto.image' => 'File harus berupa gambar.',
+            'url_foto.mimes' => 'Foto harus berformat JPG atau PNG.',
+            'url_foto.max' => 'Ukuran foto maksimal 2MB.',
+            'url_foto.dimensions' => 'Foto minimal berukuran 100x100 piksel.',
         ];
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nis')->unique();
             $table->string('nisn')->unique();
+            $table->string('url_foto')->nullable();
             $table->string('agama');
             $table->string('kelamin');
             $table->foreignId('rombel_id')->nullable()->constrained()->nullOnDelete();

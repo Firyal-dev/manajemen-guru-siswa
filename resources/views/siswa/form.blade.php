@@ -20,12 +20,79 @@
             </h2>
         </div>
         
-        <form method="POST" action="{{ isset($siswa) ? route('siswa.update', $siswa) : route('siswa.store') }}" class="p-6 space-y-6">
+        <form method="POST" action="{{ isset($siswa) ? route('siswa.update', $siswa) : route('siswa.store') }}" class="p-6 space-y-6" enctype="multipart/form-data">
             @csrf
             @isset($siswa)
                 @method('PATCH')
             @endisset
 
+            {{-- Foto Siswa --}}
+             <div x-data="{
+                    previewUrl: '{{ isset($siswa) && $siswa->url_foto ? asset('storage/' . $siswa->url_foto) : '' }}',
+                    fileName: '',
+                    status: '{{ isset($siswa) && $siswa->url_foto ? 'current' : 'idle' }}',
+                    previewFile(event) {
+                        const file = event.target.files[0];
+                        if (! file) {
+                            this.fileName = '';
+                            this.status = '{{ isset($siswa) && $siswa->url_foto ? 'current' : 'idle' }}';
+                            return;
+                        }
+                        this.fileName = file.name;
+                        this.status = 'loading';
+
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.previewUrl = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+
+                        setTimeout(() => {
+                            this.status = 'ready';
+                        }, 700);
+                    }
+                }">
+                <label for="url_foto" class="block text-[13px] font-bold text-on-surface mb-2">Foto Profil (Opsional)</label>
+
+                <template x-if="previewUrl">
+                    <div class="mb-3 flex items-center gap-4">
+                        <img :src="previewUrl" alt="Preview foto" class="w-16 h-16 rounded-full object-cover border border-outline-variant">
+                        <div>
+                            <p class="text-[12px] font-semibold text-on-surface">
+                                <span x-show="status === 'current'">Foto saat ini</span>
+                                <span x-show="status === 'loading'">Memeriksa foto...</span>
+                                <span x-show="status === 'ready'">Foto terpilih</span>
+                            </p>
+                            <p class="text-[12px] text-on-surface-variant" x-text="fileName || '{{ isset($siswa) && $siswa->url_foto ? basename($siswa->url_foto) : 'Belum ada foto' }}'"></p>
+                        </div>
+                    </div>
+                </template>
+
+                <div class="grid gap-2">
+                    <label for="url_foto" class="inline-flex items-center justify-center gap-2 w-full max-w-fit px-4 py-2 border border-outline-variant rounded-lg text-[14px] font-semibold text-primary hover:bg-primary-container/10 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">photo_camera</span>
+                        Pilih Foto
+                    </label>
+                    <p class="text-[12px] text-on-surface-variant">Maksimal JPG/PNG 2MB. Biarkan kosong jika tidak ingin mengganti foto.</p>
+                </div>
+
+                <input type="file" name="url_foto" id="url_foto" accept=".jpg,.png" class="sr-only" @change="previewFile($event)">
+
+                <div class="mt-3 transition-all">
+                    <div x-show="status === 'loading'" class="inline-flex items-center gap-2 text-secondary text-[13px]">
+                        <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                        Memindai foto...
+                    </div>
+                    <div x-show="status === 'ready'" class="inline-flex items-center gap-2 text-success text-[13px]">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        Foto siap diunggah
+                    </div>
+                </div>
+
+                @error('url_foto')
+                    <p class="mt-2 text-[12px] text-error font-medium">{{ $message }}</p>
+                @enderror
+            </div>
             {{-- Nama Lengkap --}}
             <div>
                 <label for="nama" class="block text-[13px] font-bold text-on-surface mb-2">Nama Lengkap</label>
