@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nisn')->unique();
             $table->string('agama');
             $table->string('kelamin');
+            $table->string('url_foto')->nullable();
             $table->foreignId('rombel_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamp('tanggal_waktu')->nullable();
             $table->string('status')->default('1');

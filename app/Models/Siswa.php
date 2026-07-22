@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['nama', 'nis', 'nisn', 'agama', 'kelamin', 'status', 'alasan_hapus'])]
+#[Fillable(['url_foto', 'nama', 'nis', 'nisn', 'agama', 'kelamin', 'status', 'alasan_hapus'])]
 class Siswa extends Model
 {
     use HasFactory;

@@ -6,6 +6,7 @@ use App\Http\Requests\SiswaRequest;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SiswaController extends Controller
 {
@@ -28,7 +29,17 @@ class SiswaController extends Controller
 
     public function store(SiswaRequest $req)
     {
-        $siswa = Siswa::create($req->validated());
+        $data = $req->validated();
+
+        if ($req->hasFile('url_foto')) {
+            $file = $req->file('url_foto');
+            if (!@getimagesize($file->getPathname())) {
+                return back()->withErrors(['url_foto' => 'File yang diupload bukan gambar valid.'])->withInput();
+            }
+            $data['url_foto'] = $file->store('foto-siswa', 'public');
+        }
+
+        $siswa = Siswa::create($data);
 
         if ($req->filled('rombel_id')) {
             $activeTa = \App\Models\TahunAjaran::where('aktif', true)->first();
@@ -54,7 +65,20 @@ class SiswaController extends Controller
 
     public function update(SiswaRequest $req, Siswa $siswa)
     {
-        $siswa->update($req->validated());
+        $data = $req->validated();
+
+        if ($req->hasFile('url_foto')) {
+            $file = $req->file('url_foto');
+            if (!@getimagesize($file->getPathname())) {
+                return back()->withErrors(['url_foto' => 'File yang diupload bukan gambar valid.'])->withInput();
+            }
+            if ($siswa->url_foto) {
+                Storage::disk('public')->delete($siswa->url_foto);
+            }
+            $data['url_foto'] = $file->store('foto-siswa', 'public');
+        }
+
+        $siswa->update($data);
 
         $activeTa = \App\Models\TahunAjaran::where('aktif', true)->first();
         if ($activeTa) {
