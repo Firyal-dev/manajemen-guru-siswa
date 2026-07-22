@@ -224,6 +224,15 @@
                 <span class="material-symbols-outlined text-[20px]">assignment_ind</span>
                 <span class="text-[13px] font-semibold">Guru Mapel</span>
             </a>
+
+            <div class="px-3 py-1.5 mt-4">
+                <span class="text-[10px] font-bold text-outline uppercase tracking-widest">API & Integrasi</span>
+            </div>
+            <a href="{{ route('tokens.index') }}"
+                class="nav-item flex items-center gap-3 px-3 py-2.5 -ml-[3px] pl-[15px] rounded-lg transition-colors duration-150 text-on-surface-variant hover:text-primary hover:bg-surface-container-high {{ request()->routeIs('tokens.*') ? 'nav-active' : '' }}">
+                <span class="material-symbols-outlined text-[20px]">key</span>
+                <span class="text-[13px] font-semibold">Manajemen Token API</span>
+            </a>
         </nav>
 
         <div class="p-4 border-t border-outline-variant">

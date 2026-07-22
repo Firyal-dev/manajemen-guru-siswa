@@ -92,6 +92,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/penugasan/guru-mapel', [\App\Http\Controllers\PenugasanController::class, 'storeGuruMapel'])->name('penugasan.guru-mapel.store');
     Route::get('/penugasan/rombels', [\App\Http\Controllers\PenugasanController::class, 'apiRombels'])->name('penugasan.rombels');
     Route::delete('/penugasan/guru-mapel/{guruMapel}', [\App\Http\Controllers\PenugasanController::class, 'destroyGuruMapel'])->name('penugasan.guru-mapel.destroy');
+
+    // Manajemen Token API
+    Route::get('/manajemen-token', [\App\Http\Controllers\TokenController::class, 'index'])->name('tokens.index');
+    Route::post('/manajemen-token', [\App\Http\Controllers\TokenController::class, 'store'])->name('tokens.store');
+    Route::delete('/manajemen-token/{id}', [\App\Http\Controllers\TokenController::class, 'destroy'])->name('tokens.destroy');
 });
 
 require __DIR__ . '/auth.php';
