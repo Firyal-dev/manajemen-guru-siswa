@@ -91,7 +91,8 @@
                                         </x-input-label>
                                         <x-text-input type="number" x-bind:id="`rombel_${index}_tingkat`"
                                             x-bind:name="`rombels[${index}][tingkat]`" class="mt-1 block w-full"
-                                            placeholder="Nomor rombongan belajar" min="1" x-model="rombel.tingkat" required />
+                                            placeholder="Nomor rombongan belajar" min="1" x-model="rombel.tingkat"
+                                            @keydown="if(['e', 'E', '+', '-', '.'].includes($event.key)) $event.preventDefault()" required />
                                     </div>
 
                                     {{-- Kurikulum selector --}}
