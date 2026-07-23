@@ -110,8 +110,7 @@
                                         'rombel'  => $siswaRombel,
                                     ];
                                 @endphp
-                                <tr @click="selected = {{ json_encode($siswaData) }}"
-                                    class="cursor-pointer transition-colors hover:bg-surface-container-highest"
+                                <tr @click="selected = {{ json_encode(array_merge($siswaData, ['url_foto' => $siswa->url_foto])) }}"
                                     :class="selected?.id === {{ $siswa->id }} ? 'bg-secondary/10 border-l-4 border-l-secondary' : 'border-l-4 border-l-transparent'">
                                     
                                     <td class="py-3 px-4 text-[13px] text-on-surface-variant text-center font-medium">
@@ -120,9 +119,15 @@
                                     
                                     <td class="py-3 px-4">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-9 h-9 rounded-full bg-green-100 text-secondary flex items-center justify-center font-bold text-[13px]">
-                                                {{ str($siswa->nama)->substr(0, 1)->upper() }}
-                                            </div>
+                                             <div class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant">
+                                            @if($siswa->url_foto)
+                                                <img src="{{ asset('storage/' . $siswa->url_foto) }}" alt="Foto siswa" class="w-9 h-9 rounded-full object-cover">
+                                            @else
+                                                <div class="w-9 h-9 rounded-full bg-green-100 text-secondary flex items-center justify-center font-bold text-[13px]">
+                                                    {{ str($siswa->nama)->substr(0, 1)->upper() }}
+                                                </div>
+                                            @endif
+                                        </div>
                                             <div>
                                                 <p class="font-bold text-[14px] text-on-surface">{{ $siswa->nama }}</p>
                                                 <p class="text-[12px] text-on-surface-variant">NIS: {{ $siswa->nis }}</p>
@@ -180,12 +185,15 @@
                         <div>
                             <div class="flex flex-col items-center text-center mb-6">
                                 <div class="relative mb-4">
-                                    <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-sm border-4 border-white"
-                                        :class="selected.kelamin === 'laki_laki' ? 'bg-blue-500' : 'bg-pink-500'">
-                                        <span x-text="selected.nama.charAt(0).toUpperCase()"></span>
-                                    </div>
-                                </div>
-                                <h3 class="text-[20px] font-bold text-on-surface leading-tight" x-text="selected.nama"></h3>
+                                     <template x-if="selected.url_foto">
+                                            <img :src="'{{ asset('storage') }}/' + selected.url_foto" alt="Foto siswa" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm mx-auto" />
+                                        </template>
+                                        <template x-if="!selected.url_foto">
+                                            <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-sm border-4 border-white"
+                                                :class="selected.kelamin === 'laki_laki' ? 'bg-blue-500' : 'bg-pink-500'">
+                                                <span x-text="selected.nama.charAt(0).toUpperCase()"></span>
+                                            </div>
+                                        </template>
                                 <p class="text-[14px] text-secondary font-semibold mt-1" x-text="`NIS: ${selected.nis}`"></p>
                             </div>
 
