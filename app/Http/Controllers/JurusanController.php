@@ -11,7 +11,10 @@ class JurusanController extends Controller
     // List all departments with nested relations (kelas → rombel → guru/siswa).
     public function index()
     {
-        $jurusans = Jurusan::with(['kelas.rombel.guru', 'kelas.rombel.siswa'])->get();
+        $jurusans = Jurusan::with([
+            'kelas.rombel' => fn($q) => $q->withCount('siswa'),
+            'kelas.rombel.guru'
+        ])->get();
         return view('kelas.index', compact('jurusans'));
     }
 

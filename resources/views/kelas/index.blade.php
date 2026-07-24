@@ -34,7 +34,23 @@
         </div>
     @endif
 
-    <div class="space-y-6" x-data="{ selectedRombel: null }">
+    <div class="space-y-6" x-data="{ 
+        selectedRombel: null,
+        isLoadingSiswa: false,
+        async loadSiswa(rombelId) {
+            this.isLoadingSiswa = true;
+            try {
+                const res = await fetch(`/kelas-rombel/${rombelId}/siswa-by-rombel`);
+                const data = await res.json();
+                if (this.selectedRombel && this.selectedRombel.id === rombelId) {
+                    this.selectedRombel.siswa = data;
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            this.isLoadingSiswa = false;
+        }
+    }" @load-siswa.window="loadSiswa($event.detail)">
         @forelse ($jurusans as $jurusan)
             <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden" x-data="{ open: true }">
                 {{-- Header Jurusan --}}
@@ -81,9 +97,9 @@
                                      @click="selectedRombel = { 
                                         id: {{ $rombel->id }},
                                         display_nama: '{{ $displayNama }}', 
-                                        siswa_count: {{ $rombel->siswa->count() }}, 
-                                        siswa: {{ json_encode($rombel->siswa->map(fn($s) => ['nama' => $s->nama, 'nis' => $s->nis])->values()->all()) }} 
-                                     }; $dispatch('open-modal', 'detail-rombel')">
+                                        siswa_count: {{ $rombel->siswa_count }}, 
+                                        siswa: [] 
+                                     }; $dispatch('open-modal', 'detail-rombel'); document.dispatchEvent(new CustomEvent('load-siswa', { detail: {{ $rombel->id }} }));">
                                     
                                     <div class="flex justify-between items-start mb-4">
                                         <div class="flex items-center gap-2">
@@ -92,7 +108,7 @@
                                             </div>
                                             <div>
                                                 <p class="font-bold text-[15px] text-on-surface">{{ $displayNama }}</p>
-                                                <p class="text-[12px] font-medium text-on-surface-variant">{{ $rombel->siswa->count() }} Siswa</p>
+                                                <p class="text-[12px] font-medium text-on-surface-variant">{{ $rombel->siswa_count }} Siswa</p>
                                             </div>
                                         </div>
                                         <form method="POST" id="delete-rombel-form-{{ $rombel->id }}" action="{{ route('kelas-rombel.destroy', $rombel) }}" class="inline-block" @click.stop>

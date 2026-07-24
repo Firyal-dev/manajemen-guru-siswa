@@ -64,9 +64,7 @@
                                 </div>
                             </div>
                             <div id="guru_select_options" class="max-h-64 overflow-y-auto">
-                                @foreach($gurus as $guru)
-                                    <button type="button" data-value="{{ $guru->id }}" class="w-full text-left px-3 py-2 hover:bg-surface-container-high transition-colors text-[14px] text-on-surface">{{ $guru->nama }}</button>
-                                @endforeach
+                                <!-- Options akan diload via AJAX -->
                             </div>
                         </div>
                     </div>
@@ -176,7 +174,7 @@
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const customDropdown = (buttonId, dropdownId, searchId, optionsId, hiddenInputId, displayTextId) => {
+            const customDropdown = (buttonId, dropdownId, searchId, optionsId, hiddenInputId, displayTextId, apiUrl = null, extraParams = {}) => {
                 const button = document.getElementById(buttonId);
                 const dropdown = document.getElementById(dropdownId);
                 const search = document.getElementById(searchId);
@@ -188,6 +186,42 @@
                     return;
                 }
 
+                const fetchOptions = async (query = '') => {
+                    if (!apiUrl) return;
+                    options.innerHTML = '<div class="px-3 py-2 text-[13px] text-on-surface-variant text-center">Memuat...</div>';
+                    try {
+                        const params = new URLSearchParams({ q: query, ...extraParams });
+                        const res = await fetch(`${apiUrl}?${params.toString()}`);
+                        const data = await res.json();
+                        
+                        options.innerHTML = '';
+                        if (data.length === 0) {
+                            options.innerHTML = '<div class="px-3 py-2 text-[13px] text-on-surface-variant text-center">Tidak ada data ditemukan</div>';
+                            return;
+                        }
+                        
+                        data.forEach(item => {
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = 'w-full text-left px-3 py-2 hover:bg-surface-container-high transition-colors text-[14px] text-on-surface';
+                            btn.dataset.value = item.id;
+                            btn.textContent = item.text;
+                            
+                            btn.addEventListener('click', function () {
+                                hiddenInput.value = this.dataset.value;
+                                displayText.textContent = this.textContent.trim();
+                                displayText.classList.remove('text-on-surface-variant');
+                                displayText.classList.add('text-on-surface');
+                                dropdown.classList.add('hidden');
+                                button.setAttribute('aria-expanded', 'false');
+                            });
+                            options.appendChild(btn);
+                        });
+                    } catch (e) {
+                        options.innerHTML = '<div class="px-3 py-2 text-[13px] text-error text-center">Gagal memuat data</div>';
+                    }
+                };
+
                 button.addEventListener('click', function () {
                     const isOpen = !dropdown.classList.contains('hidden');
                     if (isOpen) {
@@ -197,30 +231,30 @@
                         dropdown.classList.remove('hidden');
                         button.setAttribute('aria-expanded', 'true');
                         search.focus();
+                        if (apiUrl && options.children.length === 0) {
+                            fetchOptions();
+                        }
                     }
                 });
 
-                options.querySelectorAll('button[data-value]').forEach(option => {
-                    option.addEventListener('click', function () {
-                        hiddenInput.value = this.dataset.value;
-                        displayText.textContent = this.textContent.trim();
-                        displayText.classList.remove('text-on-surface-variant');
-                        displayText.classList.add('text-on-surface');
-                        dropdown.classList.add('hidden');
-                        button.setAttribute('aria-expanded', 'false');
-                    });
-                });
-
+                let searchTimeout;
                 search.addEventListener('input', function () {
                     const query = this.value.trim().toLowerCase();
-                    options.querySelectorAll('button[data-value]').forEach(option => {
-                        const text = option.textContent.trim().toLowerCase();
-                        option.style.display = query && !text.includes(query) ? 'none' : 'block';
-                    });
+                    if (apiUrl) {
+                        clearTimeout(searchTimeout);
+                        searchTimeout = setTimeout(() => {
+                            fetchOptions(query);
+                        }, 300);
+                    } else {
+                        options.querySelectorAll('button[data-value]').forEach(option => {
+                            const text = option.textContent.trim().toLowerCase();
+                            option.style.display = query && !text.includes(query) ? 'none' : 'block';
+                        });
+                    }
                 });
             };
 
-            customDropdown('guru_select_button', 'guru_select_dropdown', 'guru_search', 'guru_select_options', 'guru_id', 'guru_select_text');
+            customDropdown('guru_select_button', 'guru_select_dropdown', 'guru_search', 'guru_select_options', 'guru_id', 'guru_select_text', '/penugasan/gurus', { exclude_wali_kelas: 1 });
         });
     </script>
 

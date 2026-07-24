@@ -80,7 +80,7 @@ class KelasRombelController extends Controller
             $req->attributes->set('active_ta_id', $taId);
         }
 
-        $query = \App\Models\Siswa::with('riwayatKelas.rombel')
+        $query = \App\Models\Siswa::with('rombelAktifRelation')
             ->orderBy('nama', 'asc');
 
         if ($req->filled('q')) {
@@ -155,5 +155,23 @@ class KelasRombelController extends Controller
         }
 
         return redirect()->route('kelas')->with('success', 'Siswa berhasil diatur untuk rombel tersebut.');
+    }
+
+    // API endpoint for fetching students of a specific rombel (for modal detail)
+    public function siswaByRombel(Rombel $rombel)
+    {
+        // Ambil siswa yang memiliki riwayat kelas aktif di rombel ini
+        // Batasi hingga 100 untuk mencegah issue performa dan DOM overload
+        $siswas = \App\Models\Siswa::whereHas('riwayatKelas', function ($q) use ($rombel) {
+            $q->where('rombel_id', $rombel->id)
+              ->where('status', 'aktif')
+              ->where('tahun_ajaran_id', $rombel->tahun_ajaran_id);
+        })
+        ->select(['id', 'nama', 'nis'])
+        ->orderBy('nama')
+        ->take(100)
+        ->get();
+
+        return response()->json($siswas);
     }
 }

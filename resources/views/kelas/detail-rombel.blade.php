@@ -30,8 +30,18 @@
                         <th class="py-3 px-5 text-left font-bold text-on-surface w-32">NIS</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-outline-variant">
-                    <template x-if="selectedRombel?.siswa && selectedRombel.siswa.length > 0">
+                <tbody class="divide-y divide-outline-variant relative">
+                    <template x-if="isLoadingSiswa">
+                        <tr>
+                            <td class="py-12 px-5 text-center text-on-surface-variant" colspan="3">
+                                <div class="flex flex-col items-center justify-center gap-3">
+                                    <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                    <p class="font-medium text-[14px]">Memuat data siswa...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                    <template x-if="!isLoadingSiswa && selectedRombel?.siswa && selectedRombel.siswa.length > 0">
                         <template x-for="(siswa, index) in selectedRombel.siswa" :key="index">
                             <tr class="hover:bg-surface-container-lowest transition-colors group">
                                 <td class="py-3 px-5 text-on-surface-variant font-medium" x-text="index + 1"></td>
@@ -40,7 +50,7 @@
                             </tr>
                         </template>
                     </template>
-                    <template x-if="!selectedRombel?.siswa || selectedRombel.siswa.length === 0">
+                    <template x-if="!isLoadingSiswa && (!selectedRombel?.siswa || selectedRombel.siswa.length === 0)">
                         <tr>
                             <td class="py-12 px-5 text-center text-on-surface-variant" colspan="3">
                                 <div class="flex flex-col items-center justify-center gap-2">

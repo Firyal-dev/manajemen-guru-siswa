@@ -19,7 +19,7 @@ class Rombel extends Model
         static::addGlobalScope('active_tahun_ajaran', function (\Illuminate\Database\Eloquent\Builder $builder) {
             $activeTa = TahunAjaran::where('aktif', true)->first();
             if ($activeTa) {
-                $builder->where('tahun_ajaran_id', $activeTa->id);
+                $builder->where('rombels.tahun_ajaran_id', $activeTa->id);
             }
         });
     }

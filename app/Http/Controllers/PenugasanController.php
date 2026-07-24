@@ -16,11 +16,8 @@ class PenugasanController extends Controller
     {
         $waliKelas = WaliKelas::has('rombel')->with(['guru', 'rombel.kelas'])->get();
         
-        // Ambil ID guru yang sudah menjadi wali kelas
-        $assignedGuruIds = $waliKelas->pluck('guru_id')->toArray();
-        
-        // Kecualikan guru yang sudah jadi wali kelas agar tidak muncul di pilihan
-        $gurus = Guru::whereNotIn('id', $assignedGuruIds)->orderBy('nama', 'asc')->get();
+        // Data guru dikosongkan untuk mencegah DOM overload, di-load via AJAX `apiGurus`
+        $gurus = collect();
         
         $rombels = Rombel::with(['kelas', 'kelas.jurusan'])->get();
         
@@ -51,8 +48,9 @@ class PenugasanController extends Controller
     public function indexGuruMapel()
     {
         $guruMapels = GuruMapel::has('rombel')->with(['guru', 'mapel', 'rombel.kelas'])->get();
-        $gurus = Guru::orderBy('nama', 'asc')->get();
-        $mapels = Mapel::orderBy('nama_mapel', 'asc')->get();
+        // Data guru dan mapel dikosongkan, di-load via AJAX `apiGurus` dan `apiMapels`
+        $gurus = collect();
+        $mapels = collect();
         $rombels = Rombel::with(['kelas', 'kelas.jurusan'])->get();
 
         return view('penugasan.guru-mapel', compact('guruMapels', 'gurus', 'mapels', 'rombels'));
@@ -135,5 +133,48 @@ class PenugasanController extends Controller
             ]);
 
         return response()->json($rombels);
+    }
+
+    public function apiGurus(Request $request)
+    {
+        $query = $request->input('q');
+        $excludeWaliKelas = $request->boolean('exclude_wali_kelas');
+
+        $gurus = Guru::when($query, function ($builder) use ($query) {
+                $builder->search($query);
+            })
+            ->when($excludeWaliKelas, function ($builder) {
+                $assignedGuruIds = WaliKelas::pluck('guru_id')->toArray();
+                $builder->whereNotIn('id', $assignedGuruIds);
+            })
+            ->orderBy('nama', 'asc')
+            ->take(20)
+            ->get()
+            ->map(fn($guru) => [
+                'id' => $guru->id,
+                'text' => $guru->nama,
+            ]);
+
+        return response()->json($gurus);
+    }
+
+    public function apiMapels(Request $request)
+    {
+        $query = $request->input('q');
+
+        $mapels = Mapel::when($query, function ($builder) use ($query) {
+                $builder->where('nama_mapel', 'like', "%{$query}%");
+            })
+            ->orderBy('nama_mapel', 'asc')
+            ->take(20)
+            ->get()
+            ->map(fn($mapel) => [
+                'id' => $mapel->id,
+                'text' => $mapel->nama_mapel,
+                'kelompok' => strtolower($mapel->kelompok ?? ''),
+                'jurusan_id' => $mapel->jurusan_id ?? '',
+            ]);
+
+        return response()->json($mapels);
     }
 }

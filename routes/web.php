@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/kelas-rombel/{rombel}/assign-siswa', [KelasRombelController::class, 'assignSiswa'])->name('kelas-rombel.assign-siswa');
     Route::post('/kelas-rombel/{rombel}/assign-siswa', [KelasRombelController::class, 'updateAssignSiswa'])->name('kelas-rombel.update-assign-siswa');
     Route::post('/kelas-rombel/api/siswas', [KelasRombelController::class, 'apiSiswas'])->name('kelas-rombel.api-siswas');
+    Route::get('/kelas-rombel/{rombel}/siswa-by-rombel', [KelasRombelController::class, 'siswaByRombel'])->name('kelas-rombel.api-siswa-by-rombel');
 
     // Student CRUD
     Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa');
@@ -91,6 +92,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/penugasan/guru-mapel', [\App\Http\Controllers\PenugasanController::class, 'indexGuruMapel'])->name('penugasan.guru-mapel');
     Route::post('/penugasan/guru-mapel', [\App\Http\Controllers\PenugasanController::class, 'storeGuruMapel'])->name('penugasan.guru-mapel.store');
     Route::get('/penugasan/rombels', [\App\Http\Controllers\PenugasanController::class, 'apiRombels'])->name('penugasan.rombels');
+    Route::get('/penugasan/gurus', [\App\Http\Controllers\PenugasanController::class, 'apiGurus'])->name('penugasan.gurus');
+    Route::get('/penugasan/mapels', [\App\Http\Controllers\PenugasanController::class, 'apiMapels'])->name('penugasan.mapels');
     Route::delete('/penugasan/guru-mapel/{guruMapel}', [\App\Http\Controllers\PenugasanController::class, 'destroyGuruMapel'])->name('penugasan.guru-mapel.destroy');
 
     // Manajemen Token API

@@ -13,7 +13,7 @@ class SiswaController extends Controller
 {
     public function index(Request $req)
     {
-        $siswas = Siswa::with(['riwayatKelas.rombel.kelas.jurusan'])
+        $siswas = Siswa::with(['rombelAktifRelation.kelas.jurusan'])
             ->search($req->search)
             ->filter(['agama' => $req->agama, 'kelamin' => $req->kelamin])
             ->paginate(10)
