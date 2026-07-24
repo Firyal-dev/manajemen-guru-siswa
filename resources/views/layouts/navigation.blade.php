@@ -1,61 +1,72 @@
-{{-- Main navigation with desktop + responsive mobile menus --}}
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+{{-- Main navigation with desktop + responsive mobile menus (Material Design 3 style) --}}
+<nav x-data="{ open: false }" class="bg-surface border-b border-outline-variant card-shadow relative z-30">
     {{-- Primary Navigation Menu --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 {{-- Logo --}}
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                <div class="shrink-0 flex items-center gap-2">
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+                        <x-application-logo class="block h-9 w-9 object-contain rounded-lg" />
+                        <span class="hidden md:inline font-headline text-[15px] font-bold text-primary leading-tight">Master Data</span>
                     </a>
                 </div>
 
-
-
                 {{-- Desktop nav links --}}
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <div class="hidden sm:flex sm:items-center sm:ms-8 sm:space-x-1">
+                    <a href="{{ route('dashboard') }}"
+                        class="inline-flex items-center gap-2 h-16 px-3 border-l-4 text-[13px] font-semibold transition-colors duration-150 {{ request()->routeIs('dashboard') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                        <span class="material-symbols-outlined text-[20px]">dashboard</span>
                         {{ __('Beranda') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('tahun-ajaran.index')" :active="request()->routeIs('tahun-ajaran.*')">
+                    </a>
+                    <a href="{{ route('tahun-ajaran.index') }}"
+                        class="inline-flex items-center gap-2 h-16 px-3 border-l-4 text-[13px] font-semibold transition-colors duration-150 {{ request()->routeIs('tahun-ajaran.*') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                        <span class="material-symbols-outlined text-[20px]">calendar_month</span>
                         {{ __('Tahun Ajaran') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('kurikulum.index')" :active="request()->routeIs('kurikulum.*')">
+                    </a>
+                    <a href="{{ route('kurikulum.index') }}"
+                        class="inline-flex items-center gap-2 h-16 px-3 border-l-4 text-[13px] font-semibold transition-colors duration-150 {{ request()->routeIs('kurikulum.*') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                        <span class="material-symbols-outlined text-[20px]">menu_book</span>
                         {{ __('Kurikulum') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('guru')" :active="request()->routeIs('guru')">
+                    </a>
+                    <a href="{{ route('guru') }}"
+                        class="inline-flex items-center gap-2 h-16 px-3 border-l-4 text-[13px] font-semibold transition-colors duration-150 {{ request()->routeIs('guru') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                        <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
                         {{ __('Guru') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('siswa')" :active="request()->routeIs('siswa')">
+                    </a>
+                    <a href="{{ route('siswa') }}"
+                        class="inline-flex items-center gap-2 h-16 px-3 border-l-4 text-[13px] font-semibold transition-colors duration-150 {{ request()->routeIs('siswa') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                        <span class="material-symbols-outlined text-[20px]">groups</span>
                         {{ __('Siswa') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('kelas')" :active="request()->routeIs('kelas')">
+                    </a>
+                    <a href="{{ route('kelas') }}"
+                        class="inline-flex items-center gap-2 h-16 px-3 border-l-4 text-[13px] font-semibold transition-colors duration-150 {{ request()->routeIs('kelas') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                        <span class="material-symbols-outlined text-[20px]">meeting_room</span>
                         {{ __('Kelas') }}
-                    </x-nav-link>
+                    </a>
 
                     {{-- Penugasan Dropdown --}}
-                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <div class="hidden sm:flex sm:items-center">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out {{ request()->routeIs('penugasan.*') ? 'border-indigo-400 text-gray-900 focus:border-indigo-700' : '' }}">
-                                    <div>Penugasan</div>
-
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
+                                <button class="inline-flex items-center gap-2 h-16 px-3 border-l-4 text-[13px] font-semibold transition-colors duration-150 focus:outline-none {{ request()->routeIs('penugasan.*') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                                    <span class="material-symbols-outlined text-[20px]">assignment_ind</span>
+                                    <span>Penugasan</span>
+                                    <span class="material-symbols-outlined text-[18px]">expand_more</span>
                                 </button>
                             </x-slot>
 
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('penugasan.wali-kelas')">
-                                    {{ __('Wali Kelas') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('penugasan.guru-mapel')">
-                                    {{ __('Guru Mapel') }}
-                                </x-dropdown-link>
+                                <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden py-1.5 min-w-[200px]">
+                                    <a href="{{ route('penugasan.wali-kelas') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-[13px] font-semibold transition-colors {{ request()->routeIs('penugasan.wali-kelas') ? 'bg-primary-container/10 text-primary' : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                                        <span class="material-symbols-outlined text-[18px]">supervisor_account</span>
+                                        {{ __('Wali Kelas') }}
+                                    </a>
+                                    <a href="{{ route('penugasan.guru-mapel') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-[13px] font-semibold transition-colors {{ request()->routeIs('penugasan.guru-mapel') ? 'bg-primary-container/10 text-primary' : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                                        <span class="material-symbols-outlined text-[18px]">assignment_ind</span>
+                                        {{ __('Guru Mapel') }}
+                                    </a>
+                                </div>
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -67,35 +78,35 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                            class="inline-flex items-center gap-2 px-3 py-2 rounded-full text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors focus:outline-none">
+                            <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-[12px]">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
                             </div>
+                            <span class="text-[13px] font-semibold text-on-surface">{{ Auth::user()->name }}</span>
+                            <span class="material-symbols-outlined text-[18px]">expand_more</span>
                         </button>
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profil Saya') }}
-                        </x-dropdown-link>
+                        <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden py-1.5 min-w-[200px]">
+                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-[13px] font-semibold text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">person</span>
+                                {{ __('Profil Saya') }}
+                            </a>
 
-                        {{-- Logout --}}
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                            {{-- Logout --}}
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Keluar') }}
-                            </x-dropdown-link>
-                        </form>
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                    this.closest('form').submit();"
+                                    class="flex items-center gap-2.5 px-4 py-2.5 text-[13px] font-semibold text-error hover:bg-error-container/20 transition-colors">
+                                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                                    {{ __('Keluar') }}
+                                </a>
+                            </form>
+                        </div>
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -103,77 +114,95 @@
             {{-- Hamburger (mobile) --}}
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    class="inline-flex items-center justify-center p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low focus:outline-none transition-colors duration-150">
+                    <span class="material-symbols-outlined" x-text="open ? 'close' : 'menu'">menu</span>
                 </button>
             </div>
         </div>
     </div>
 
     {{-- Responsive Navigation Menu (mobile) --}}
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden border-t border-outline-variant bg-surface-container-lowest">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <a href="{{ route('dashboard') }}"
+                class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 text-[14px] font-semibold transition-colors duration-150 {{ request()->routeIs('dashboard') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
                 {{ __('Beranda') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('tahun-ajaran.index')" :active="request()->routeIs('tahun-ajaran.*')">
+            </a>
+            <a href="{{ route('tahun-ajaran.index') }}"
+                class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 text-[14px] font-semibold transition-colors duration-150 {{ request()->routeIs('tahun-ajaran.*') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                <span class="material-symbols-outlined text-[20px]">calendar_month</span>
                 {{ __('Tahun Ajaran') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('kurikulum.index')" :active="request()->routeIs('kurikulum.*')">
+            </a>
+            <a href="{{ route('kurikulum.index') }}"
+                class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 text-[14px] font-semibold transition-colors duration-150 {{ request()->routeIs('kurikulum.*') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                <span class="material-symbols-outlined text-[20px]">menu_book</span>
                 {{ __('Kurikulum') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('guru')" :active="request()->routeIs('guru')">
+            </a>
+            <a href="{{ route('guru') }}"
+                class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 text-[14px] font-semibold transition-colors duration-150 {{ request()->routeIs('guru') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
                 {{ __('Guru') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('siswa')" :active="request()->routeIs('siswa')">
+            </a>
+            <a href="{{ route('siswa') }}"
+                class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 text-[14px] font-semibold transition-colors duration-150 {{ request()->routeIs('siswa') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
                 {{ __('Siswa') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('kelas')" :active="request()->routeIs('kelas')">
+            </a>
+            <a href="{{ route('kelas') }}"
+                class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 text-[14px] font-semibold transition-colors duration-150 {{ request()->routeIs('kelas') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                <span class="material-symbols-outlined text-[20px]">meeting_room</span>
                 {{ __('Kelas') }}
-            </x-responsive-nav-link>
+            </a>
 
             {{-- Responsive Penugasan --}}
-            <div class="pt-2 pb-1 border-t border-gray-200 dark:border-gray-600">
-                <div class="px-4 font-medium text-base text-gray-800 dark:text-gray-200">Penugasan</div>
-                <div class="mt-2 space-y-1">
-                    <x-responsive-nav-link :href="route('penugasan.wali-kelas')" :active="request()->routeIs('penugasan.wali-kelas')">
+            <div class="pt-3 pb-1 border-t border-outline-variant mt-2">
+                <div class="px-4 pb-2 text-[11px] font-bold text-outline uppercase tracking-widest">Penugasan</div>
+                <div class="space-y-1">
+                    <a href="{{ route('penugasan.wali-kelas') }}"
+                        class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 text-[14px] font-semibold transition-colors duration-150 {{ request()->routeIs('penugasan.wali-kelas') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                        <span class="material-symbols-outlined text-[20px]">supervisor_account</span>
                         {{ __('Wali Kelas') }}
-                    </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('penugasan.guru-mapel')" :active="request()->routeIs('penugasan.guru-mapel')">
+                    </a>
+                    <a href="{{ route('penugasan.guru-mapel') }}"
+                        class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 text-[14px] font-semibold transition-colors duration-150 {{ request()->routeIs('penugasan.guru-mapel') ? 'bg-primary-container/10 text-primary border-l-primary' : 'border-l-transparent text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}">
+                        <span class="material-symbols-outlined text-[20px]">assignment_ind</span>
                         {{ __('Guru Mapel') }}
-                    </x-responsive-nav-link>
+                    </a>
                 </div>
             </div>
         </div>
-        
 
         {{-- Responsive: user settings --}}
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+        <div class="pt-3 pb-3 border-t border-outline-variant">
+            <div class="px-4 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-[13px] flex-shrink-0">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                </div>
+                <div class="min-w-0">
+                    <p class="font-semibold text-[14px] text-on-surface truncate">{{ Auth::user()->name }}</p>
+                    <p class="text-[12px] text-on-surface-variant truncate">{{ Auth::user()->email }}</p>
+                </div>
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <a href="{{ route('profile.edit') }}"
+                    class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 border-l-transparent text-[14px] font-semibold text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors duration-150">
+                    <span class="material-symbols-outlined text-[20px]">person</span>
                     {{ __('Profil Saya') }}
-                </x-responsive-nav-link>
+                </a>
 
                 {{-- Logout --}}
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
+                    <a href="{{ route('logout') }}"
                         onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                                        this.closest('form').submit();"
+                        class="flex items-center gap-3 pl-4 pr-4 py-2.5 border-l-4 border-l-transparent text-[14px] font-semibold text-error hover:bg-error-container/20 transition-colors duration-150">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
                         {{ __('Keluar') }}
-                    </x-responsive-nav-link>
+                    </a>
                 </form>
             </div>
         </div>

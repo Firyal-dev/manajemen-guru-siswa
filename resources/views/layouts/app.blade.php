@@ -147,12 +147,12 @@
     @stack('styles')
 </head>
 
-<body class="bg-surface-gray text-on-surface min-h-screen">
+<body class="bg-surface-container-lowest text-on-surface min-h-screen">
 
-    <div id="mobileOverlay" class="fixed inset-0 bg-black/40 z-30 hidden md:hidden" onclick="closeSidebar()"></div>
+    <div id="mobileOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 hidden md:hidden" onclick="closeSidebar()"></div>
 
     <aside id="sidebar"
-        class="fixed left-0 top-0 h-full w-72 flex flex-col z-40 bg-surface border-r border-outline-variant md:translate-x-0">
+        class="fixed left-0 top-0 h-full w-72 flex flex-col z-40 bg-surface border-r border-outline-variant card-shadow md:translate-x-0">
         <div class="p-5 border-b border-outline-variant flex items-center gap-3">
             <div class="w-12 h-12 rounded-2xl overflow-hidden bg-white/90 flex items-center justify-center shadow-sm">
                 <img src="{{ asset('aknb.png') }}" alt="Logo Master Data" class="h-10 w-10 object-contain" />
@@ -258,7 +258,7 @@
     </aside>
 
     <header
-        class="fixed top-0 right-0 left-0 md:left-72 h-16 flex items-center justify-between px-4 md:px-gutter z-20 bg-surface border-b border-outline-variant card-shadow">
+        class="fixed top-0 right-0 left-0 md:left-72 h-16 flex items-center justify-between px-4 md:px-gutter z-20 bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/80 border-b border-outline-variant card-shadow">
         <div class="flex items-center gap-3">
             <button onclick="toggleSidebar()"
                 class="md:hidden p-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer">

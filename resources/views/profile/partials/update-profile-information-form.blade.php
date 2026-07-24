@@ -1,11 +1,12 @@
 {{-- Profile information update form --}}
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+        <h2 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">badge</span>
             {{ __('Informasi Akun') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-1 text-[13px] text-on-surface-variant">
             {{ __("Perbarui nama dan alamat email akun Anda.") }}
         </p>
     </header>
@@ -35,16 +36,16 @@
             {{-- Email verification notice --}}
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                    <p class="text-[13px] mt-2 text-on-surface-variant">
                         {{ __('Alamat email Anda belum diverifikasi.') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                        <button form="send-verification" class="underline font-semibold text-primary hover:text-primary/80 rounded focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-2">
                             {{ __('Klik di sini untuk mengirim ulang email verifikasi.') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                        <p class="mt-2 font-bold text-[13px] text-secondary">
                             {{ __('Email verifikasi baru sudah dikirim ke alamat email Anda.') }}
                         </p>
                     @endif
@@ -53,7 +54,7 @@
         </div>
 
         {{-- Actions --}}
-        <div class="flex items-center gap-4">
+        <div class="pt-4 border-t border-outline-variant flex items-center gap-4">
             <x-primary-button>{{ __('Simpan') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
@@ -62,8 +63,8 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Tersimpan.') }}</p>
+                    class="text-[13px] font-semibold text-secondary flex items-center gap-1"
+                ><span class="material-symbols-outlined text-[16px]">check_circle</span>{{ __('Tersimpan.') }}</p>
             @endif
         </div>
     </form>

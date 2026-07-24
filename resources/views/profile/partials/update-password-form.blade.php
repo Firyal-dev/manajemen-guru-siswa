@@ -1,11 +1,12 @@
 {{-- Password update form --}}
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+        <h2 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">lock</span>
             {{ __('Ubah Kata Sandi') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-1 text-[13px] text-on-surface-variant">
             {{ __('Gunakan kata sandi yang panjang dan sulit ditebak agar akun tetap aman.') }}
         </p>
     </header>
@@ -36,7 +37,7 @@
         </div>
 
         {{-- Actions --}}
-        <div class="flex items-center gap-4">
+        <div class="pt-4 border-t border-outline-variant flex items-center gap-4">
             <x-primary-button>{{ __('Simpan') }}</x-primary-button>
 
             @if (session('status') === 'password-updated')
@@ -45,8 +46,8 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Tersimpan.') }}</p>
+                    class="text-[13px] font-semibold text-secondary flex items-center gap-1"
+                ><span class="material-symbols-outlined text-[16px]">check_circle</span>{{ __('Tersimpan.') }}</p>
             @endif
         </div>
     </form>

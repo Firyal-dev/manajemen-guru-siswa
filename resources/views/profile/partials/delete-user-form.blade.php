@@ -1,11 +1,12 @@
 {{-- Account deletion section with password confirmation modal --}}
 <section class="space-y-6">
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+        <h2 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-error">warning</span>
             {{ __('Hapus Akun') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-1 text-[13px] text-on-surface-variant">
             {{ __('Setelah akun dihapus, semua data akan hilang secara permanen. Sebelum menghapus akun, simpan dulu data atau informasi yang masih Anda perlukan.') }}
         </p>
     </header>
@@ -22,11 +23,12 @@
             @csrf
             @method('delete')
 
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <h2 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-error">warning</span>
                 {{ __('Yakin ingin menghapus akun Anda?') }}
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p class="mt-2 text-[13px] text-on-surface-variant">
                 {{ __('Setelah akun dihapus, semua data akan hilang secara permanen. Masukkan kata sandi Anda untuk memastikan Anda ingin menghapus akun ini secara permanen.') }}
             </p>
 
@@ -46,12 +48,12 @@
             </div>
 
             {{-- Actions --}}
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex justify-end gap-3">
                 <x-secondary-button x-on:click="$dispatch('close')">
                     {{ __('Batal') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3">
+                <x-danger-button>
                     {{ __('Hapus Akun') }}
                 </x-danger-button>
             </div>

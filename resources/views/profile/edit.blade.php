@@ -1,31 +1,32 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profil Saya') }}
-        </h2>
+        Profil Saya
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            {{-- Update profile info form --}}
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+    <div class="mb-6">
+        <h1 class="font-headline text-[28px] font-bold text-on-surface">Profil Saya</h1>
+        <p class="text-[14px] text-on-surface-variant mt-1">Kelola informasi akun, kata sandi, dan keamanan Anda.</p>
+    </div>
 
-            {{-- Change password form --}}
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
+    <div class="max-w-2xl space-y-6">
+        {{-- Update profile info form --}}
+        <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden">
+            <div class="p-6">
+                @include('profile.partials.update-profile-information-form')
             </div>
+        </div>
 
-            {{-- Delete account section --}}
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
+        {{-- Change password form --}}
+        <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden">
+            <div class="p-6">
+                @include('profile.partials.update-password-form')
+            </div>
+        </div>
+
+        {{-- Delete account section --}}
+        <div class="bg-surface rounded-xl border border-outline-variant card-shadow overflow-hidden">
+            <div class="p-6">
+                @include('profile.partials.delete-user-form')
             </div>
         </div>
     </div>

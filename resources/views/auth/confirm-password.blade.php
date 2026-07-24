@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+    <div class="mb-4 text-[14px] text-on-surface-variant">
         {{ __('Ini adalah area yang diamankan. Masukkan kembali kata sandi Anda sebelum melanjutkan.') }}
     </div>
 

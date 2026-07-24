@@ -4,7 +4,8 @@
         @csrf
         @method('PATCH')
 
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+        <h2 class="font-bold text-[16px] text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">edit</span>
             {{ __('Edit Kurikulum') }}
         </h2>
 
@@ -37,19 +38,19 @@
 
         {{-- Set as active checkbox --}}
         <div class="mt-4">
-            <label class="inline-flex items-center">
-                <input type="checkbox" name="status" value="1" {{ old('status', $k->status) ? 'checked' : '' }} class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Status Aktif') }}</span>
+            <label class="inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="status" value="1" {{ old('status', $k->status) ? 'checked' : '' }} class="rounded border-outline-variant text-primary shadow-sm focus:ring-primary focus:ring-offset-0 w-4 h-4">
+                <span class="ms-2 text-[13px] font-medium text-on-surface-variant">{{ __('Status Aktif') }}</span>
             </label>
         </div>
 
         {{-- Actions --}}
-        <div class="mt-6 flex justify-end">
+        <div class="mt-6 pt-4 border-t border-outline-variant flex justify-end gap-3">
             <x-secondary-button x-on:click="$dispatch('close')">
                 {{ __('Batal') }}
             </x-secondary-button>
 
-            <x-primary-button class="ms-3">
+            <x-primary-button>
                 {{ __('Simpan Perubahan') }}
             </x-primary-button>
         </div>
