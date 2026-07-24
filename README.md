@@ -34,7 +34,7 @@ Aplikasi manajemen data sekolah berbasis Laravel untuk mengelola guru, jurusan, 
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate
+php artisan migrate:fresh --seed
 php artisan storage:link
 npm install
 npm run build
@@ -84,3 +84,11 @@ API_ACCESS_TOKEN=<your-secret-token>
 ```
 
 Nilai token ini bebas, namun **harus sama persis** dengan nilai `API_SISWA_TOKEN` yang dimasukkan pada file `.env` aplikasi `management-nilai` agar permintaan sinkronisasi data tidak ditolak.
+
+## 📷 Manajemen File & Foto Profil
+
+Aplikasi ini bertindak sebagai **Pusat Penyimpanan Media (Master)** untuk aplikasi di ekosistemnya. File fisik seperti foto profil Guru dan Siswa diunggah dan disimpan sepenuhnya secara lokal di aplikasi ini (`storage/app/public`).
+
+File tersebut disajikan dan dapat diakses secara publik berkat perintah `php artisan storage:link`. Aplikasi lain (seperti `management-nilai`) tidak akan menyimpan foto-foto tersebut ulang, melainkan hanya akan menumpang (*hotlinking*) menampilkan foto-foto ini dengan mengarahkan *tag image*-nya ke URL aplikasi ini.
+
+Pastikan aplikasi ini selalu berjalan (secara default di port 8001: `php artisan serve --port=8001`) agar foto-foto tersebut tidak *broken* di aplikasi klien.

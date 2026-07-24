@@ -38,7 +38,8 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->call([
-            DummyDataSeeder::class,
+            // DummyDataSeeder::class, // Diganti dengan data aktual
+            DataReal2026Seeder::class,
         ]);
     }
 }
